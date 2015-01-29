@@ -4,11 +4,11 @@ const int Engine::TILE_SIZE = 32;
 bool Engine::m_isRunning = true;
 
 int Engine::getScreenHeight() {
-    return 500;
+    return 640;
 }
 
 int Engine::getScreenWidth() {
-    return 500;
+    return 640;
 }
 
 bool Engine::isRunning() {

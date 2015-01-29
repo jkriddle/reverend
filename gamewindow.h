@@ -11,9 +11,10 @@ class GameWindow : public QObject
 
 private:
     QGraphicsScene *m_scene;
+    QGraphicsView *m_view;
     QBrush *m_grassBrush;
     QBrush *m_playerBrush;
-    PlayerTile *player;
+    PlayerTile *m_player;
 
 public:
     GameWindow();

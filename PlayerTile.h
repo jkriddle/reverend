@@ -3,9 +3,12 @@
 
 #include <QGraphicsItem>
 
-class PlayerTile: public QGraphicsRectItem{
+class PlayerTile: public QGraphicsRectItem {
+
+private:
 public:
     void keyPressEvent(QKeyEvent *event);
+
 };
 
 #endif // PLAYERTILE_H
