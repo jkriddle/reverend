@@ -1,11 +1,10 @@
-#include "PlayerTile.h"
+#include "playertile.h"
 #include "Engine.h"
 #include <QKeyEvent>
 #include <QDebug>
 
 void PlayerTile::keyPressEvent(QKeyEvent *event)
 {
-    qDebug() << "KEY PRESED";
     if (event->key() == Qt::Key_A) {
         setPos(x() - Engine::TILE_SIZE, y());
     } else if (event->key() == Qt::Key_D) {

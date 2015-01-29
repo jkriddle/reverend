@@ -1,4 +1,4 @@
-#include "engine.h"
+#include "Engine.h"
 
 const int Engine::TILE_SIZE = 32;
 bool Engine::m_isRunning = true;
