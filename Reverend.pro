@@ -13,9 +13,12 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    PlayerTile.cpp
+    PlayerTile.cpp \
+    engine.cpp
 
 HEADERS  += \
-    PlayerTile.h
+    PlayerTile.h \
+    engine.h \
+    main.h
 
 FORMS    +=
