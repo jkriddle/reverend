@@ -1,22 +1,24 @@
-/*This source code copyrighted by Lazy Foo' Productions (2004-2013)
-and may not be redistributed without written permission.*/
+#pragma warning(disable: 4244) // conversion of Vector2d float to int
 
-//Using SDL, SDL_image, standard IO, and strings
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <stdio.h>
-#include <string>
-#include <iostream>
 #include "game.h"
+
+const int FPS = 60;
+const int DELAY_TIME = 1000.0f / FPS;
 
 int main( int argc, char* args[] )
 {
+	Uint32 frameStart = 0, frameTime = 0;
+
 	Game::getInstance()->init();
 
 	while(Game::getInstance()->running()) {
 		Game::getInstance()->handleEvents();
 		Game::getInstance()->update();
 		Game::getInstance()->draw();
+		frameTime = SDL_GetTicks() - frameStart;
+		if(frameTime< DELAY_TIME) {
+			SDL_Delay((int)(DELAY_TIME - frameTime));
+		}
 	}
 
 	return 0;

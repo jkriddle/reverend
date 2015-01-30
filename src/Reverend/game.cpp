@@ -52,6 +52,8 @@ bool Game::initSystems() {
 	//Get window surface
 	screen_ = SDL_GetWindowSurface(window_);
 
+	InputHandler::getInstance()->initialiseJoysticks();
+
 	return true;
 }
 
@@ -94,10 +96,8 @@ bool Game::loadMedia()
 	TextureManager::getInstance()->load("assets/textures/enemy.png", "enemy", renderer_);
 	
 	player_ = new Player(new LoaderParams(64*5, 64*5, 64, 64, "player"));
-	go_ = new Player(new LoaderParams(64*3, 64*3, 64, 64, "player"));
-	enemy_ = new Player(new LoaderParams(64*2, 64*2, 64, 64, "enemy"));
+	enemy_ = new Enemy(new LoaderParams(64*2, 64*2, 64, 64, "enemy"));
 	
-	gameObjects_.push_back(go_);
 	gameObjects_.push_back(player_);
 	gameObjects_.push_back(enemy_);
 
@@ -122,48 +122,7 @@ void Game::update() {
 }
 
 void Game::handleEvents() {
-	SDL_Event ev;
-    while (SDL_PollEvent(&ev)) {
-        switch(ev.type) {
-			case SDL_QUIT:
-				gameState_ = GameState::EXIT;
-				break;
-			case SDL_KEYDOWN:
-                /* Check the SDLKey values and move change the coords */
-                switch(ev.key.keysym.sym) {
-                    case SDLK_a:
-						//player_->setPos(player_->getX() - Game::getTileSize(), player_->getY());
-						//player_->setDirection(GameDirection::WEST);
-                        break;
-                    case SDLK_d:
-						//player_->setPos(player_->getX() + Game::getTileSize(), player_->getY());
-						//player_->setDirection(GameDirection::EAST);
-                        break;
-                    case SDLK_w:
-						//player_->setPos(player_->getX(), player_->getY() - Game::getTileSize());
-						//player_->setDirection(GameDirection::NORTH);
-                        break;
-                    case SDLK_s:
-						//player_->setPos(player_->getX(), player_->getY() + Game::getTileSize());
-						//player_->setDirection(GameDirection::SOUTH);
-                        break;
-                }
-				break;
-            case SDL_MOUSEBUTTONDOWN:
-				switch(ev.button.button) {
-					case SDL_BUTTON_LEFT:
-						std::cout << "Left mouse click" << std::endl;
-						break;
-					case SDL_BUTTON_RIGHT:
-						std::cout << "Right mouse click" << std::endl;
-						break;
-				}
-				break;
-			case SDL_MOUSEMOTION:
-				std::cout << ev.motion.x << " " << ev.motion.y << std::endl;
-				break;
-		}
-    }
+	InputHandler::getInstance()->update();
 }
 
 void Game::draw() {

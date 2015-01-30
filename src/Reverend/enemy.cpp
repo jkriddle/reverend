@@ -11,10 +11,12 @@ void Enemy::draw()
 
 void Enemy::update()
 {
-	x_ += 1;
-	y_ += 1;
 	currentTextureFrame_ = int(((SDL_GetTicks() / 100) % 12));
 	currentTextureRow_ = 6;
+	velocity_.setX(1);
+	velocity_.setY(1);
+
+	SDLGameObject::update();
 }
 
 void Enemy::clean()

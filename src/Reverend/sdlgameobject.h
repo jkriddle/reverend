@@ -5,6 +5,8 @@
 
 #include <SDL/SDL.h>
 #include "gameobject.h"
+#include "vector2d.h"
+#include "inputhandler.h"
 
 class SDLGameObject : public GameObject
 {
@@ -16,8 +18,9 @@ public:
 	virtual void clean();
 
 protected:
-	int x_;
-	int y_;
+	Vector2d position_;
+	Vector2d velocity_;
+	Vector2d acceleration_;
 
 	int width_;
 	int height_;

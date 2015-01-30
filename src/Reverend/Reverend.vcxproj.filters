@@ -36,6 +36,9 @@
     <ClCompile Include="sdlgameobject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="inputhandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\images\grass.png">
@@ -74,6 +77,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sdlgameobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vector2d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inputhandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

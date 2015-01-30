@@ -9,6 +9,7 @@
 #include "enemy.h"
 #include "texturemanager.h"
 #include "cleanup.h"
+#include "inputhandler.h"
 
 enum class GameState {
 	PLAY,
@@ -65,7 +66,6 @@ private:
 	
 	std::vector<GameObject*> gameObjects_;
 
-	GameObject* go_;
 	GameObject* player_;
 	GameObject* enemy_;
 	

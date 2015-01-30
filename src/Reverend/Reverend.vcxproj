@@ -75,6 +75,7 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameobject.cpp" />
+    <ClCompile Include="inputhandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="sdlgameobject.cpp" />
@@ -99,10 +100,12 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameobject.h" />
+    <ClInclude Include="inputhandler.h" />
     <ClInclude Include="loaderparams.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="sdlgameobject.h" />
     <ClInclude Include="texturemanager.h" />
+    <ClInclude Include="vector2d.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
