@@ -1,8 +1,15 @@
-#pragma once
+#ifndef GAME_H
+#define GAME_H
 
 #include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
 #include <iostream>
+#include <vector>
 #include "gameobject.h"
+#include "player.h"
+#include "enemy.h"
+#include "texturemanager.h"
+#include "cleanup.h"
 
 enum class GameState {
 	PLAY,
@@ -18,8 +25,10 @@ public:
 	void close();
 	void update();
 	void handleEvents();
-	void render();
+	void draw();
 	bool running() { return gameState_ == GameState::PLAY; }
+
+	static int getTileSize() { return 64; }
 
 private:
 	bool initSystems();
@@ -34,6 +43,12 @@ private:
 	SDL_Renderer* renderer_;
 	SDL_Surface* screen_;
 	GameState gameState_;
+	
+	std::vector<GameObject*> gameObjects_;
 
+	GameObject* go_;
 	GameObject* player_;
+	GameObject* enemy_;
 };
+
+#endif

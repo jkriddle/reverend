@@ -1,8 +1,4 @@
 #include "game.h"
-#include "cleanup.h"
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <iostream>
 
 Game::Game() {
 	window_ = nullptr;
@@ -103,13 +99,23 @@ SDL_Texture* Game::loadImage(std::string path)
 bool Game::loadMedia()
 {
 	//Loading success flag
-	bool success = true;
+	TextureManager::Instance()->load("assets/textures/player.png", "player", renderer_);
+	TextureManager::Instance()->load("assets/textures/enemy.png", "enemy", renderer_);
+	
+	player_ = new Player();
+	player_->load(64*5, 64*5, 64, 64, "player");
+	
+	go_ = new GameObject();
+	go_->load(64*3, 64*3, 64, 64, "player");
+	
+	enemy_ = new Enemy();
+	enemy_->load(64*2, 64*2, 64, 64, "enemy");
+	
+	gameObjects_.push_back(go_);
+	gameObjects_.push_back(player_);
+	gameObjects_.push_back(enemy_);
 
-	//Load PNG surface
-
-	player_ = new GameObject(loadImage("assets/textures/player.png"), 0, 0);
-
-	return success;
+	return true;
 }
 
 /**
@@ -118,7 +124,13 @@ bool Game::loadMedia()
 void Game::update() {
 	while(gameState_ != GameState::EXIT) {
 		handleEvents();
-		render();
+		
+		for(std::vector<GameObject*>::size_type i = 0; i != gameObjects_.size(); i++) {
+			gameObjects_[i]->update();
+		}
+
+		draw();
+		SDL_Delay(10); // cap frame rate
 	}
 	close();
 }
@@ -134,16 +146,20 @@ void Game::handleEvents() {
                 /* Check the SDLKey values and move change the coords */
                 switch(ev.key.keysym.sym) {
                     case SDLK_a:
-						player_->setPos(player_->getX() - 32, player_->getY());
+						//player_->setPos(player_->getX() - Game::getTileSize(), player_->getY());
+						//player_->setDirection(GameDirection::WEST);
                         break;
                     case SDLK_d:
-						player_->setPos(player_->getX() + 32, player_->getY());
+						//player_->setPos(player_->getX() + Game::getTileSize(), player_->getY());
+						//player_->setDirection(GameDirection::EAST);
                         break;
                     case SDLK_w:
-						player_->setPos(player_->getX(), player_->getY() - 32);
+						//player_->setPos(player_->getX(), player_->getY() - Game::getTileSize());
+						//player_->setDirection(GameDirection::NORTH);
                         break;
                     case SDLK_s:
-						player_->setPos(player_->getX(), player_->getY() + 32);
+						//player_->setPos(player_->getX(), player_->getY() + Game::getTileSize());
+						//player_->setDirection(GameDirection::SOUTH);
                         break;
                 }
 				break;
@@ -164,20 +180,36 @@ void Game::handleEvents() {
     }
 }
 
-void Game::render() {
+void Game::draw() {
 	SDL_RenderClear(renderer_);
-	SDL_SetRenderDrawColor(renderer_, 255,0,0,255);
-		
+	SDL_SetRenderDrawColor(renderer_, 0, 0, 0, 255);
+
+	for(std::vector<GameObject*>::size_type i = 0; i != gameObjects_.size(); i++) {
+		gameObjects_[i]->draw(renderer_);
+	}
+
+	//TextureManager::Instance()->drawFrame("player", 100, 100, 64, 64, 1, player_->currentFrame, renderer_);
+
+
+	/*
 	SDL_Rect sourceRectangle; // the first rectangle
 	SDL_Rect destinationRectangle; // another rectangle
-	SDL_QueryTexture(player_->getTexture(), NULL, NULL, &sourceRectangle.w, &sourceRectangle.h);
-	destinationRectangle.x = sourceRectangle.x = 0;
-	destinationRectangle.y = sourceRectangle.y = 0;
+	sourceRectangle.w = 64;
+	sourceRectangle.h = 64;
+	sourceRectangle.x = (64*0) + (64 * int(((SDL_GetTicks() / 100) % 12))); // 100 = switch frames every 100ms, 3 = # of frames
+	sourceRectangle.y = 64 * 4; // 100 = switch frames every 100ms, 3 = # of frames
+
+	destinationRectangle.x = sourceRectangle.x;
+	destinationRectangle.y = sourceRectangle.y;
+
 	destinationRectangle.x = player_->getX();
 	destinationRectangle.y = player_->getY();
 	destinationRectangle.w = sourceRectangle.w;
 	destinationRectangle.h = sourceRectangle.h;
-	SDL_RenderCopy(renderer_, player_->getTexture(), &sourceRectangle, &destinationRectangle);
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
+	if (player_->getDirection() == GameDirection::WEST) flip = SDL_FLIP_HORIZONTAL;
+	SDL_RenderCopyEx(renderer_, player_->getTexture(), &sourceRectangle, &destinationRectangle, 0, 0, flip); // pass in the horizontal flip
+	*/
 
     SDL_RenderPresent(renderer_); 
 }

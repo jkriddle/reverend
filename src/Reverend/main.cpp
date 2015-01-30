@@ -17,7 +17,7 @@ int main( int argc, char* args[] )
 	while(game->running()) {
 		game->handleEvents();
 		game->update();
-		game->render();
+		game->draw();
 	}
 
 	return 0;

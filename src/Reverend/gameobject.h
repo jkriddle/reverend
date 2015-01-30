@@ -1,16 +1,41 @@
+#ifndef GAMEOBJECT_H
+#define GAMEOBJECT_H
+
 #include <SDL/SDL.h>
-#include <iostream>
+#include "cleanup.h"
+#include <string>
+#include "texturemanager.h"
+
+/*
+enum GameDirection {
+	NORTH,
+	NORTH_EAST,
+	EAST,
+	SOUTH_EAST,
+	SOUTH,
+	SOUTH_WEST,
+	WEST,
+	NORTH_WEST
+};
+*/
 
 class GameObject {
 public:
-	GameObject(SDL_Texture* texture, int x, int y);
-	~GameObject();
-	int getX() { return x_; }
-	int getY() { return y_; }
-	SDL_Texture* getTexture() { return texture_; }
-	void setPos(int x, int y);
-private:
+	virtual void load(int x, int y, int width, int height, std::string textureID);
+	virtual void draw(SDL_Renderer* pRenderer);
+	virtual void update();
+	virtual void clean();
+protected:
+	std::string textureId_;
+	
+	int currentTextureFrame_;
+	int currentTextureRow_;
+
 	int x_;
 	int y_;
-	SDL_Texture* texture_;
+
+	int width_;
+	int height_;
 };
+
+#endif
