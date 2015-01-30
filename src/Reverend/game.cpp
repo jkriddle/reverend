@@ -15,10 +15,9 @@ Game::Game() {
 Game::~Game() {
 }
 
-void Game::run() {
+void Game::init() {
 	if (initSystems()) {
 		loadMedia();
-		gameLoop();
 	} else {
 		SDL_Quit();
 	}
@@ -34,15 +33,21 @@ bool Game::initSystems() {
 	}
 
 	//Create window
-	window_ = SDL_CreateWindow("Reverend", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth_, screenHeight_, SDL_WINDOW_OPENGL);
+	window_ = SDL_CreateWindow("Reverend", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth_, screenHeight_, SDL_WINDOW_OPENGL); // SDL_WINDOW_FULLSCREEN
 	if( window_ == NULL )
 	{
 		printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
 		return false;
 	}
 
-	SDL_Renderer *gRenderer = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (gRenderer == nullptr){
+	context_ = SDL_GL_CreateContext(window_);
+	if (context_ == nullptr) {
+		std::cout << "SDL_GL context could not be created!";
+		return false;
+	}
+
+	renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (renderer_ == nullptr){
 		SDL_DestroyWindow(window_);
 		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
 		SDL_Quit();
@@ -64,35 +69,35 @@ bool Game::initSystems() {
 }
 
 void Game::close() {
-	cleanup(screen_, window_);
+	cleanup(screen_, window_, renderer_);
 	screen_ = NULL;
 	window_ = NULL;
+	renderer_ = NULL;
 
 	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
 }
 
-SDL_Surface* Game::loadImage(std::string path)
+SDL_Texture* Game::loadImage(std::string path)
 {
 	//Load image at specified path
+	SDL_Texture* texture; // the new SDL_Texture variable
+
 	IMG_Init(IMG_INIT_PNG);
-	SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
+	SDL_Surface* loadedSurface = IMG_Load(path.c_str()); //path.c_str()
 	if( loadedSurface == NULL )
 	{
 		printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
 	}
 	else
 	{
-		std::cout << "Bliting surface" << std::endl;
-		//Convert surface to screen format
-		SDL_BlitSurface( loadedSurface, NULL, screen_, NULL );
+    // Clear the entire screen to the Renderer's base colour 
+		texture = SDL_CreateTextureFromSurface(renderer_, loadedSurface);
+		SDL_FreeSurface(loadedSurface);
 	}
-	
-	//Update the surface
-	SDL_UpdateWindowSurface( window_ );
 
-	return loadedSurface;
+	return texture;
 }
 
 bool Game::loadMedia()
@@ -101,7 +106,8 @@ bool Game::loadMedia()
 	bool success = true;
 
 	//Load PNG surface
-	loadImage( "player.png" );
+
+	player_ = new GameObject(loadImage("assets/textures/player.png"), 0, 0);
 
 	return success;
 }
@@ -109,14 +115,15 @@ bool Game::loadMedia()
 /**
  * Main game loop, where all the magic happens.
  */
-void Game::gameLoop() {
+void Game::update() {
 	while(gameState_ != GameState::EXIT) {
-		processInput();
+		handleEvents();
+		render();
 	}
 	close();
 }
 
-void Game::processInput() {
+void Game::handleEvents() {
 	SDL_Event ev;
     while (SDL_PollEvent(&ev)) {
         switch(ev.type) {
@@ -127,16 +134,16 @@ void Game::processInput() {
                 /* Check the SDLKey values and move change the coords */
                 switch(ev.key.keysym.sym) {
                     case SDLK_a:
-						std::cout << "a key down" << std::endl;
+						player_->setPos(player_->getX() - 32, player_->getY());
                         break;
                     case SDLK_d:
-						std::cout << "d key down" << std::endl;
+						player_->setPos(player_->getX() + 32, player_->getY());
                         break;
                     case SDLK_w:
-						std::cout << "w key down" << std::endl;
+						player_->setPos(player_->getX(), player_->getY() - 32);
                         break;
                     case SDLK_s:
-						std::cout << "s key down" << std::endl;
+						player_->setPos(player_->getX(), player_->getY() + 32);
                         break;
                 }
 				break;
@@ -155,4 +162,22 @@ void Game::processInput() {
 				break;
 		}
     }
+}
+
+void Game::render() {
+	SDL_RenderClear(renderer_);
+	SDL_SetRenderDrawColor(renderer_, 255,0,0,255);
+		
+	SDL_Rect sourceRectangle; // the first rectangle
+	SDL_Rect destinationRectangle; // another rectangle
+	SDL_QueryTexture(player_->getTexture(), NULL, NULL, &sourceRectangle.w, &sourceRectangle.h);
+	destinationRectangle.x = sourceRectangle.x = 0;
+	destinationRectangle.y = sourceRectangle.y = 0;
+	destinationRectangle.x = player_->getX();
+	destinationRectangle.y = player_->getY();
+	destinationRectangle.w = sourceRectangle.w;
+	destinationRectangle.h = sourceRectangle.h;
+	SDL_RenderCopy(renderer_, player_->getTexture(), &sourceRectangle, &destinationRectangle);
+
+    SDL_RenderPresent(renderer_); 
 }
