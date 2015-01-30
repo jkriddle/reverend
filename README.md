@@ -24,3 +24,7 @@ survive. How long will you last?
 ## Development Roadmap
 
 * ...
+
+## Installation
+
+* Run install.bat
