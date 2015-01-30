@@ -50,6 +50,7 @@ public:
     // mouse events
     bool getMouseButtonState(int buttonNumber) const;
     Vector2d* getMousePosition() const;
+    Vector2d* getPrevMousePosition() const;
     
 private:
     
@@ -92,6 +93,7 @@ private:
     // mouse specific
     std::vector<bool> mouseButtonStates_;
     Vector2d* mousePosition_;
+	Vector2d* prevMousePosition_;
     
     // singleton
     static InputHandler* instance_;

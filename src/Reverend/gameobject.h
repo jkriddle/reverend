@@ -6,7 +6,6 @@
 #include "texturemanager.h"
 #include "loaderparams.h"
 
-/*
 enum GameDirection {
 	NORTH,
 	NORTH_EAST,
@@ -17,7 +16,6 @@ enum GameDirection {
 	WEST,
 	NORTH_WEST
 };
-*/
 
 class GameObject {
 public:
