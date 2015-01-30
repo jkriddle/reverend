@@ -13,6 +13,7 @@ InputHandler::InputHandler() : keystates_(0), joysticksInitialised_(false), mous
     {
         mouseButtonStates_.push_back(false);
     }
+
 }
 
 InputHandler::~InputHandler()
@@ -26,6 +27,7 @@ InputHandler::~InputHandler()
     joysticks_.clear();
     buttonStates_.clear();
     mouseButtonStates_.clear();
+	triggerStates_.clear();
 }
 
 void InputHandler::clean()
@@ -77,6 +79,14 @@ void InputHandler::initialiseJoysticks()
                 }
                 // push the button array into the button state array
                 buttonStates_.push_back(tempButtons);
+
+				// push false values for L/R triggers
+                std::vector<bool> tempTriggers;
+				for(int j = 0; j <  2; j++)
+                {
+                    tempTriggers.push_back(false);
+                }
+				triggerStates_.push_back(tempTriggers);
             }
             else
             {
@@ -156,6 +166,11 @@ int InputHandler::getAxisY(int joy, int stick) const
 bool InputHandler::getButtonState(int joy, int buttonNumber) const
 {
     return buttonStates_[joy][buttonNumber];
+}
+
+bool InputHandler::getTriggerState(int joy, int triggerNumber) const
+{
+    return triggerStates_[joy][triggerNumber];
 }
 
 bool InputHandler::getMouseButtonState(int buttonNumber) const
@@ -339,12 +354,28 @@ void InputHandler::onJoystickAxisMove(SDL_Event &event)
             joystickValues_[whichOne].second->setY(0);
         }
     }
+	
+	if (event.jaxis.axis == 4) {
+		if (event.jaxis.value > -triggerDeadZone_) {
+			triggerStates_[whichOne][0] = true;
+		} else {
+			triggerStates_[whichOne][0] = false;
+		}
+	}
+	
+	if (event.jaxis.axis == 5) {
+		if (event.jaxis.value > -triggerDeadZone_) {
+			triggerStates_[whichOne][1] = true;
+		} else {
+			triggerStates_[whichOne][1] = false;
+		}
+	}
+
 }
 
 void InputHandler::onJoystickButtonDown(SDL_Event &event)
 {
     int whichOne = event.jaxis.which;
-    
     buttonStates_[whichOne][event.jbutton.button] = true;
 }
 

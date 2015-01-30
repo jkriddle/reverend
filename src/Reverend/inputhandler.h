@@ -45,6 +45,7 @@ public:
     int getAxisX(int joy, int stick) const;
     int getAxisY(int joy, int stick) const;
     bool getButtonState(int joy, int buttonNumber) const;
+	bool getTriggerState(int joy, int trigger) const;
     
     // mouse events
     bool getMouseButtonState(int buttonNumber) const;
@@ -73,6 +74,7 @@ private:
     void onJoystickAxisMove(SDL_Event& event);
     void onJoystickButtonDown(SDL_Event& event);
     void onJoystickButtonUp(SDL_Event& event);
+    static const int triggerDeadZone_ = 15000;
 
     // member variables
     
@@ -83,6 +85,7 @@ private:
     std::vector<std::pair<Vector2d*, Vector2d*>> joystickValues_;
     std::vector<SDL_Joystick*> joysticks_;
     std::vector<std::vector<bool>> buttonStates_;
+    std::vector<std::vector<bool>> triggerStates_;
     bool joysticksInitialised_;
     static const int joystickDeadZone_ = 10000;
     
