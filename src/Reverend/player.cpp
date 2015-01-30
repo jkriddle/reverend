@@ -1,13 +1,12 @@
 #include "player.h"
 
-void Player::load(int x, int y, int width, int height, std::string textureId)
+Player::Player(const LoaderParams* pParams) : SDLGameObject(pParams)
 {
-	GameObject::load(x, y, width, height, textureId);
 }
 
-void Player::draw(SDL_Renderer* renderer)
+void Player::draw()
 {
-	GameObject::draw(renderer);
+	SDLGameObject::draw();
 }
 
 void Player::update()
@@ -19,5 +18,5 @@ void Player::update()
 
 void Player::clean()
 {
-	GameObject::clean();
+	SDLGameObject::clean();
 }

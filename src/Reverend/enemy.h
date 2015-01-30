@@ -3,14 +3,14 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "gameobject.h"
+#include "sdlgameobject.h"
 
-class Enemy : public GameObject {
+class Enemy : public SDLGameObject {
 public:
-	void load(int x, int y, int width, int height, std::string textureId);
-	void draw(SDL_Renderer* renderer);
-	void update();
-	void clean();
+	Enemy(const LoaderParams* pParams);
+	virtual void draw();
+	virtual void update();
+	virtual void clean();
 };
 
 #endif

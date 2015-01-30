@@ -11,7 +11,8 @@ public:
 	bool load(std::string fileName, std::string id, SDL_Renderer* renderer);
 	void draw(std::string id, int x, int y, int width, int height, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	void drawFrame(std::string id, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer*pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
-	static TextureManager* Instance()
+	
+	static TextureManager* getInstance()
 	{
 		if(instance_ == 0)
 		{
@@ -22,9 +23,9 @@ public:
 	} 
 
 private:
-	TextureManager() {};
-	std::map<std::string, SDL_Texture*> textureMap_;
+	TextureManager() {}
 	static TextureManager* instance_;
+	std::map<std::string, SDL_Texture*> textureMap_;
 };
 
 #endif

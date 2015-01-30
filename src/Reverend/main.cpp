@@ -11,13 +11,12 @@ and may not be redistributed without written permission.*/
 
 int main( int argc, char* args[] )
 {
-	Game* game = new Game();
-	game->init();
+	Game::getInstance()->init();
 
-	while(game->running()) {
-		game->handleEvents();
-		game->update();
-		game->draw();
+	while(Game::getInstance()->running()) {
+		Game::getInstance()->handleEvents();
+		Game::getInstance()->update();
+		Game::getInstance()->draw();
 	}
 
 	return 0;

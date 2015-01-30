@@ -5,7 +5,6 @@
 #include <SDL/SDL_image.h>
 #include <iostream>
 #include <vector>
-#include "gameobject.h"
 #include "player.h"
 #include "enemy.h"
 #include "texturemanager.h"
@@ -18,8 +17,6 @@ enum class GameState {
 
 class Game {
 public:
-	Game();
-	~Game();
 
 	void init();
 	void close();
@@ -30,7 +27,29 @@ public:
 
 	static int getTileSize() { return 64; }
 
+	static Game* getInstance()
+	{
+		if(instance_ == 0)
+		{
+			instance_ = new Game();
+			return instance_;
+		}
+		return instance_;
+	} 
+
+	SDL_Renderer* getRenderer() const { return renderer_; }
+
 private:
+	Game() {
+		window_ = nullptr;
+		screen_ = nullptr;
+		screenWidth_ = 640;
+		screenHeight_ = 480;
+		gameState_ = GameState::PLAY;
+	}
+
+	static Game* instance_;
+
 	bool initSystems();
 	
 	bool loadMedia();
@@ -49,6 +68,7 @@ private:
 	GameObject* go_;
 	GameObject* player_;
 	GameObject* enemy_;
+	
 };
 
 #endif

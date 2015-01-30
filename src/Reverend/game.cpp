@@ -1,15 +1,6 @@
 #include "game.h"
 
-Game::Game() {
-	window_ = nullptr;
-	screen_ = nullptr;
-	screenWidth_ = 640;
-	screenHeight_ = 480;
-	gameState_ = GameState::PLAY;
-}
-
-Game::~Game() {
-}
+Game* Game::instance_ = 0;
 
 void Game::init() {
 	if (initSystems()) {
@@ -99,17 +90,12 @@ SDL_Texture* Game::loadImage(std::string path)
 bool Game::loadMedia()
 {
 	//Loading success flag
-	TextureManager::Instance()->load("assets/textures/player.png", "player", renderer_);
-	TextureManager::Instance()->load("assets/textures/enemy.png", "enemy", renderer_);
+	TextureManager::getInstance()->load("assets/textures/player.png", "player", renderer_);
+	TextureManager::getInstance()->load("assets/textures/enemy.png", "enemy", renderer_);
 	
-	player_ = new Player();
-	player_->load(64*5, 64*5, 64, 64, "player");
-	
-	go_ = new GameObject();
-	go_->load(64*3, 64*3, 64, 64, "player");
-	
-	enemy_ = new Enemy();
-	enemy_->load(64*2, 64*2, 64, 64, "enemy");
+	player_ = new Player(new LoaderParams(64*5, 64*5, 64, 64, "player"));
+	go_ = new Player(new LoaderParams(64*3, 64*3, 64, 64, "player"));
+	enemy_ = new Player(new LoaderParams(64*2, 64*2, 64, 64, "enemy"));
 	
 	gameObjects_.push_back(go_);
 	gameObjects_.push_back(player_);
@@ -185,10 +171,10 @@ void Game::draw() {
 	SDL_SetRenderDrawColor(renderer_, 0, 0, 0, 255);
 
 	for(std::vector<GameObject*>::size_type i = 0; i != gameObjects_.size(); i++) {
-		gameObjects_[i]->draw(renderer_);
+		gameObjects_[i]->draw();
 	}
 
-	//TextureManager::Instance()->drawFrame("player", 100, 100, 64, 64, 1, player_->currentFrame, renderer_);
+	//TextureManager::getInstance()->drawFrame("player", 100, 100, 64, 64, 1, player_->currentFrame, renderer_);
 
 
 	/*

@@ -2,9 +2,9 @@
 #define GAMEOBJECT_H
 
 #include <SDL/SDL.h>
-#include "cleanup.h"
 #include <string>
 #include "texturemanager.h"
+#include "loaderparams.h"
 
 /*
 enum GameDirection {
@@ -21,21 +21,12 @@ enum GameDirection {
 
 class GameObject {
 public:
-	virtual void load(int x, int y, int width, int height, std::string textureID);
-	virtual void draw(SDL_Renderer* pRenderer);
-	virtual void update();
-	virtual void clean();
+	virtual void draw() = 0;
+	virtual void update() = 0;
+	virtual void clean() = 0;
 protected:
-	std::string textureId_;
-	
-	int currentTextureFrame_;
-	int currentTextureRow_;
-
-	int x_;
-	int y_;
-
-	int width_;
-	int height_;
+	GameObject(const LoaderParams* params) {}
+	virtual ~GameObject() {}
 };
 
 #endif
