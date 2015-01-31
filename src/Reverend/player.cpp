@@ -226,10 +226,6 @@ void Player::handleInput()
 		if (InputHandler::getInstance()->getButtonState(0, 5)) {
 			// Select
 		}
-
-		if (InputHandler::getInstance()->getButtonState(0, 4)) {
-			// Start
-		}
 	}
 
 	handleKeyboardInput();

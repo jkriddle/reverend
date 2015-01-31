@@ -10,11 +10,9 @@
 #include "texturemanager.h"
 #include "cleanup.h"
 #include "inputhandler.h"
-
-enum class GameState {
-	PLAY,
-	EXIT
-};
+#include "playstate.h"
+#include "pausestate.h"
+#include "gamestatemachine.h"
 
 class Game {
 public:
@@ -24,7 +22,7 @@ public:
 	void update();
 	void handleEvents();
 	void draw();
-	bool running() { return gameState_ == GameState::PLAY; }
+	bool running() { return isRunning_; }
 
 	static int getTileSize() { return 64; }
 
@@ -39,6 +37,7 @@ public:
 	} 
 
 	SDL_Renderer* getRenderer() const { return renderer_; }
+	GameStateMachine* getStateMachine(){ return gameStateMachine_; }
 
 private:
 	Game() {
@@ -46,23 +45,22 @@ private:
 		screen_ = nullptr;
 		screenWidth_ = 640;
 		screenHeight_ = 480;
-		gameState_ = GameState::PLAY;
+		isRunning_ = true;
 	}
 
 	static Game* instance_;
 
 	bool initSystems();
-	
-	bool loadMedia();
-	SDL_Texture* loadImage(std::string path);
 
+	bool isRunning_;
+	
 	SDL_Window* window_;
 	int screenWidth_;
 	int screenHeight_;
 	SDL_GLContext context_;
 	SDL_Renderer* renderer_;
 	SDL_Surface* screen_;
-	GameState gameState_;
+	GameStateMachine* gameStateMachine_;
 	
 	std::vector<GameObject*> gameObjects_;
 

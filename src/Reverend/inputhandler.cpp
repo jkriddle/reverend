@@ -166,6 +166,7 @@ int InputHandler::getAxisY(int joy, int stick) const
 
 bool InputHandler::getButtonState(int joy, int buttonNumber) const
 {
+	if (buttonStates_.size() == 0) return false;
     return buttonStates_[joy][buttonNumber];
 }
 

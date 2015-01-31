@@ -74,12 +74,14 @@
   <ItemGroup>
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="gameobject.cpp" />
+    <ClCompile Include="gamestatemachine.cpp" />
     <ClCompile Include="inputhandler.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pausestate.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="playstate.cpp" />
     <ClCompile Include="sdlgameobject.cpp" />
-    <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="texturemanager.cpp" />
     <ClCompile Include="vector2d.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -95,9 +97,13 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameobject.h" />
+    <ClInclude Include="gamestate.h" />
+    <ClInclude Include="gamestatemachine.h" />
     <ClInclude Include="inputhandler.h" />
     <ClInclude Include="loaderparams.h" />
+    <ClInclude Include="pausestate.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="playstate.h" />
     <ClInclude Include="sdlgameobject.h" />
     <ClInclude Include="texturemanager.h" />
     <ClInclude Include="vector2d.h" />
