@@ -80,6 +80,12 @@
     <Image Include="assets\textures\restart.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="assets\textures\exit.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\gameover.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cleanup.h">
@@ -133,5 +139,10 @@
     <ClInclude Include="soundmanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\sounds\fast_swipe.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

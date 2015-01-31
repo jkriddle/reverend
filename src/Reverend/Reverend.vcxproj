@@ -89,6 +89,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\textures\enemy.png" />
+    <Image Include="assets\textures\exit.png" />
+    <Image Include="assets\textures\gameover.png" />
     <Image Include="assets\textures\grass.png" />
     <Image Include="assets\textures\player.png" />
     <Image Include="assets\textures\restart.png" />
@@ -118,6 +120,9 @@
     <ClInclude Include="soundmanager.h" />
     <ClInclude Include="texturemanager.h" />
     <ClInclude Include="vector2d.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\sounds\fast_swipe.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

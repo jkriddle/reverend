@@ -31,9 +31,10 @@ bool PlayState::onEnter()
 {
 	std::cout << "entering PlayState\n";
 	
-	//Loading success flag
 	TextureManager::getInstance()->load("assets/textures/player.png", "player", Game::getInstance()->getRenderer());
 	TextureManager::getInstance()->load("assets/textures/enemy.png", "enemy", Game::getInstance()->getRenderer());
+
+	SoundManager::getInstance()->load("assets/sounds/fast_swipe.wav", "short_swipe", SoundType::SOUND_SFX);
 	
 	Player* player_ = new Player(new LoaderParams(64*5, 64*5, 64, 64, "player"));
 	Enemy* enemy_ = new Enemy(new LoaderParams(64*2, 64*2, 64, 64, "enemy"));

@@ -16,7 +16,7 @@ class SoundManager
 {
 public:
     
-    static SoundManager* Instance()
+    static SoundManager* getInstance()
     {
         if(instance_ == 0)
         {

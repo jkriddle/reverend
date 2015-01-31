@@ -93,6 +93,10 @@ void Player::handleKeyboardInput() {
 		look = true;
 	}
 	
+	if (InputHandler::getInstance()->getMouseButtonPress(0)) {
+		attack();
+	}
+
 	if (InputHandler::getInstance()->getMouseButtonPress(2)) {
 		action();
 	}
@@ -268,6 +272,7 @@ void Player::action() {
 
 void Player::attack() {
 	std::cout << "attack" << std::endl;
+	SoundManager::getInstance()->playSound("short_swipe", 0);
 }
 
 void Player::equip(int slot) {

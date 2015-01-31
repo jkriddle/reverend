@@ -6,6 +6,7 @@
 #include "player.h"
 #include "enemy.h"
 #include "gamestate.h"
+#include "soundmanager.h"
 #include <iostream>
 
 class PlayState : public GameState {
