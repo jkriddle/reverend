@@ -82,12 +82,6 @@
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="grass.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="player.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
     <Image Include="resources\images\grass.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>

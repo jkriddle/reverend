@@ -223,8 +223,9 @@ void InputHandler::update()
             case SDL_MOUSEBUTTONUP:
                 onMouseButtonUp(event);
                 break;
-                
+
             case SDL_KEYDOWN:
+				std::cout << "D";
                 onKeyDown();
                 break;
                 

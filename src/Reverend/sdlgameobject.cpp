@@ -26,7 +26,6 @@ void SDLGameObject::update()
 	position_ += velocity_;
 }
 
-
 void SDLGameObject::clean()
 {
 }
