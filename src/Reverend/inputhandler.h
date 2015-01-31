@@ -7,7 +7,7 @@
 #include <SDL/SDL.h>
 #include "Vector2d.h"
 
-enum mouse_buttons
+enum MouseButtons
 {
     LEFT = 0,
     MIDDLE = 1,
@@ -37,9 +37,11 @@ public:
     // update and clean the input handler
     void update();
     void clean();
-    
+    bool cdown;
+
     // keyboard events
     bool isKeyDown(SDL_Scancode key) const;
+	bool isKeyPressed(SDL_Scancode key) const;
     
     // joystick events
     int getAxisX(int joy, int stick) const;
@@ -49,6 +51,7 @@ public:
     
     // mouse events
     bool getMouseButtonState(int buttonNumber) const;
+	bool getMouseButtonPress(int buttonNumber) const;
     Vector2d* getMousePosition() const;
     Vector2d* getPrevMousePosition() const;
     
@@ -65,6 +68,7 @@ private:
     // handle keyboard events
     void onKeyDown();
     void onKeyUp();
+	void compareKeystates();
     
     // handle mouse events
     void onMouseMove(SDL_Event& event);
@@ -81,6 +85,7 @@ private:
     
     // keyboard specific
     const Uint8* keystates_;
+	Uint8* prevKeystates_;
     
     // joystick specific
     std::vector<std::pair<Vector2d*, Vector2d*>> joystickValues_;
@@ -92,6 +97,7 @@ private:
     
     // mouse specific
     std::vector<bool> mouseButtonStates_;
+	Uint8* prevMouseButtonStates_;
     Vector2d* mousePosition_;
 	Vector2d* prevMousePosition_;
     

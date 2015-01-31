@@ -59,34 +59,42 @@ void Player::handleKeyboardInput() {
 		// Down
 		velocity_.setY(1);
 	}
+
+	if (InputHandler::getInstance()->isKeyPressed(SDL_SCANCODE_E)) {
+		action();
+	}
 		
-	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_0)) {
+	if (InputHandler::getInstance()->isKeyPressed(SDL_SCANCODE_0)) {
 		equip(0);
 	}
 		
-	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_1)) {
+	if (InputHandler::getInstance()->isKeyPressed(SDL_SCANCODE_1)) {
 		equip(1);
 	}
 		
-	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_2)) {
+	if (InputHandler::getInstance()->isKeyPressed(SDL_SCANCODE_2)) {
 		equip(2);
 	}
 		
-	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_3)) {
+	if (InputHandler::getInstance()->isKeyPressed(SDL_SCANCODE_3)) {
 		equip(3);
 	}
 	
-	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_LEFTBRACKET)) {
+	if (InputHandler::getInstance()->isKeyPressed(SDL_SCANCODE_LEFTBRACKET)) {
 		equipPrev();
 	}
 	
-	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_RIGHTBRACKET)) {
+	if (InputHandler::getInstance()->isKeyPressed(SDL_SCANCODE_RIGHTBRACKET)) {
 		equipNext();
 	}
 		
 	// if mouse button is being held down (shooting) then look in direction of mouse
 	if (InputHandler::getInstance()->getMouseButtonState(0)) {
 		look = true;
+	}
+	
+	if (InputHandler::getInstance()->getMouseButtonPress(2)) {
+		action();
 	}
 
 	if (look) {
@@ -225,7 +233,7 @@ void Player::handleInput()
 		updateForwardTexture();
 
 		// Buttons
-		if (InputHandler::getInstance()->getButtonState(0, 10) || InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_E)) {
+		if (InputHandler::getInstance()->getButtonState(0, 10)) {
 			// Xbox (A) or E-key
 			action();
 		}

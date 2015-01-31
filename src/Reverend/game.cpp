@@ -73,27 +73,14 @@ void Game::close() {
 
 void Game::update() {
 	gameStateMachine_->update();
-	/*
-	while(gameState_ != GS::EXIT) {
-		handleEvents();
-		
-		for(std::vector<GameObject*>::size_type i = 0; i != gameObjects_.size(); i++) {
-			gameObjects_[i]->update();
-		}
-
-		draw();
-		SDL_Delay(10); // cap frame rate
-	}
-	close();*/
 }
 
 void Game::handleEvents() {
 	InputHandler::getInstance()->update();
-	gameStateMachine_->update();
 }
 
 void Game::draw() {
 	SDL_RenderClear(renderer_);
-	gameStateMachine_->render();
+	gameStateMachine_->draw();
     SDL_RenderPresent(renderer_); 
 }

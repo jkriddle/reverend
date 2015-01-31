@@ -12,7 +12,7 @@ public:
     ~GameStateMachine() {}
     
     void update();
-    void render();
+    void draw();
     
     void pushState(GameState* state);
     void changeState(GameState* state);

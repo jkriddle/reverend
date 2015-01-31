@@ -21,7 +21,7 @@ void GameStateMachine::update()
 	}
 }
 
-void GameStateMachine::render()
+void GameStateMachine::draw()
 {
     if(!gameStates_.empty())
     {

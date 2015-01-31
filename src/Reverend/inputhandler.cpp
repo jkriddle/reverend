@@ -13,13 +13,13 @@ InputHandler::InputHandler() : keystates_(0), joysticksInitialised_(false), mous
     {
         mouseButtonStates_.push_back(false);
     }
-
 }
 
 InputHandler::~InputHandler()
 {
     // delete anything we created dynamically
     delete keystates_;
+    delete prevKeystates_;
     delete mousePosition_;
     delete prevMousePosition_;
     
@@ -115,6 +115,7 @@ void InputHandler::reset()
     mouseButtonStates_[MIDDLE] = false;
 }
 
+// Check if a key is currently held down (including repeats)
 bool InputHandler::isKeyDown(SDL_Scancode key) const
 {
     if(keystates_ != 0)
@@ -131,6 +132,21 @@ bool InputHandler::isKeyDown(SDL_Scancode key) const
     
     return false;
 }
+
+// Check if a key has been pressed ONCE (no repeats detected unlike isKeyDown)
+bool InputHandler::isKeyPressed(SDL_Scancode key) const
+{
+    if(prevKeystates_ != 0)
+    {
+        if(prevKeystates_[int(key)] == 1) {
+			return true;
+		}
+		return false;
+    }
+    
+    return false;
+}
+
 
 int InputHandler::getAxisX(int joy, int stick) const
 {
@@ -175,9 +191,16 @@ bool InputHandler::getTriggerState(int joy, int triggerNumber) const
     return triggerStates_[joy][triggerNumber];
 }
 
+// Check if a mouse button is currently down (including repeat events)
 bool InputHandler::getMouseButtonState(int buttonNumber) const
 {
     return mouseButtonStates_[buttonNumber];
+}
+
+// Check if a mouse button has been initially pressed (no repeat events/held down)
+bool InputHandler::getMouseButtonPress(int buttonNumber) const
+{
+    return prevMouseButtonStates_[buttonNumber] == 1;
 }
 
 Vector2d* InputHandler::getMousePosition() const
@@ -193,6 +216,9 @@ Vector2d* InputHandler::getPrevMousePosition() const
 void InputHandler::update()
 {
     SDL_Event event;
+	prevKeystates_ = new Uint8[255];
+	prevMouseButtonStates_ = new Uint8[3];
+
     while(SDL_PollEvent(&event))
     {
         switch (event.type)
@@ -226,7 +252,13 @@ void InputHandler::update()
                 break;
 
             case SDL_KEYDOWN:
-                onKeyDown();
+
+				if (!event.key.repeat) {
+					prevKeystates_[int(event.key.keysym.scancode)] = 1;
+				}
+
+				onKeyDown();
+
                 break;
                 
             case SDL_KEYUP:
@@ -260,16 +292,22 @@ void InputHandler::onMouseButtonDown(SDL_Event &event)
 {
     if(event.button.button == SDL_BUTTON_LEFT)
     {
+		if (prevMouseButtonStates_[LEFT] == 1) prevMouseButtonStates_[LEFT] = 0;
+		else prevMouseButtonStates_[LEFT] = 1;
         mouseButtonStates_[LEFT] = true;
     }
     
     if(event.button.button == SDL_BUTTON_MIDDLE)
     {
+		if (prevMouseButtonStates_[MIDDLE] == 1) prevMouseButtonStates_[MIDDLE] = 0;
+		else prevMouseButtonStates_[MIDDLE] = 1;
         mouseButtonStates_[MIDDLE] = true;
     }
     
     if(event.button.button == SDL_BUTTON_RIGHT)
     {
+		if (prevMouseButtonStates_[RIGHT] == 1) prevMouseButtonStates_[RIGHT] = 0;
+		else prevMouseButtonStates_[RIGHT] = 1;
         mouseButtonStates_[RIGHT] = true;
     }
 }
@@ -278,16 +316,19 @@ void InputHandler::onMouseButtonUp(SDL_Event &event)
 {
     if(event.button.button == SDL_BUTTON_LEFT)
     {
+		prevMouseButtonStates_[LEFT] = 0;
         mouseButtonStates_[LEFT] = false;
     }
     
     if(event.button.button == SDL_BUTTON_MIDDLE)
     {
+		prevMouseButtonStates_[MIDDLE] = 0;
         mouseButtonStates_[MIDDLE] = false;
     }
     
     if(event.button.button == SDL_BUTTON_RIGHT)
     {
+		prevMouseButtonStates_[RIGHT] = 0;
         mouseButtonStates_[RIGHT] = false;
     }
 }
