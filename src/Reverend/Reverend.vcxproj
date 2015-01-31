@@ -72,6 +72,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="animatedgraphic.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="game.cpp" />
@@ -99,6 +100,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="animatedgraphic.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="cleanup.h" />
     <ClInclude Include="enemy.h" />

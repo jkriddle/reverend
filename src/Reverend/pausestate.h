@@ -6,6 +6,7 @@
 #include "gamestate.h"
 #include "button.h"
 #include "inputhandler.h"
+#include "animatedgraphic.h"
 #include <iostream>
 
 class PauseState : public GameState {

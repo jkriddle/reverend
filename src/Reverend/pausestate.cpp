@@ -36,17 +36,23 @@ bool PauseState::onEnter()
 	if(!TextureManager::getInstance()->load("assets/textures/restart.png", "restartButton", Game::getInstance()->getRenderer())) {
 		return false;
 	}
-
+	
 	if(!TextureManager::getInstance()->load("assets/textures/exit.png", "exitButton", Game::getInstance()->getRenderer())) {
 		return false;
 	}
 
+	if(!TextureManager::getInstance()->load("assets/textures/gameover.png", "gameoverGraphic", Game::getInstance()->getRenderer())) {
+		return false;
+	}
+
 	//GameObject* button1 = new Button(new LoaderParams(100, 100, 200, 100, "restartButton"));
+	GameObject* button4 = new AnimatedGraphic(new LoaderParams(100, 100, 190, 30, "gameoverGraphic"), 2, 2);
 	GameObject* button2 = new Button(new LoaderParams(100, 200, 200, 100, "resumeButton"), pauseToPlay);
 	GameObject* button3 = new Button(new LoaderParams(100, 300, 200, 100, "exitButton"), pauseToExit);
 	//gameObjects_.push_back(button1);
 	gameObjects_.push_back(button2);
 	gameObjects_.push_back(button3);
+	gameObjects_.push_back(button4);
 
 	std::cout << "entering PauseState\n";
 	return true;
@@ -62,6 +68,7 @@ bool PauseState::onExit()
 	TextureManager::getInstance()->clearFromTextureMap("restartbutton");
 	TextureManager::getInstance()->clearFromTextureMap("resumeButton");
 	TextureManager::getInstance()->clearFromTextureMap("exitButton");
+	TextureManager::getInstance()->clearFromTextureMap("gameoverGraphic");
 
 	std::cout << "exiting PauseState\n";
 	return true;
