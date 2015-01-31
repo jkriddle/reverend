@@ -98,7 +98,7 @@ private:
     // singleton
     static InputHandler* instance_;
 };
-typedef InputHandler TheInputHandler;
+typedef InputHandler InputHandler;
 
 
-#endif /* defined(__SDL_Game_Programming_Book__InputHandler__) */
+#endif 

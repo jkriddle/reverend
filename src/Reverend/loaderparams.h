@@ -1,3 +1,6 @@
+#ifndef LOADERPARAMS_H
+#define LOADERPARAMS_H
+
 #include <string>
 
 class LoaderParams {
@@ -21,3 +24,5 @@ private:
 	std::string textureId_;
 
 };
+
+#endif

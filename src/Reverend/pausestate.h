@@ -4,6 +4,7 @@
 #include "game.h"
 #include "gameobject.h"
 #include "gamestate.h"
+#include "button.h"
 #include "inputhandler.h"
 #include <iostream>
 
@@ -18,6 +19,9 @@ public:
 private:
 	static const std::string id_;
 	std::vector<GameObject*> gameObjects_;
+
+	static void pauseToPlay();
+	static void pauseToExit();
 };
 
 #endif;

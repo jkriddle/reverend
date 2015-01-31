@@ -48,12 +48,30 @@
     <ClCompile Include="texturemanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\images\grass.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="resources\images\player.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\resume.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\enemy.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\grass.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\player.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\restart.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
@@ -98,6 +116,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="playstate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

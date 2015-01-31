@@ -72,6 +72,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="button.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gamestatemachine.cpp" />
@@ -85,6 +86,11 @@
     <ClCompile Include="vector2d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\textures\enemy.png" />
+    <Image Include="assets\textures\grass.png" />
+    <Image Include="assets\textures\player.png" />
+    <Image Include="assets\textures\restart.png" />
+    <Image Include="assets\textures\resume.png" />
     <Image Include="resources\images\grass.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
@@ -93,6 +99,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="button.h" />
     <ClInclude Include="cleanup.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="game.h" />
