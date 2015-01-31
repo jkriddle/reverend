@@ -6,6 +6,7 @@
 class Vector2d {
 
 public:
+	static const Vector2d* ZERO;
 	static const Vector2d* NORTH;
 	static const Vector2d* NORTH_EAST;
 	static const Vector2d* EAST;
@@ -56,6 +57,10 @@ public:
 	
 	friend bool operator==(Vector2d& v1, const Vector2d& v2) {
 		return (v1.x_ == v2.x_ && v1.y_ == v2.y_);
+	}
+	
+	friend bool operator!=(Vector2d& v1, const Vector2d& v2) {
+		return !(v1.x_ == v2.x_ && v1.y_ == v2.y_);
 	}
 
 	Vector2d operator/(float scalar) {

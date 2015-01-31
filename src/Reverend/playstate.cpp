@@ -7,6 +7,11 @@ void PlayState::update() {
 		Game::getInstance()->getStateMachine()->pushState(new PauseState());
 	}
 
+	// Inventory
+	if(InputHandler::getInstance()->getButtonState(0, 11) || InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_I)) {
+		std::cout << "show inventory" << std::endl;
+	}
+		
 	if(InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
 		Game::getInstance()->close();
 	}

@@ -18,6 +18,16 @@ private:
 	void handleKeyboardInput();
 	void getWalkingDirection();
 	void updateForwardTexture();
+
+	void move(Vector2d* direction);
+	void action();
+	void attack();
+	void equip(int slot);
+	void equipPrev();
+	void equipNext();
+
+	int equippedItem_;
+	int numBeltSlots_;
 };
 
 #endif

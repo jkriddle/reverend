@@ -226,7 +226,6 @@ void InputHandler::update()
                 break;
 
             case SDL_KEYDOWN:
-				std::cout << "D";
                 onKeyDown();
                 break;
                 

@@ -6,6 +6,8 @@
 Player::Player(const LoaderParams* pParams) : SDLGameObject(pParams)
 {
 	currentTextureRow_ = 4;
+	numBeltSlots_ = 3;
+	equippedItem_ = 0;
 }
 
 void Player::draw()
@@ -20,7 +22,10 @@ void Player::update()
 
 	handleInput();
 
-	currentTextureFrame_ = int(((SDL_GetTicks() / 100) % 12));
+	// TODO - if we want idle animation remove the if condition here. I'm just using a static frame
+	// for now despite the sprite sheet having it (MORE LOGIC)
+	if (forward_ != *Vector2d::ZERO) currentTextureFrame_ = int(((SDL_GetTicks() / 100) % 12));
+	else currentTextureFrame_ = 1;
 
 	SDLGameObject::update();
 }
@@ -55,19 +60,38 @@ void Player::handleKeyboardInput() {
 		velocity_.setY(1);
 	}
 		
-	Vector2d* mousePos = InputHandler::getInstance()->getMousePosition();
-	Vector2d* prevMousePos = InputHandler::getInstance()->getPrevMousePosition();
-
-	// If mouse moves a single pixel don't register it as a changed look
-	if (abs(mousePos->getX() - prevMousePos->getX()) > 1 && abs(mousePos->getY() - prevMousePos->getY()) > 1) {
+	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_0)) {
+		equip(0);
+	}
+		
+	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_1)) {
+		equip(1);
+	}
+		
+	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_2)) {
+		equip(2);
+	}
+		
+	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_3)) {
+		equip(3);
+	}
+	
+	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_LEFTBRACKET)) {
+		equipPrev();
+	}
+	
+	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_RIGHTBRACKET)) {
+		equipNext();
+	}
+		
+	// if mouse button is being held down (shooting) then look in direction of mouse
+	if (InputHandler::getInstance()->getMouseButtonState(0)) {
 		look = true;
 	}
 
-	if (!look) {
-		look = false;
-	} else {
-		look = true;
-			
+	if (look) {
+		Vector2d* mousePos = InputHandler::getInstance()->getMousePosition();
+
 		// Mouse is active
 		Vector2d delta = *mousePos - position_;
 		float radian = atan2(delta.getY(), delta.getX()) + M_PI;
@@ -105,6 +129,7 @@ void Player::getWalkingDirection() {
 
 	if (velocity_.getX() == 0 && velocity_.getY() == 0) {
 		// Idle
+		forward_ = *Vector2d::ZERO;
 	} else if (velocity_.getX() == 0 && velocity_.getY() < 0) {
 		// N
 		forward_ = *Vector2d::NORTH;
@@ -133,6 +158,9 @@ void Player::getWalkingDirection() {
 }
 
 void Player::updateForwardTexture() {
+	if (forward_ == *Vector2d::ZERO) {
+		currentTextureRow_ = 42; // Idle frame
+	}
 	if (forward_ == *Vector2d::NORTH) currentTextureRow_ = 1;
 	if (forward_ == *Vector2d::NORTH_EAST) currentTextureRow_ = 3;
 	if (forward_ == *Vector2d::EAST) currentTextureRow_ = 5;
@@ -140,11 +168,12 @@ void Player::updateForwardTexture() {
 	if (forward_ == *Vector2d::SOUTH) currentTextureRow_ = 9;
 	if (forward_ == *Vector2d::SOUTH_WEST) currentTextureRow_ = 11;
 	if (forward_ == *Vector2d::WEST) currentTextureRow_ = 13;
-	if (forward_ == *Vector2d::NORTH_WEST) currentTextureRow_ = 15; // 14?
+	if (forward_ == *Vector2d::NORTH_WEST) currentTextureRow_ = 15;
 }
 
 void Player::handleInput()
 {
+	// Joystick input
 	if (InputHandler::getInstance()->joysticksInitialised()) {
 		
 		// Left stick
@@ -188,6 +217,7 @@ void Player::handleInput()
 			forward_ = *Vector2d::NORTH;
 		}
 
+		// If we're not looking at something, look in the direction we're walking
 		if (!look) {
 			getWalkingDirection();
 		}
@@ -197,36 +227,54 @@ void Player::handleInput()
 		// Buttons
 		if (InputHandler::getInstance()->getButtonState(0, 10) || InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_E)) {
 			// Xbox (A) or E-key
+			action();
 		}
 		
-		if (InputHandler::getInstance()->getButtonState(0, 12) || InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_F)) {
-			// Xbox (X) or F-key
-		}
-		
-		if (InputHandler::getInstance()->getButtonState(0, 13) || InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_M)) {
-			// Xbox (Y) or M-key
-		}
-		
-
-		if (InputHandler::getInstance()->getButtonState(0, 11) || InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_C)) {
-			// Xbox (B) or C-key
-		}
-
-		if (InputHandler::getInstance()->getTriggerState(0, 0)) {
-			// L Trigger
-			std::cout << "L TRIGGER" << std::endl;
-		}
-
 		if (InputHandler::getInstance()->getTriggerState(0, 1)) {
 			// R Trigger
-			std::cout << "R TRIGGER" << std::endl;
+			attack();
 		}
-		
-		
-		if (InputHandler::getInstance()->getButtonState(0, 5)) {
-			// Select
+
+		if (InputHandler::getInstance()->getTriggerState(0, 8)) {
+			// R Bumper
+			equipPrev();
 		}
+
+		if (InputHandler::getInstance()->getTriggerState(0, 9)) {
+			// R Bumper
+			equipNext();
+		}
+
 	}
 
 	handleKeyboardInput();
+}
+
+
+void Player::move(Vector2d* direction) {
+}
+
+void Player::action() {
+	std::cout << "action" << std::endl;
+}
+
+void Player::attack() {
+	std::cout << "attack" << std::endl;
+}
+
+void Player::equip(int slot) {
+	std::cout << "equipping slot " << slot << std::endl;
+	equippedItem_ = slot;
+}
+
+void Player::equipPrev() {
+	equippedItem_--;
+	if (equippedItem_ < 0) equippedItem_ = numBeltSlots_;
+	equip(equippedItem_);
+}
+
+void Player::equipNext() {
+	equippedItem_++;
+	if (equippedItem_ > numBeltSlots_) equippedItem_ = 0;
+	equip(equippedItem_);
 }

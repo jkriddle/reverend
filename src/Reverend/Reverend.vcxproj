@@ -52,7 +52,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>D:\Projects\reverend\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL/SDL2.lib;SDL/SDL2main.lib;SDL/SDL2_image.lib;GL/glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL/SDL2.lib;SDL/SDL2main.lib;SDL/SDL2_image.lib;SDL/SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
@@ -83,6 +83,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playstate.cpp" />
     <ClCompile Include="sdlgameobject.cpp" />
+    <ClCompile Include="soundmanager.cpp" />
     <ClCompile Include="texturemanager.cpp" />
     <ClCompile Include="vector2d.cpp" />
   </ItemGroup>
@@ -114,6 +115,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="playstate.h" />
     <ClInclude Include="sdlgameobject.h" />
+    <ClInclude Include="soundmanager.h" />
     <ClInclude Include="texturemanager.h" />
     <ClInclude Include="vector2d.h" />
   </ItemGroup>
