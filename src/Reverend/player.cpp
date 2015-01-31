@@ -34,8 +34,6 @@ void Player::handleKeyboardInput() {
 	
 	bool look = false;
 
-	GameDirection direction = currentDirection_;
-
 	// Digital Pad
 	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_A)) {
 		// Left
@@ -77,92 +75,72 @@ void Player::handleKeyboardInput() {
 			
 		// 0/360 degrees is due West
 		if (degree >= 30 && degree < 75) {
-			direction = GameDirection::NORTH_WEST;
+			// NW
+			forward_ = *Vector2d::NORTH_WEST;
 		} else if (degree >= 75 && degree < 120) {
-			direction = GameDirection::NORTH;
+			forward_ = *Vector2d::NORTH;
 		} else if (degree >= 120 && degree < 165) {
-			direction = GameDirection::NORTH_EAST;
+			forward_ = *Vector2d::NORTH_EAST;
 		} else if (degree >= 165 && degree < 210) {
-			direction = GameDirection::EAST;
+			forward_ = *Vector2d::EAST;
 		} else if (degree >= 210 && degree < 255) {
-			direction = GameDirection::SOUTH_EAST;
+			forward_ = *Vector2d::SOUTH_EAST;
 		} else if (degree >= 255 && degree < 300) {
-			direction = GameDirection::SOUTH;
+			forward_ = *Vector2d::SOUTH;
 		} else if (degree >= 300 && degree < 345) {
-			direction = GameDirection::SOUTH_WEST;
+			forward_ = *Vector2d::SOUTH_WEST;
 		} else if (degree >= 345 || degree < 30) {
-			direction = GameDirection::WEST;
+			forward_ = *Vector2d::WEST;
 		}
 	}
 
 	if (!look) {
-		direction = getWalkingDirection();
+		getWalkingDirection();
 	}
 
-	updateInputTexture(direction);
-
+	updateForwardTexture();
 }
 
-GameDirection Player::getWalkingDirection() {
-	GameDirection direction = currentDirection_;
+void Player::getWalkingDirection() {
 
 	if (velocity_.getX() == 0 && velocity_.getY() == 0) {
 		// Idle
 	} else if (velocity_.getX() == 0 && velocity_.getY() < 0) {
 		// N
-		direction = GameDirection::NORTH;
+		forward_ = *Vector2d::NORTH;
 	} else if (velocity_.getX() > 0 && velocity_.getY() < 0) {
 		// NE
-		direction = GameDirection::NORTH_EAST;
+		forward_ = *Vector2d::NORTH_EAST;
 	} else if (velocity_.getX() > 0 && velocity_.getY() == 0) {
 		// E
-		direction = GameDirection::EAST;
+		forward_ = *Vector2d::EAST;
 	} else if (velocity_.getX() > 0 && velocity_.getY() > 0) {
 		// SE
-		direction = GameDirection::SOUTH_EAST;
+		forward_ = *Vector2d::SOUTH_EAST;
 	} else if (velocity_.getX() == 0 && velocity_.getY() > 0) {
 		// S
-		direction = GameDirection::SOUTH;
+		forward_ = *Vector2d::SOUTH;
 	} else if (velocity_.getX() < 0 && velocity_.getY() > 0) {
 		// SW
-		direction = GameDirection::SOUTH_WEST;
+		forward_ = *Vector2d::SOUTH_WEST;
 	} else if (velocity_.getX() < 0 && velocity_.getY() == 0) {
 		// W
-		direction = GameDirection::WEST;
+		forward_ = *Vector2d::WEST;
 	} else if (velocity_.getX() < 0 && velocity_.getY() < 0) {
 		// NW
-		direction = GameDirection::NORTH_WEST;
+		forward_ = *Vector2d::NORTH_WEST;
 	}
-	return direction;
 }
 
-void Player::updateInputTexture(GameDirection direction) {
-	switch(direction) {
-		case GameDirection::NORTH:
-			currentTextureRow_ = 1;
-			break;
-		case GameDirection::NORTH_EAST:
-			currentTextureRow_ = 3;
-			break;
-		case GameDirection::EAST:
-			currentTextureRow_ = 5;
-		break;
-		case GameDirection::SOUTH_EAST:
-			currentTextureRow_ = 7;
-			break;
-		case GameDirection::SOUTH:
-			currentTextureRow_ = 9;
-			break;
-		case GameDirection::SOUTH_WEST:
-			currentTextureRow_ = 11;
-			break;
-		case GameDirection::WEST:
-			currentTextureRow_ = 13;
-			break;
-		case GameDirection::NORTH_WEST:
-			currentTextureRow_ = 14;
-			break;
-	}
+void Player::updateForwardTexture() {
+	if (forward_ == *Vector2d::NORTH) currentTextureRow_ = 1;
+	if (forward_ == *Vector2d::NORTH_EAST) currentTextureRow_ = 3;
+	if (forward_ == *Vector2d::EAST) currentTextureRow_ = 5;
+	if (forward_ == *Vector2d::SOUTH_EAST) currentTextureRow_ = 7;
+	if (forward_ == *Vector2d::SOUTH) currentTextureRow_ = 9;
+	if (forward_ == *Vector2d::SOUTH_WEST) currentTextureRow_ = 11;
+	if (forward_ == *Vector2d::WEST) currentTextureRow_ = 13;
+	if (forward_ == *Vector2d::NORTH_WEST) currentTextureRow_ = 15; // 14?
 }
 
 void Player::handleInput()
@@ -180,7 +158,6 @@ void Player::handleInput()
 		}
 		
 		// Right stick (Look)
-		GameDirection direction = currentDirection_;
 		bool look = true;
 
 		// If nothing is pressed on right stick, use direction of left stick
@@ -190,32 +167,32 @@ void Player::handleInput()
 		} else if (InputHandler::getInstance()->getAxisX(0, 2) > 0) {
 			// RS - Right
 			if (InputHandler::getInstance()->getAxisY(0, 2) > 0) {
-				direction = GameDirection::NORTH_EAST;
+				forward_ = *Vector2d::NORTH_EAST;
 			} else if (InputHandler::getInstance()->getAxisY(0, 2) < 0) {
-				direction = GameDirection::SOUTH_EAST;
+				forward_ = *Vector2d::SOUTH_EAST;
 			} else {
-				direction = GameDirection::EAST;
+				forward_ = *Vector2d::EAST;
 			}
 		} else if (InputHandler::getInstance()->getAxisX(0, 2) < 0) {
 			// RS - Left
 			if (InputHandler::getInstance()->getAxisY(0, 2) > 0) {
-				direction = GameDirection::SOUTH_WEST;
+				forward_ = *Vector2d::SOUTH_WEST;
 			} else if (InputHandler::getInstance()->getAxisY(0, 2) < 0) {
-				direction = GameDirection::NORTH_WEST;
+				forward_ = *Vector2d::NORTH_WEST;
 			} else {
-				direction = GameDirection::WEST;
+				forward_ = *Vector2d::WEST;
 			}
 		} else if (InputHandler::getInstance()->getAxisY(0, 2) > 0) {
-			direction = GameDirection::SOUTH;
+			forward_ = *Vector2d::SOUTH;
 		} else if (InputHandler::getInstance()->getAxisY(0, 2) < 0) {
-			direction = GameDirection::NORTH;
+			forward_ = *Vector2d::NORTH;
 		}
 
 		if (!look) {
-			direction = getWalkingDirection();
+			getWalkingDirection();
 		}
 
-		updateInputTexture(direction);
+		updateForwardTexture();
 
 		// Buttons
 		if (InputHandler::getInstance()->getButtonState(0, 10) || InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_E)) {

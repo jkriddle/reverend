@@ -80,6 +80,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="sdlgameobject.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="vector2d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\images\grass.png">

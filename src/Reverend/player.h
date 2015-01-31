@@ -14,11 +14,10 @@ public:
 	virtual void clean();
 
 private:
-	GameDirection currentDirection_;
 	void handleInput();
 	void handleKeyboardInput();
-	GameDirection getWalkingDirection();
-	void updateInputTexture(GameDirection direction);
+	void getWalkingDirection();
+	void updateForwardTexture();
 };
 
 #endif
