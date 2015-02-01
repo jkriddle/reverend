@@ -52,7 +52,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>D:\Projects\reverend\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL/SDL2.lib;SDL/SDL2main.lib;SDL/SDL2_image.lib;SDL/SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL/SDL2.lib;SDL/SDL2main.lib;SDL/SDL2_image.lib;SDL/SDL2_mixer.lib;noise/libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
@@ -79,6 +79,7 @@
     <ClCompile Include="gamestatemachine.cpp" />
     <ClCompile Include="inputhandler.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="noise\noiseutils.cpp" />
     <ClCompile Include="pausestate.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playstate.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="gamestatemachine.h" />
     <ClInclude Include="inputhandler.h" />
     <ClInclude Include="loaderparams.h" />
+    <ClInclude Include="noise\noiseutils.h" />
     <ClInclude Include="pausestate.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playstate.h" />
@@ -125,6 +127,11 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sounds\fast_swipe.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="mains\game.main.txt" />
+    <Text Include="mains\mapgen.main.txt" />
+    <Text Include="mains\voronoi.main.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

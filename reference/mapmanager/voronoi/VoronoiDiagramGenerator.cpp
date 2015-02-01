@@ -20,10 +20,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 email: shaneosullivan1@gmail.com
 */
 
-#include "voronoi.h"
+#include "VoronoiDiagramGenerator.h"
 
 VoronoiDiagramGenerator::VoronoiDiagramGenerator()
 {
+	GET_FILE_LOG
+	//LOGGING_OFF
 	siteidx = 0;
 	sites = 0;
 
@@ -54,6 +56,7 @@ VoronoiDiagramGenerator::VoronoiDiagramGenerator()
 
 VoronoiDiagramGenerator::~VoronoiDiagramGenerator()
 {
+	LOG<<"In ~VoronoiDiagramGenerator()"<<endl;
 	reset();
 
 	/*
@@ -79,6 +82,7 @@ VoronoiDiagramGenerator::~VoronoiDiagramGenerator()
 
 void VoronoiDiagramGenerator::reset()
 {
+	LOG<<"In VoronoiDiagramGenerator::reset()"<<endl;
 	cleanup();
 	cleanupEdges();
 
@@ -102,6 +106,8 @@ void VoronoiDiagramGenerator::reset()
 	vertexLinks = 0;
 	vertices = 0;
 	finalVertexLinks = 0;
+
+	LOG<<"At end of VoronoiDiagramGenerator::reset()"<<endl;
 
 }
 
@@ -164,6 +170,7 @@ bool VoronoiDiagramGenerator::generateVoronoi(float *xValues, float *yValues,  i
 
 	if(sites == 0)
 	{
+		LOG<<"generateVoronoi returning false 1";
 		return false;
 	}
 
@@ -217,6 +224,7 @@ bool VoronoiDiagramGenerator::generateVoronoi(float *xValues, float *yValues,  i
 	
 	siteidx = 0;
 
+	LOG<<"About to call voronoi("<<triangulate<<")";
 	voronoi(genVertexInfo); //uncomment
 
 	return true;
@@ -705,6 +713,7 @@ void VoronoiDiagramGenerator::makefree(struct Freenode *curr,struct Freelist *fl
 
 void VoronoiDiagramGenerator::cleanup()
 {
+	LOG<<"In cleanup"<<endl;
 	if(sites != 0)
 	{
 		free(sites);
@@ -751,10 +760,12 @@ void VoronoiDiagramGenerator::cleanup()
 		PQhash = 0;
 	}
 
+	LOG<<"At the end of cleanup";
 }
 
 void VoronoiDiagramGenerator::cleanupEdges()
 {
+	LOG<<"At start of cleanupEdges"<<endl;
 	GraphEdge* geCurrent = 0, *gePrev = 0;
 	geCurrent = gePrev = allEdges;
 
@@ -777,6 +788,7 @@ void VoronoiDiagramGenerator::cleanupEdges()
 	}
 
 	delaunayEdges = 0;
+	LOG<<"At end of cleanupEdges"<<endl;
 }
 
 void VoronoiDiagramGenerator::pushGraphEdge(float x1, float y1, float x2, float y2)
@@ -798,8 +810,10 @@ void VoronoiDiagramGenerator::pushDelaunayGraphEdge(float x1, float y1, float x2
 {
 	if(sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1))) < minDistanceBetweenSites)
 	{
+		LOG<<"Skipping line of length "<<(x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)<<" because minDistanceBetweenSites = "<<minDistanceBetweenSites;
 		return;
 	}
+	LOG<<"NOT Skipping line of length "<<(x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)<<" because minDistanceBetweenSites = "<<minDistanceBetweenSites;
 		
 	GraphEdge* newEdge = new GraphEdge;
 	newEdge->next = delaunayEdges;
@@ -840,6 +854,9 @@ void VoronoiDiagramGenerator::out_bisector(struct Edge *e)
 	{
 		pushDelaunayGraphEdge(e->reg[0]->coord.x, e->reg[0]->coord.y, 
 		     e->reg[1]->coord.x, e->reg[1]->coord.y);
+		LOG<<"Pused Delaunay Edge ("<<e->reg[0]->coord.x<<","<<e->reg[0]->coord.y<<") -> ("<<e->reg[1]->coord.x<<","<<e->reg[1]->coord.y<<")";
+
+
 	}
 	//if(triangulate & plot &!debug)
 	//	printf("li %g %g %g %g\n", e->reg[0]->coord.x, e->reg[0]->coord.y, 
@@ -1120,11 +1137,13 @@ bool VoronoiDiagramGenerator::voronoi(bool genVertexInfo)
 
 	if(!retval)
 	{
+		LOG<<"voronoi returning false 1";
 		return false;
 	}
 	
 	newsite = nextone();
 
+	LOG<<"About to go into the infinite while loop";
 	long counter = 0;
 	while(1)
 	{
@@ -1225,6 +1244,8 @@ bool VoronoiDiagramGenerator::voronoi(bool genVertexInfo)
 		clip_line(e);
 	};
 
+	LOG<<"Voronoi: after finishing the voronoi diagram - about to get the vertices";
+	LOG<<"sizeOfVertexLinks = "<<sizeOfVertexLinks;
 	//count the total number of 
 	long i = 0;
 
@@ -1240,6 +1261,8 @@ bool VoronoiDiagramGenerator::voronoi(bool genVertexInfo)
 			}
 		}
 
+		LOG<<"After counting the size of the final vertices = "<<sizeOfFinalVertices<<endl;
+
 		finalVertices = (PointVDG*)myalloc(sizeOfFinalVertices*sizeof(PointVDG));
 		counter = 0;
 		for(i = 0; i < sizeOfVertexLinks; i++)
@@ -1251,12 +1274,17 @@ bool VoronoiDiagramGenerator::voronoi(bool genVertexInfo)
 			}
 		}
 
+		LOG<<"Just before generateVertexLinks()"<<endl;
 
 		generateVertexLinks();
+		LOG<<"Just after generateVertexLinks()"<<endl;
 
 	}
 	
+	LOG<<"After generateVertexLinks()"<<endl;
 	cleanup();
+
+	LOG<<"After cleanup()";
 
 	return true;
 	
@@ -1285,6 +1313,7 @@ void VoronoiDiagramGenerator::insertVertexAddress(long vertexNum, struct Site* a
 			vertices[i] = 0;
 		}
 
+		LOG<<"Grew vertices to size "<<sizeOfVertices<<" and vertices = "<<vertices<<endl;
 	}
 	vertices[vertexNum] = address;
 }
@@ -1295,6 +1324,7 @@ void VoronoiDiagramGenerator::insertVertexLink(long vertexNum, long vertexLinked
 {
 	if(vertexLinks == 0)
 	{
+		LOG<<"Initialising vertexlinks for the first time";
 		vertexLinks = (struct Point3*) myalloc(4000*sizeof(*vertexLinks));
 		sizeOfVertexLinks = 4000;
 		for(int i = 0; i < sizeOfVertexLinks; i++)
@@ -1360,20 +1390,28 @@ void VoronoiDiagramGenerator::generateVertexLinks()
 	long i = 0, j = 0;	
 	if(finalVertexLinks != 0)
 	{
+		LOG<<"Just before freeing finalVertexLinks";
 		free(finalVertexLinks);
 		finalVertexLinks = 0;
 	}
 
 	if(vertices == 0)
 	{
+		LOG<<"vertices is zero, not doing anything in generateVertexLinks()";
 		return;
 	}
 
 	sizeOfFinalVertexLinks = (sizeOfVertices>sizeOfVertexLinks) ? sizeOfVertices : sizeOfVertexLinks;
+
+	LOG<<"sizeOfFinalVertexLinks = "<<sizeOfFinalVertexLinks<<",sizeOfVertexLinks = "<<sizeOfVertexLinks<<endl; 
+
 	finalVertexLinks = (struct VertexLink*)myalloc(sizeOfFinalVertexLinks* sizeof(VertexLink));
 
 	if(finalVertexLinks == 0)
 		return;
+
+	LOG<<"Created vertexLinks array of size "<<sizeOfFinalVertexLinks<<endl;
+	LOG<<"finalVertexLinks = "<<finalVertexLinks;
 
 	for(i = 0; i< sizeOfFinalVertexLinks; i++)
 	{
@@ -1404,9 +1442,15 @@ void VoronoiDiagramGenerator::generateVertexLinks()
 		count3vertices[i] = 0;
 	}
 
+	LOG<<"sizeOfVertices = "<<sizeOfVertices;
+	LOG<<"sizeOfVertexLinks = "<<sizeOfVertexLinks;
+	LOG<<"count1vertices and count3vertices are of size "<<sizeOfFinalVertexLinks;
+	LOG<<"finalVertexLinks is of size "<<sizeOfFinalVertexLinks;
+	
 	long count1counter = 0, count3counter = 0;
 	long count3links[3] = {-1};
 	
+	LOG<<"Before copying "<<sizeOfVertices<<" coordinates into finalVertexLinks"<<endl;
 	for(i = 0; i< sizeOfVertices; i++)
 	{		
 	//	LOG<<"copying "<<i<<" coords,vertices[i]="<<vertices[i]<<endl;
@@ -1415,6 +1459,8 @@ void VoronoiDiagramGenerator::generateVertexLinks()
 		
 		finalVertexLinks[i].coord = vertices[i]->coord;
 	}
+	
+	LOG<<"After copying "<<i+1<<" coordinates into finalVertexLinks"<<endl;
 
 	for(i = 0; i< sizeOfVertexLinks; i++)
 	{
@@ -1428,6 +1474,8 @@ void VoronoiDiagramGenerator::generateVertexLinks()
 			break;		
 		}		
 	}
+
+	LOG<<"About to process the "<<count1counter<<" count 1 (leaf) vertices"<<endl;
 
 	//first, we go from all leaf nodes, those with just one edge, to either the next leaf or the
 	//next node with 3 edges
@@ -1499,15 +1547,32 @@ void VoronoiDiagramGenerator::generateVertexLinks()
 		}		
 	}
 
+	LOG<<"Finished processing the "<<count1counter<<" count 1 (leaf) vertices";
+	LOG<<"About to process the "<<count3counter<<" count 3 (non-leaf) vertices"<<endl;
+
+
 	//at this stage, all the edges that end in leaf nodes are processed, now just do the edges between vertices with 3 connections
 	for(i = 0; i< count3counter; i++)
 	{
+	//	LOG<<i<<", count3vertices["<<i<<"] = "<<count3vertices[i];
 
 		//get the (possible) three vertices that the vertex at pos count3vertices[i] of vertexLinks is linked to
 		count3links[0] = (long)vertexLinks[count3vertices[i]].x;
 		count3links[1] = (long)vertexLinks[count3vertices[i]].y;
 		count3links[2] = (long)vertexLinks[count3vertices[i]].z;
-	
+	//	LOG<<"after count3links, finalVertexLinks[count3vertices[i]].count = "<<finalVertexLinks[count3vertices[i]].count<<endl;
+
+		LOGCODE		if(finalVertexLinks[count3vertices[i]].count > 2 || finalVertexLinks[count3vertices[i]].count < 0)
+		LOGCODE		{
+		LOGCODE			LOG<<"Error: finalVertexLinks[count3vertices[i]].count = "<<finalVertexLinks[count3vertices[i]].count;
+		LOGCODE			return;
+		LOGCODE		}
+
+		//mark one of the links in this finalVertexLink
+		//finalVertexLinks[count3vertices[i]].v[finalVertexLinks[count3vertices[i]].count] = 
+		//														vertices[currentVertex]->coord;
+	//	LOG<<"after finalVertexLinks[count3vertices[i]]"<<endl;
+
 		for(j = 0; j< 3; j++)//process each of the vertices that the current one is linked to
 		{
 			if(count3links[j] == -1) //all links to leaf nodes are marked with -1
@@ -1540,6 +1605,8 @@ void VoronoiDiagramGenerator::generateVertexLinks()
 			}
 			if(currentVertex < 0|| currentVertex >= sizeOfVertexLinks)
 			{
+				LOG<<"Error, currentVertex = "<<currentVertex<<" and sizeOfVertexLinks = "<<sizeOfVertexLinks;
+				LOG<<"On element "<<i+1<<" of "<<count3counter;
 				continue; //this is an error, and shouldn't happen
 			}
 		
@@ -1569,6 +1636,7 @@ void VoronoiDiagramGenerator::generateVertexLinks()
 		}		
 	}
 
+	LOG<<"Finished processing the count 3 vertices"<<endl;
 }
 
 
@@ -1620,4 +1688,4 @@ struct Site * VoronoiDiagramGenerator::nextone()
 	else	
 		return( (struct Site *)NULL);
 }
-	
+

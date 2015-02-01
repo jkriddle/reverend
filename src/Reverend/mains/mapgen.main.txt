@@ -1,0 +1,75 @@
+#pragma warning(disable: 4244) // conversion of Vector2d float to int
+
+#include <iostream>
+#include <noise/noise.h>
+#include "noise/noiseutils.h"
+#include <time.h>
+
+int main(int argc,char **argv) 
+{	
+	int windowX_ = 800;
+	int windowY_ = 600;
+
+	noise::module::Perlin myModule;
+	//double value = myModule.GetValue (2.50, 3,2.75);
+	//std::cout << value << std::endl;
+	
+	srand(static_cast<int>(time(0)));
+
+	module::RidgedMulti mountainTerrain;
+
+	module::Billow baseFlatTerrain;
+	baseFlatTerrain.SetFrequency (2.0);
+
+	module::ScaleBias flatTerrain;
+	flatTerrain.SetSourceModule (0, baseFlatTerrain);
+	flatTerrain.SetScale (0.125);
+	flatTerrain.SetBias (-0.75);
+
+	module::Perlin terrainType;
+	terrainType.SetFrequency (0.5);
+	terrainType.SetPersistence (0.25);
+
+	module::Select finalTerrain;
+	finalTerrain.SetSourceModule (0, flatTerrain);
+	finalTerrain.SetSourceModule (1, mountainTerrain);
+	finalTerrain.SetControlModule (terrainType);
+	finalTerrain.SetBounds (0.0, 1000.0);
+	finalTerrain.SetEdgeFalloff (0.125);
+
+	utils::NoiseMap hm;
+	utils::NoiseMapBuilderPlane hmb;
+	hmb.SetSourceModule (finalTerrain);
+	hmb.SetDestNoiseMap (hm);
+
+	// how big is the resulting image?
+	hmb.SetDestSize (windowX_, windowY_);
+
+	// where are we on the map?
+	hmb.SetBounds(700, 701, 700, 701);
+	hmb.Build ();
+	utils::RendererImage renderer;
+	utils::Image image;
+	renderer.SetSourceNoiseMap (hm);
+	renderer.SetDestImage (image);
+	renderer.ClearGradient ();
+	renderer.AddGradientPoint (-1.00, utils::Color ( 32, 160,   0, 255)); // grass
+	renderer.AddGradientPoint (-0.25, utils::Color (224, 224,   0, 255)); // dirt
+	renderer.AddGradientPoint ( 0.25, utils::Color (128, 128, 128, 255)); // rock
+	renderer.AddGradientPoint ( 1.00, utils::Color (255, 255, 255, 255)); // snow
+	renderer.EnableLight ();
+	renderer.SetLightContrast (3.0);
+	renderer.SetLightBrightness (2.0);
+	renderer.Render ();
+	utils::WriterBMP writer;
+	writer.SetSourceImage (image);
+	writer.SetDestFilename ("terrain.bmp");
+	writer.WriteDestFile ();
+
+	// Wait
+	int x = 0;
+	std::cout << "Terrain generated to terrain.bmp" << std::endl;
+	std::cin >> x;
+
+	return 0;
+}

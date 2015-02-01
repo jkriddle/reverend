@@ -26,6 +26,8 @@ email: shaneosullivan1@gmail.com
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../logger/Logger.h"
+
 
 #ifndef NULL
 #define NULL 0
@@ -147,6 +149,8 @@ public:
 		y1 = iteratorEdges->y1;
 		y2 = iteratorEdges->y2;
 
+//		LOG<<"getNext returned the edge ("<<x1<<","<<y1<<") -> ("<<x2<<","<<y2<<")";
+
 		iteratorEdges = iteratorEdges->next;
 
 		return true;
@@ -155,12 +159,14 @@ public:
 	void resetDelaunayEdgesIterator()
 	{
 		iteratorDelaunayEdges = delaunayEdges;
+		LOG<<"resetDelaunayEdgesIterator set iteratorDelaunayEdges = "<<iteratorDelaunayEdges;
 	}
 
 	bool getNextDelaunay(float& x1, float& y1, float& x2, float& y2)
 	{
 		if(iteratorDelaunayEdges == 0)
 		{
+			LOG<<"iteratorDelaunayEdges = 0, returning false";
 			return false;
 		}
 		x1 = iteratorDelaunayEdges->x1;
@@ -169,6 +175,8 @@ public:
 		y2 = iteratorDelaunayEdges->y2;
 
 		iteratorDelaunayEdges = iteratorDelaunayEdges->next;
+
+		LOG<<"getNextDelaunay returned the edge ("<<x1<<","<<y1<<") -> ("<<x2<<","<<y2<<")";
 
 		return true;
 	}
@@ -322,10 +330,13 @@ private:
 
 	float		minDistanceBetweenSites;
 
+	DEF_LOG
+	
 };
 
 int scomp(const void *p1,const void *p2);
 
 
 #endif
+
 

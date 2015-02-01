@@ -61,3 +61,17 @@ the Reverend will continue to look in the direction of the mouse.
 ## Installation
 
 * Run install.bat
+
+## Developer Notes
+
+### Terrain Generation
+
+General Technique:   
+http://www-cs-students.stanford.edu/~amitp/game-programming/polygon-map-generation/  
+http://www.gamasutra.com/view/feature/3549/interview_the_making_of_dwarf_.php?page=7
+
+Voronoi:  
+http://sourceforge.net/projects/mapmanager/ (which is based on http://www.skynet.ie/~sos/mapviewer/voronoi.php)
+
+Heightmap:  
+http://libnoise.sourceforge.net/tutorials/
