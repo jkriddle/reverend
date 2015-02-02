@@ -6,8 +6,11 @@
 #include "voronoi.h"
 #include <iostream>
 #include <SDL\SDL.h>
+#include <SDL\SDL_image.h>
 #include <random>
 #include <time.h>
+#include <noise\noise.h>
+#include "noise\noiseutils.h"
 
 SDL_Window* window_;
 SDL_Renderer* renderer_;
@@ -118,13 +121,108 @@ int main(int argc,char **argv)
 	unsigned int b = (rand() % (int)(RAND_MAX + 1));
 	unsigned int seed = a*(RAND_MAX+1)+b;
 	std::cout << a << " " << b << " " << seed << std::endl;
-	//srand(seed);
-	srand(0); // testing only
 
+	seed = 0; // testing only	
+	
+	srand(seed);
     SDL_SetRenderDrawColor( renderer_, 0, 0, 0, 1.0);
     SDL_RenderClear( renderer_ );
+
+	////////////////////////////// HEIGHT MAP ///////////////////////////////////////////
+
+	noise::module::Perlin myModule;
+	myModule.SetSeed(seed);
+
+	//double value = myModule.GetValue (2.50, 3,2.75);
+	//std::cout << value << std::endl;
+	
+	
+	/*
+	noise::module::RidgedMulti mountainTerrain;
+
+	// TODO: how do we generate less water??? SetBias?
+	noise::module::Billow baseFlatTerrain;
+	baseFlatTerrain.SetFrequency (2.0);
+
+	noise::module::ScaleBias flatTerrain;
+	flatTerrain.SetSourceModule (0, baseFlatTerrain);
+	flatTerrain.SetScale (0.125);
+	flatTerrain.SetBias (-0.75);
+
+	noise::module::Perlin terrainType;
+	terrainType.SetFrequency (0.5);
+	terrainType.SetPersistence (0.25);
+
+	noise::module::Select finalTerrain;
+	finalTerrain.SetSourceModule (0, flatTerrain);
+	finalTerrain.SetSourceModule (1, mountainTerrain);
+	finalTerrain.SetControlModule (terrainType);
+	finalTerrain.SetBounds (0.0, 1000.0);
+	finalTerrain.SetEdgeFalloff (0.125);
+
+	noise::utils::NoiseMap hm;
+	noise::utils::NoiseMapBuilderPlane hmb;
+	hmb.SetSourceModule (finalTerrain);
+	hmb.SetDestNoiseMap (hm);*/
+	noise::utils::NoiseMap hm;
+	noise::utils::NoiseMapBuilderPlane hmb;
+	hmb.SetSourceModule (myModule);
+	hmb.SetDestNoiseMap (hm);
+
+	// how big is the resulting image?
+	hmb.SetDestSize (windowX_, windowY_);
+
+	// where are we on the map?
+	hmb.SetBounds(0, 4, 0, 4);
+	hmb.Build ();
+
+	noise::utils::RendererImage renderer;
+	noise::utils::Image image;
+	renderer.SetSourceNoiseMap (hm);
+	renderer.SetDestImage (image);
+	renderer.ClearGradient ();
+  
+	/*
+	renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0, 128, 255)); // deeps
+	renderer.AddGradientPoint (-0.2500, utils::Color (  0,   0, 255, 255)); // shallow
+	renderer.AddGradientPoint ( 0.0000, utils::Color (  0, 128, 255, 255)); // shore
+	renderer.AddGradientPoint ( 0.0625, utils::Color (240, 240,  64, 255)); // sand
+	renderer.AddGradientPoint ( 0.1250, utils::Color ( 32, 160,   0, 255)); // grass
+	renderer.AddGradientPoint ( 0.3750, utils::Color (224, 224,   0, 255)); // dirt
+	renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); // rock
+	renderer.AddGradientPoint ( 1.0000, utils::Color (255, 255, 255, 255)); // snow
+	*/
+
+	renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0, 128, 255)); // deeps
+	renderer.AddGradientPoint (-0.5500, utils::Color (240, 240,  64, 255)); // sand
+	renderer.AddGradientPoint ( 0.0625, utils::Color ( 32, 160,   0, 255)); // grass
+	renderer.AddGradientPoint ( 0.3750, utils::Color (139, 69, 19, 255)); // dirt
+	renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); // rock
+	renderer.AddGradientPoint ( 1.0000, utils::Color (255, 255, 255, 255)); // snow
+
+
+	renderer.Render ();
+	utils::WriterBMP writer;
+	writer.SetSourceImage (image);
+	writer.SetDestFilename ("terrain.bmp");
+	writer.WriteDestFile ();
+
+	SDL_Surface* terrain = SDL_LoadBMP("terrain.bmp");
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer_, terrain);
+	SDL_FreeSurface(terrain);
+	
+    SDL_RenderCopy(renderer_, texture, NULL, NULL);
+
+    SDL_RenderPresent( renderer_ );
+
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	////////////////////////////// VORONOI ///////////////////////////////////////////
+
+    
 		
-	const int count = 200;
+	const int count = 400;
 	const int dotRadius = 3;
 
 	float xValues[count];
@@ -141,13 +239,12 @@ int main(int argc,char **argv)
 	}
 	
 	// dots
-	SDL_SetRenderDrawColor( renderer_, 255, 0, 0, 1.0);
+	/*SDL_SetRenderDrawColor( renderer_, 255, 0, 0, 1.0);
 	for(int i = 0; i < count; i++) {
 		Uint32* pixel = new Uint32[windowX_ * windowY_];
 		fill_circle(screen, xValues[i], yValues[i], dotRadius, *pixel);
-	}
+	}*/
 
-    
 	SDL_SetRenderDrawColor( renderer_, 255, 255, 255, 1.0);
 	VoronoiDiagramGenerator vdg;
 	vdg.generateVoronoi(xValues,yValues,count, 0, windowX_, 0, windowY_, 1);
@@ -171,6 +268,17 @@ int main(int argc,char **argv)
 	// Wait
 	int x = 0;
 	std::cin >> x;
+
+	
+    SDL_FreeSurface( screen );
+    screen = NULL;
+
+    //Destroy window
+    SDL_DestroyWindow( window_ );
+    window_ = NULL;
+
+    //Quit SDL subsystems
+    SDL_Quit();
 
 	return 0;
 }
