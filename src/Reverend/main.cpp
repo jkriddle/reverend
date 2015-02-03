@@ -5,6 +5,7 @@
 #include <malloc.h>
 #include "voronoi.h"
 #include <iostream>
+#include <sstream>
 #include <SDL\SDL.h>
 #include <SDL\SDL_image.h>
 #include <random>
@@ -12,11 +13,14 @@
 #include <noise\noise.h>
 #include "noise\noiseutils.h"
 #include "vector2d.h"
+#include "map\mapgenerator.h"
 
 SDL_Window* window_;
 SDL_Renderer* renderer_;
-const int windowX_ = 800;
-const int windowY_ = 600;
+const int windowX_ = 1280;
+const int windowY_ = 720;
+const int screenTileSize_ = 64;
+const int mapTileSize_ = 1;
 
 bool initSystems() {
 	
@@ -108,14 +112,45 @@ void fill_circle(SDL_Surface *surface, int n_cx, int n_cy, int radius, Uint32 pi
 }
 
 void render_player(int x, int y, int tileSize) {
+
+	// Render screen view window
+	double r = (double)windowX_ / (double)windowY_;  // 1280/720 = 1.7777
+	double numTilesPerScreenX = windowX_ / screenTileSize_; // 1280 / 64 = 20
+	double numTilesPerScreenY = windowY_ / screenTileSize_; // 720 / 64 = 11.25
+
+	// so we know that every screen is 20x11 tiles (of 64x64 size)
+	// in this world map, each screen = 1 pixel. Thus we want a rectangle of 20x11
+
 	// Render character
 	SDL_Rect* rectToDraw = new SDL_Rect();
 	rectToDraw->x = x;
 	rectToDraw->y = y;
-	rectToDraw->w = tileSize;
-	rectToDraw->h = tileSize;
+	rectToDraw->w = numTilesPerScreenX;
+	rectToDraw->h = numTilesPerScreenY;
 	SDL_SetRenderDrawColor(renderer_, 255, 0, 0, 1.0);
-	SDL_RenderFillRect(renderer_, rectToDraw);
+	SDL_RenderDrawRect(renderer_, rectToDraw);
+
+}
+
+SDL_Texture* getSimpleHeightMapTexture(MapGenerator* mapGen, SDL_Surface* terrain) {
+	for(int i = 0; i < windowX_; i+=mapTileSize_) {
+		for(int j = 0; j < windowY_; j+=mapTileSize_) {
+			int midX = i;
+			int midY = j;
+			double height = mapGen->getAltitude(midX, midY);
+			utils::Color color = utils::Color (  0,   0, 128, 255); // deeps
+			if (height > -0.100) color = utils::Color (240, 240,  64, 255); // sand
+			if (height > 0.0725) color = utils::Color ( 32, 160,   0, 255); // grass
+			if (height > 0.5050) color = utils::Color (139, 69, 19, 255); // dirt
+			if (height > 0.7500) color = utils::Color (128, 128, 128, 255); // rock
+			if (height > 0.9) color = utils::Color (255, 255, 255, 255); // snow
+
+			SDL_Rect rectToDraw = { i, j, mapTileSize_, mapTileSize_};
+			SDL_FillRect(terrain, &rectToDraw, SDL_MapRGBA(terrain->format, color.red, color.green, color.blue, 1.0));
+		}
+	}
+	SDL_Texture* terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
+	return terrainTexture;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -141,125 +176,43 @@ int main(int argc,char **argv)
     SDL_RenderClear( renderer_ );
 
 	////////////////////////////// HEIGHT MAP ///////////////////////////////////////////
-
-	noise::module::Perlin myModule;
-	myModule.SetSeed(seed);
-
-	//double value = myModule.GetValue (2.50, 3,2.75);
-	//std::cout << value << std::endl;
-	
-	
-	/*
-	noise::module::RidgedMulti mountainTerrain;
-
-	// TODO: how do we generate less water??? SetBias?
-	noise::module::Billow baseFlatTerrain;
-	baseFlatTerrain.SetFrequency (2.0);
-
-	noise::module::ScaleBias flatTerrain;
-	flatTerrain.SetSourceModule (0, baseFlatTerrain);
-	flatTerrain.SetScale (0.125);
-	flatTerrain.SetBias (-0.75);
-
-	noise::module::Perlin terrainType;
-	terrainType.SetFrequency (0.5);
-	terrainType.SetPersistence (0.25);
-
-	noise::module::Select finalTerrain;
-	finalTerrain.SetSourceModule (0, flatTerrain);
-	finalTerrain.SetSourceModule (1, mountainTerrain);
-	finalTerrain.SetControlModule (terrainType);
-	finalTerrain.SetBounds (0.0, 1000.0);
-	finalTerrain.SetEdgeFalloff (0.125);
-
-	noise::utils::NoiseMap hm;
-	noise::utils::NoiseMapBuilderPlane hmb;
-	hmb.SetSourceModule (finalTerrain);
-	hmb.SetDestNoiseMap (hm);*/
-	noise::utils::NoiseMap hm;
-	noise::utils::NoiseMapBuilderPlane hmb;
-	hmb.SetSourceModule (myModule);
-	hmb.SetDestNoiseMap (hm);
-
-	// how big is the resulting image?
-	hmb.SetDestSize (windowX_, windowY_);
-
-	// where are we on the map?
-	int tileSize = 16;
-	hmb.SetBounds(0, 5, 0, 5); // overworld (biome determination)
+	MapGenerator* mapGen = new MapGenerator();
+	mapGen->generate(windowX_, windowY_, seed);
+	std::ostringstream mem;
+	mapGen->renderToFile("terrain.bmp");
 
 	
-	//int tileSize = 4;
-	//hmb.SetBounds(0, 1, 0, 1); // character view
-
-	hmb.Build ();
-
-	noise::utils::RendererImage renderer;
-	noise::utils::Image image;
-	renderer.SetSourceNoiseMap (hm);
-	renderer.SetDestImage (image);
-	renderer.ClearGradient ();
-  
-	/*
-	renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0, 128, 255)); // deeps
-	renderer.AddGradientPoint (-0.2500, utils::Color (  0,   0, 255, 255)); // shallow
-	renderer.AddGradientPoint ( 0.0000, utils::Color (  0, 128, 255, 255)); // shore
-	renderer.AddGradientPoint ( 0.0625, utils::Color (240, 240,  64, 255)); // sand
-	renderer.AddGradientPoint ( 0.1250, utils::Color ( 32, 160,   0, 255)); // grass
-	renderer.AddGradientPoint ( 0.3750, utils::Color (224, 224,   0, 255)); // dirt
-	renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); // rock
-	renderer.AddGradientPoint ( 1.0000, utils::Color (255, 255, 255, 255)); // snow
-	*/
-
-	renderer.AddGradientPoint (-1.000, utils::Color (  0,   0, 128, 255)); // deeps
-	renderer.AddGradientPoint (-0.5500, utils::Color (240, 240,  64, 255)); // sand
-	renderer.AddGradientPoint ( 0.0625, utils::Color ( 32, 160,   0, 255)); // grass
-	renderer.AddGradientPoint ( 0.3750, utils::Color (139, 69, 19, 255)); // dirt
-	renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); // rock
-	renderer.AddGradientPoint ( 1.0000, utils::Color (255, 255, 255, 255)); // snow
-
-
-	renderer.Render ();
-	utils::WriterBMP writer;
-	writer.SetSourceImage (image);
-	writer.SetDestFilename ("terrain.bmp");
-	writer.WriteDestFile ();
+	// Not working yet
+	//mapGen->renderToMemory(mem);
+	//SDL_RWops* rwop = SDL_RWFromMem(mem, sizeof(mem));
+	//SDL_Surface* terrain = SDL_LoadBMP_RW( rwop, 0 );
+	//SDL_Texture* terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
 
 	SDL_Surface* terrain = SDL_LoadBMP("terrain.bmp");
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer_, terrain);
-	SDL_FreeSurface(terrain);
+	SDL_Texture* terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
+
+	// Render Height Map
+	SDL_Surface* heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);;
+	SDL_Texture* heightMapTexture = nullptr;
+	heightMapTexture = getSimpleHeightMapTexture(mapGen, heightMap);
 	
-    SDL_RenderCopy(renderer_, texture, NULL, NULL);
-
-
-	// Grid lines
-	for(int i = 0; i < windowX_; i+=tileSize) {
-		for(int j = 0; j < windowY_; j+=tileSize) {
-			int midX = i;
-			int midY = j;
-			double height = hm.GetValue(midX, midY);
-			utils::Color color = utils::Color (  0,   0, 128, 255); // deeps
-			if (height > -0.100) color = utils::Color (240, 240,  64, 255); // sand
-			if (height > 0.0725) color = utils::Color ( 32, 160,   0, 255); // grass
-			if (height > 0.5050) color = utils::Color (139, 69, 19, 255); // dirt
-			if (height > 0.7500) color = utils::Color (128, 128, 128, 255); // rock
-			if (height > 0.9) color = utils::Color (255, 255, 255, 255); // snow
-
-			SDL_Rect rectToDraw = { i, j, tileSize, tileSize};
-			SDL_SetRenderDrawColor(renderer_, color.red, color.green, color.blue, 1.0);
-			SDL_RenderFillRect(renderer_, &rectToDraw);
-		}
-	}
-
-
 	bool quit = false;
 	SDL_Event ev;
-	int pX = 320, pY = 200;
-	render_player(pX, pY, tileSize);
+	int pX = 512, pY = 320;
+	render_player(pX, pY, mapTileSize_);
 	SDL_RenderPresent( renderer_ );
+
+	double numTilesPerScreenX = windowX_ / screenTileSize_; // 1280 / 64 = 20
+	double numTilesPerScreenY = windowY_ / screenTileSize_; // 720 / 64 = 11.25
+
+	bool heightMapOn = false;
 
 	while (!quit) {
 		while (SDL_PollEvent(&ev)) {
+
+			SDL_RenderClear(renderer_);
+			SDL_RenderCopy(renderer_, terrainTexture, NULL, NULL);
+
 			switch(ev.type) {
 				case SDL_QUIT:
 					quit = true;
@@ -269,16 +222,19 @@ int main(int argc,char **argv)
 					switch (keyPressed)
 					{
 						case SDLK_a:
-							pX-= tileSize;
+							pX-= numTilesPerScreenX;
 							break;
 						case SDLK_s:
-							pY+=tileSize;
+							pY+=numTilesPerScreenY;
 							break;
 						case SDLK_d:
-							pX+= tileSize;
+							pX+= numTilesPerScreenX;
 							break;
 						case SDLK_w:
-							pY-= tileSize;
+							pY-= numTilesPerScreenY;
+							break;
+						case SDLK_h:
+							heightMapOn = !heightMapOn;
 							break;
 					}
 					break;
@@ -296,13 +252,18 @@ int main(int argc,char **argv)
 			} else if (pY >= windowY_) {
 				// change map
 			}
+			if (heightMapOn) {
+				SDL_RenderCopyEx(renderer_, heightMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_VERTICAL);
+			}
+
+			render_player(pX, pY, mapTileSize_);
 			
-			render_player(pX, pY, tileSize);
 			SDL_RenderPresent( renderer_ );
 		}
 	}
-
+	
     SDL_FreeSurface( screen );
+    SDL_FreeSurface( terrain );
     screen = NULL;
 
     //Destroy window

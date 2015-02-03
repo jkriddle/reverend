@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <string>
+#include <sstream>
 
 #include <noise/noise.h>
 
@@ -1164,6 +1165,7 @@ namespace noise
         /// method to specify the image, then call the SetDestFilename()
         /// method to specify the name of the file to write.
         void WriteDestFile ();
+        void WriteToMemory(std::ostringstream &os);
 
       protected:
 

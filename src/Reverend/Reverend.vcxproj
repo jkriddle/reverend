@@ -79,6 +79,7 @@
     <ClCompile Include="gamestatemachine.cpp" />
     <ClCompile Include="inputhandler.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="map\mapgenerator.cpp" />
     <ClCompile Include="noise\noiseutils.cpp" />
     <ClCompile Include="pausestate.cpp" />
     <ClCompile Include="player.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="gamestatemachine.h" />
     <ClInclude Include="inputhandler.h" />
     <ClInclude Include="loaderparams.h" />
+    <ClInclude Include="map\mapgenerator.h" />
     <ClInclude Include="noise\noiseutils.h" />
     <ClInclude Include="pausestate.h" />
     <ClInclude Include="player.h" />
