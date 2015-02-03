@@ -197,8 +197,9 @@ public:
 		return true;
 	}
 
+	void resetIdx() { siteidx = 0; }
 	void reset();
-
+	struct Site *nextone();
 
 private:
 	void cleanup();
@@ -251,7 +252,6 @@ private:
 	void		out_bisector(struct Edge *e);
 	void		out_ep(struct Edge *e);
 	void		out_vertex(struct Site *v);
-	struct Site *nextone();
 
 	void		pushGraphEdge(float x1, float y1, float x2, float y2);
 	void		pushDelaunayGraphEdge(float x1, float y1, float x2, float y2);

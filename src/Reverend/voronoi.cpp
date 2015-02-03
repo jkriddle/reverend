@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 email: shaneosullivan1@gmail.com
 */
 
+#include <stdio.h>
 #include "voronoi.h"
 
 VoronoiDiagramGenerator::VoronoiDiagramGenerator()
@@ -883,17 +884,18 @@ void VoronoiDiagramGenerator::out_vertex(struct Site *v)
 
 
 void VoronoiDiagramGenerator::out_site(struct Site *s)
-{/*
+{
+	return;
 	if(!triangulate & plot & !debug)
 		circle (s->coord.x, s->coord.y, cradius);
 	if(!triangulate & !plot & !debug)
 	{
-		//printf("s %f %f\n", s->coord.x, s->coord.y);
+		printf("s %f %f\n", s->coord.x, s->coord.y);
 	}
 	if(debug)
 	{
-		//printf("site (%d) at %f %f\n", s->sitenbr, s->coord.x, s->coord.y);
-	}*/
+		printf("site (%d) at %f %f\n", s->sitenbr, s->coord.x, s->coord.y);
+	}
 }
 
 
@@ -1138,7 +1140,7 @@ bool VoronoiDiagramGenerator::voronoi(bool genVertexInfo)
 		if (newsite != (struct Site *)NULL 	&& (PQempty() || newsite -> coord.y < newintstar.y
 			|| (newsite->coord.y == newintstar.y && newsite->coord.x < newintstar.x)))
 		{/* new site is smallest - this is a site event*/
-		//	out_site(newsite);						//output the site
+		out_site(newsite);						//output the site
 			lbnd = ELleftbnd(&(newsite->coord));				//get the first HalfEdge to the LEFT of the new site
 			rbnd = ELright(lbnd);						//get the first HalfEdge to the RIGHT of the new site
 			bot = rightreg(lbnd);						//if this halfedge has no edge, , bot = bottom site (whatever that is)
@@ -1256,7 +1258,7 @@ bool VoronoiDiagramGenerator::voronoi(bool genVertexInfo)
 
 	}
 	
-	cleanup();
+	//cleanup();
 
 	return true;
 	

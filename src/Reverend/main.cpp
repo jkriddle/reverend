@@ -11,6 +11,7 @@
 #include <time.h>
 #include <noise\noise.h>
 #include "noise\noiseutils.h"
+#include "vector2d.h"
 
 SDL_Window* window_;
 SDL_Renderer* renderer_;
@@ -106,6 +107,17 @@ void fill_circle(SDL_Surface *surface, int n_cx, int n_cy, int radius, Uint32 pi
     }
 }
 
+void render_player(int x, int y, int tileSize) {
+	// Render character
+	SDL_Rect* rectToDraw = new SDL_Rect();
+	rectToDraw->x = x;
+	rectToDraw->y = y;
+	rectToDraw->w = tileSize;
+	rectToDraw->h = tileSize;
+	SDL_SetRenderDrawColor(renderer_, 255, 0, 0, 1.0);
+	SDL_RenderFillRect(renderer_, rectToDraw);
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main(int argc,char **argv) 
 {	
@@ -173,7 +185,13 @@ int main(int argc,char **argv)
 	hmb.SetDestSize (windowX_, windowY_);
 
 	// where are we on the map?
-	hmb.SetBounds(0, 4, 0, 4);
+	int tileSize = 16;
+	hmb.SetBounds(0, 5, 0, 5); // overworld (biome determination)
+
+	
+	//int tileSize = 4;
+	//hmb.SetBounds(0, 1, 0, 1); // character view
+
 	hmb.Build ();
 
 	noise::utils::RendererImage renderer;
@@ -193,7 +211,7 @@ int main(int argc,char **argv)
 	renderer.AddGradientPoint ( 1.0000, utils::Color (255, 255, 255, 255)); // snow
 	*/
 
-	renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0, 128, 255)); // deeps
+	renderer.AddGradientPoint (-1.000, utils::Color (  0,   0, 128, 255)); // deeps
 	renderer.AddGradientPoint (-0.5500, utils::Color (240, 240,  64, 255)); // sand
 	renderer.AddGradientPoint ( 0.0625, utils::Color ( 32, 160,   0, 255)); // grass
 	renderer.AddGradientPoint ( 0.3750, utils::Color (139, 69, 19, 255)); // dirt
@@ -213,63 +231,77 @@ int main(int argc,char **argv)
 	
     SDL_RenderCopy(renderer_, texture, NULL, NULL);
 
-    SDL_RenderPresent( renderer_ );
 
-	
-	//////////////////////////////////////////////////////////////////////////////////
-	
-	////////////////////////////// VORONOI ///////////////////////////////////////////
+	// Grid lines
+	for(int i = 0; i < windowX_; i+=tileSize) {
+		for(int j = 0; j < windowY_; j+=tileSize) {
+			int midX = i;
+			int midY = j;
+			double height = hm.GetValue(midX, midY);
+			utils::Color color = utils::Color (  0,   0, 128, 255); // deeps
+			if (height > -0.100) color = utils::Color (240, 240,  64, 255); // sand
+			if (height > 0.0725) color = utils::Color ( 32, 160,   0, 255); // grass
+			if (height > 0.5050) color = utils::Color (139, 69, 19, 255); // dirt
+			if (height > 0.7500) color = utils::Color (128, 128, 128, 255); // rock
+			if (height > 0.9) color = utils::Color (255, 255, 255, 255); // snow
 
-    
-		
-	const int count = 400;
-	const int dotRadius = 3;
-
-	float xValues[count];
-	int min = dotRadius; // must be larger than fill_circle radius parameter
-	int max = windowX_ - dotRadius; // must be larger than fill_circle radius parameter
-	for(int i = 0; i < count; i++) {
-			xValues[i] = rand() % (max - min + 1) + min;
+			SDL_Rect rectToDraw = { i, j, tileSize, tileSize};
+			SDL_SetRenderDrawColor(renderer_, color.red, color.green, color.blue, 1.0);
+			SDL_RenderFillRect(renderer_, &rectToDraw);
+		}
 	}
 
-	max = windowY_ - dotRadius;
-	float yValues[count];
-	for(int i = 0; i < count; i++) {
-		yValues[i] = rand() % (max - min + 1) + min;
+
+	bool quit = false;
+	SDL_Event ev;
+	int pX = 320, pY = 200;
+	render_player(pX, pY, tileSize);
+	SDL_RenderPresent( renderer_ );
+
+	while (!quit) {
+		while (SDL_PollEvent(&ev)) {
+			switch(ev.type) {
+				case SDL_QUIT:
+					quit = true;
+					break;
+				case SDL_KEYDOWN:
+					SDL_Keycode keyPressed = ev.key.keysym.sym;
+					switch (keyPressed)
+					{
+						case SDLK_a:
+							pX-= tileSize;
+							break;
+						case SDLK_s:
+							pY+=tileSize;
+							break;
+						case SDLK_d:
+							pX+= tileSize;
+							break;
+						case SDLK_w:
+							pY-= tileSize;
+							break;
+					}
+					break;
+				
+			}
+
+			if (pX < 0) {
+				// change map
+			} else if (pX >= windowX_) {
+				// change map
+			}
+
+			if (pY < 0) {
+				// change map
+			} else if (pY >= windowY_) {
+				// change map
+			}
+			
+			render_player(pX, pY, tileSize);
+			SDL_RenderPresent( renderer_ );
+		}
 	}
-	
-	// dots
-	/*SDL_SetRenderDrawColor( renderer_, 255, 0, 0, 1.0);
-	for(int i = 0; i < count; i++) {
-		Uint32* pixel = new Uint32[windowX_ * windowY_];
-		fill_circle(screen, xValues[i], yValues[i], dotRadius, *pixel);
-	}*/
 
-	SDL_SetRenderDrawColor( renderer_, 255, 255, 255, 1.0);
-	VoronoiDiagramGenerator vdg;
-	vdg.generateVoronoi(xValues,yValues,count, 0, windowX_, 0, windowY_, 1);
-
-	vdg.resetIterator();
-
-	float x1,y1,x2,y2;
-
-	printf("\n-------------------------------\n");
-	while(vdg.getNext(x1,y1,x2,y2))
-	{
-		//printf("GOT Line (%f,%f)->(%f,%f)\n",x1,y1,x2, y2);
-		SDL_RenderDrawLine( renderer_, x1, y1, x2, y2);
-	}
-
-	
-    //Update screen
-    SDL_RenderPresent( renderer_ );
-
-
-	// Wait
-	int x = 0;
-	std::cin >> x;
-
-	
     SDL_FreeSurface( screen );
     screen = NULL;
 
