@@ -71,7 +71,7 @@ public:
 	MapGenerator();
 
 	// Generate a new map based on provided seed
-	void generate(int width, int height, int seed);
+	void generate(int x, int y, int width, int height, int seed);
 	
 	// Retrieve map height at location
 	double getAltitude(int x, int y);

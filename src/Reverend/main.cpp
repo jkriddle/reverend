@@ -159,7 +159,9 @@ int main(int argc,char **argv)
 	if (!initSystems()) {
 		return 0;
 	}
-
+	
+	int pX = 512, pY = 320;
+	int mapX = pX / screenTileSize_, mapY = pY / screenTileSize_;
 	SDL_Surface* screen = SDL_GetWindowSurface(window_);
 
 	/* Initialize random seed. Need larger seed than rand_max */
@@ -177,10 +179,8 @@ int main(int argc,char **argv)
 
 	////////////////////////////// HEIGHT MAP ///////////////////////////////////////////
 	MapGenerator* mapGen = new MapGenerator();
-	mapGen->generate(windowX_, windowY_, seed);
-	std::ostringstream mem;
+	mapGen->generate(mapX, mapY, windowX_, windowY_, seed);
 	mapGen->renderToFile("terrain.bmp");
-
 	
 	// Not working yet
 	//mapGen->renderToMemory(mem);
@@ -198,7 +198,6 @@ int main(int argc,char **argv)
 	
 	bool quit = false;
 	SDL_Event ev;
-	int pX = 512, pY = 320;
 	render_player(pX, pY, mapTileSize_);
 	SDL_RenderPresent( renderer_ );
 
@@ -243,15 +242,49 @@ int main(int argc,char **argv)
 
 			if (pX < 0) {
 				// change map
+				mapX--;
+				pX = windowX_ - screenTileSize_;
+				mapGen->generate(mapX, mapY, windowX_, windowY_, seed);
+				mapGen->renderToFile("terrain.bmp");
+				terrain = SDL_LoadBMP("terrain.bmp");
+				terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
+				heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);;
+				heightMapTexture = getSimpleHeightMapTexture(mapGen, heightMap);
+
 			} else if (pX >= windowX_) {
 				// change map
+				mapX++;
+				pX = 0 + screenTileSize_;
+				mapGen->generate(mapX, mapY, windowX_, windowY_, seed);
+				mapGen->renderToFile("terrain.bmp");
+				terrain = SDL_LoadBMP("terrain.bmp");
+				terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
+				heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);;
+				heightMapTexture = getSimpleHeightMapTexture(mapGen, heightMap);
 			}
 
 			if (pY < 0) {
 				// change map
+				mapY++;
+				pY = windowY_ - screenTileSize_;
+				mapGen->generate(mapX, mapY, windowX_, windowY_, seed);
+				mapGen->renderToFile("terrain.bmp");
+				terrain = SDL_LoadBMP("terrain.bmp");
+				terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
+				heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);;
+				heightMapTexture = getSimpleHeightMapTexture(mapGen, heightMap);
 			} else if (pY >= windowY_) {
 				// change map
+				mapY--;
+				pY = 0 + screenTileSize_;
+				mapGen->generate(mapX, mapY, windowX_, windowY_, seed);
+				mapGen->renderToFile("terrain.bmp");
+				terrain = SDL_LoadBMP("terrain.bmp");
+				terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
+				heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);;
+				heightMapTexture = getSimpleHeightMapTexture(mapGen, heightMap);
 			}
+
 			if (heightMapOn) {
 				SDL_RenderCopyEx(renderer_, heightMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_VERTICAL);
 			}

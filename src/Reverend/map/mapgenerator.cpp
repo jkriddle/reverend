@@ -4,7 +4,7 @@ MapGenerator::MapGenerator() {
 	mapRenderer_ = new MapRenderer();
 }
 
-void MapGenerator::generate(int width, int height, int seed) {
+void MapGenerator::generate(int x, int y, int width, int height, int seed) {
 	noise::module::Perlin module;
 	module.SetSeed(seed);
 
@@ -15,7 +15,8 @@ void MapGenerator::generate(int width, int height, int seed) {
 	heightMapBuilder_.SetDestSize(width, height);
 
 	// where are we on the map?
-	heightMapBuilder_.SetBounds(0, 1, 0, 1);
+	heightMapBuilder_.SetBounds(x, x+1, y, y+1);
+	std::cout << " Rendering map at " << x << "," << y << " to " << x+1 << "," << y+1 << std::endl;
 
 	heightMapBuilder_.Build ();
 }
