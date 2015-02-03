@@ -80,6 +80,7 @@
     <ClCompile Include="inputhandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map\mapgenerator.cpp" />
+    <ClCompile Include="map\maprenderer.cpp" />
     <ClCompile Include="noise\noiseutils.cpp" />
     <ClCompile Include="pausestate.cpp" />
     <ClCompile Include="player.cpp" />
@@ -117,6 +118,7 @@
     <ClInclude Include="inputhandler.h" />
     <ClInclude Include="loaderparams.h" />
     <ClInclude Include="map\mapgenerator.h" />
+    <ClInclude Include="map\maprenderer.h" />
     <ClInclude Include="noise\noiseutils.h" />
     <ClInclude Include="pausestate.h" />
     <ClInclude Include="player.h" />

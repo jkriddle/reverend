@@ -17,10 +17,22 @@
 
 SDL_Window* window_;
 SDL_Renderer* renderer_;
-const int windowX_ = 1280;
-const int windowY_ = 720;
+SDL_Surface* terrain;
+SDL_Texture* terrainTexture;
+SDL_Surface* heightMap;
+SDL_Texture* heightMapTexture;
+
+
+const int windowX_ = 720;
+const int windowY_ = 360;
 const int screenTileSize_ = 64;
-const int mapTileSize_ = 1;
+const int mapTileSize_ = 2;
+MapGenerator* mapGen;
+int mapX = 0;
+int mapY = 0;
+int seed;
+int pX = 0;
+int pY = 0;
 
 bool initSystems() {
 	
@@ -56,68 +68,14 @@ void close() {
 
 	SDL_Quit();
 }
-void set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
-{
-    Uint8 *target_pixel = (Uint8 *)surface->pixels + y * surface->pitch + x * 4;
-    *(Uint32 *)target_pixel = pixel;
-	SDL_RenderDrawPoint(renderer_, x, y);
-}
- 
-void fill_circle(SDL_Surface *surface, int n_cx, int n_cy, int radius, Uint32 pixel)
-{
-    // if the first pixel in the screen is represented by (0,0) (which is in sdl)
-    // remember that the beginning of the circle is not in the middle of the pixel
-    // but to the left-top from it:
- 
-    double error = (double)-radius;
-    double x = (double)radius -0.5;
-    double y = (double)0.5;
-    double cx = n_cx - 0.5;
-    double cy = n_cy - 0.5;
- 
-    while (x >= y)
-    {
-        set_pixel(surface, (int)(cx + x), (int)(cy + y), pixel);
-        set_pixel(surface, (int)(cx + y), (int)(cy + x), pixel);
- 
-        if (x != 0)
-        {
-            set_pixel(surface, (int)(cx - x), (int)(cy + y), pixel);
-            set_pixel(surface, (int)(cx + y), (int)(cy - x), pixel);
-        }
- 
-        if (y != 0)
-        {
-            set_pixel(surface, (int)(cx + x), (int)(cy - y), pixel);
-            set_pixel(surface, (int)(cx - y), (int)(cy + x), pixel);
-        }
- 
-        if (x != 0 && y != 0)
-        {
-            set_pixel(surface, (int)(cx - x), (int)(cy - y), pixel);
-            set_pixel(surface, (int)(cx - y), (int)(cy - x), pixel);
-        }
- 
-        error += y;
-        ++y;
-        error += y;
- 
-        if (error >= 0)
-        {
-            --x;
-            error -= x;
-            error -= x;
-        }
-    }
-}
 
 void render_player(int x, int y, int tileSize) {
 
 	// Render screen view window
-	double r = (double)windowX_ / (double)windowY_;  // 1280/720 = 1.7777
+	/*double r = (double)windowX_ / (double)windowY_;  // 1280/720 = 1.7777
 	double numTilesPerScreenX = windowX_ / screenTileSize_; // 1280 / 64 = 20
 	double numTilesPerScreenY = windowY_ / screenTileSize_; // 720 / 64 = 11.25
-
+*/
 	// so we know that every screen is 20x11 tiles (of 64x64 size)
 	// in this world map, each screen = 1 pixel. Thus we want a rectangle of 20x11
 
@@ -125,8 +83,8 @@ void render_player(int x, int y, int tileSize) {
 	SDL_Rect* rectToDraw = new SDL_Rect();
 	rectToDraw->x = x;
 	rectToDraw->y = y;
-	rectToDraw->w = numTilesPerScreenX;
-	rectToDraw->h = numTilesPerScreenY;
+	rectToDraw->w = mapTileSize_;
+	rectToDraw->h = mapTileSize_;
 	SDL_SetRenderDrawColor(renderer_, 255, 0, 0, 1.0);
 	SDL_RenderDrawRect(renderer_, rectToDraw);
 
@@ -138,11 +96,12 @@ SDL_Texture* getSimpleHeightMapTexture(MapGenerator* mapGen, SDL_Surface* terrai
 			int midX = i;
 			int midY = j;
 			double height = mapGen->getAltitude(midX, midY);
-			utils::Color color = utils::Color (  0,   0, 128, 255); // deeps
-			if (height > -0.100) color = utils::Color (240, 240,  64, 255); // sand
-			if (height > 0.0725) color = utils::Color ( 32, 160,   0, 255); // grass
-			if (height > 0.5050) color = utils::Color (139, 69, 19, 255); // dirt
-			if (height > 0.7500) color = utils::Color (128, 128, 128, 255); // rock
+			utils::Color color = utils::Color (  10, 105, 201, 255); // deeps
+			if (height > -0.050) color = utils::Color (12, 128, 247, 255); // shallows
+			if (height > -0.100) color = utils::Color (221, 203, 117, 255); // sand
+			if (height > 0.0725) color = utils::Color ( 61, 97, 10, 255); // grass
+			if (height > 0.5050) color = utils::Color (104, 75, 46, 255); // dirt
+			if (height > 0.7500) color = utils::Color (114, 112, 100, 255); // rock
 			if (height > 0.9) color = utils::Color (255, 255, 255, 255); // snow
 
 			SDL_Rect rectToDraw = { i, j, mapTileSize_, mapTileSize_};
@@ -153,6 +112,14 @@ SDL_Texture* getSimpleHeightMapTexture(MapGenerator* mapGen, SDL_Surface* terrai
 	return terrainTexture;
 }
 
+void generateMapScreen() {
+	mapGen->renderToFile("terrain.bmp");
+	terrain = SDL_LoadBMP("terrain.bmp");
+	terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
+	heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);;
+	heightMapTexture = getSimpleHeightMapTexture(mapGen, heightMap);
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main(int argc,char **argv) 
 {	
@@ -160,15 +127,19 @@ int main(int argc,char **argv)
 		return 0;
 	}
 	
-	int pX = 512, pY = 320;
-	int mapX = pX / screenTileSize_, mapY = pY / screenTileSize_;
+	pX = 360;
+	pY = 180;
+	mapX = 0; //-90 to 90
+	mapY = 0; //-180 to 180
+
 	SDL_Surface* screen = SDL_GetWindowSurface(window_);
 
 	/* Initialize random seed. Need larger seed than rand_max */
 	srand(static_cast<int>(time(0)));
 	unsigned int a = (rand() % (int)(RAND_MAX + 1));
 	unsigned int b = (rand() % (int)(RAND_MAX + 1));
-	unsigned int seed = a*(RAND_MAX+1)+b;
+	
+	seed = a*(RAND_MAX+1)+b;
 	std::cout << a << " " << b << " " << seed << std::endl;
 
 	seed = 0; // testing only	
@@ -178,22 +149,21 @@ int main(int argc,char **argv)
     SDL_RenderClear( renderer_ );
 
 	////////////////////////////// HEIGHT MAP ///////////////////////////////////////////
-	MapGenerator* mapGen = new MapGenerator();
-	mapGen->generate(mapX, mapY, windowX_, windowY_, seed);
+	mapGen = new MapGenerator(windowX_, windowY_, seed);
+	mapGen->generate(mapX, mapY);
 	mapGen->renderToFile("terrain.bmp");
 	
 	// Not working yet
 	//mapGen->renderToMemory(mem);
 	//SDL_RWops* rwop = SDL_RWFromMem(mem, sizeof(mem));
-	//SDL_Surface* terrain = SDL_LoadBMP_RW( rwop, 0 );
-	//SDL_Texture* terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
+	//terrain = SDL_LoadBMP_RW( rwop, 0 );
+	//terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
 
-	SDL_Surface* terrain = SDL_LoadBMP("terrain.bmp");
-	SDL_Texture* terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
+	terrain = SDL_LoadBMP("terrain.bmp");
+	terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
 
 	// Render Height Map
-	SDL_Surface* heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);;
-	SDL_Texture* heightMapTexture = nullptr;
+	heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);
 	heightMapTexture = getSimpleHeightMapTexture(mapGen, heightMap);
 	
 	bool quit = false;
@@ -205,10 +175,11 @@ int main(int argc,char **argv)
 	double numTilesPerScreenY = windowY_ / screenTileSize_; // 720 / 64 = 11.25
 
 	bool heightMapOn = false;
-
+	bool rerenderMap = false;
+	bool zoomedOut = false;
 	while (!quit) {
 		while (SDL_PollEvent(&ev)) {
-
+			rerenderMap = true;
 			SDL_RenderClear(renderer_);
 			SDL_RenderCopy(renderer_, terrainTexture, NULL, NULL);
 
@@ -235,54 +206,55 @@ int main(int argc,char **argv)
 						case SDLK_h:
 							heightMapOn = !heightMapOn;
 							break;
+						case SDLK_z:
+							// zoom out to world
+							if (!zoomedOut) {
+								std::cout << "Zooming out..." << std::endl;
+								zoomedOut = true;
+								mapGen->generate(-90, 90, -180, 180);
+								generateMapScreen();
+								rerenderMap = false;
+							} else {
+								std::cout << "Zooming in..." << std::endl;
+								zoomedOut = false;
+								rerenderMap = false;
+								mapGen->generate(mapX, mapY);
+								generateMapScreen();
+							}
+							break;
 					}
 					break;
 				
 			}
 
-			if (pX < 0) {
-				// change map
-				mapX--;
-				pX = windowX_ - screenTileSize_;
-				mapGen->generate(mapX, mapY, windowX_, windowY_, seed);
-				mapGen->renderToFile("terrain.bmp");
-				terrain = SDL_LoadBMP("terrain.bmp");
-				terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
-				heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);;
-				heightMapTexture = getSimpleHeightMapTexture(mapGen, heightMap);
+			if (rerenderMap) {
+				if (pX <= 0) {
+					// change map
+					mapX--;
+					pX = windowX_ - screenTileSize_;
+					mapGen->generate(mapX, mapY);
+					generateMapScreen();
+				} else if (pX >= windowX_) {
+					// change map
+					mapX++;
+					pX = 0 + screenTileSize_;
+					mapGen->generate(mapX, mapY);
+					generateMapScreen();
+				}
 
-			} else if (pX >= windowX_) {
-				// change map
-				mapX++;
-				pX = 0 + screenTileSize_;
-				mapGen->generate(mapX, mapY, windowX_, windowY_, seed);
-				mapGen->renderToFile("terrain.bmp");
-				terrain = SDL_LoadBMP("terrain.bmp");
-				terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
-				heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);;
-				heightMapTexture = getSimpleHeightMapTexture(mapGen, heightMap);
-			}
-
-			if (pY < 0) {
-				// change map
-				mapY++;
-				pY = windowY_ - screenTileSize_;
-				mapGen->generate(mapX, mapY, windowX_, windowY_, seed);
-				mapGen->renderToFile("terrain.bmp");
-				terrain = SDL_LoadBMP("terrain.bmp");
-				terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
-				heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);;
-				heightMapTexture = getSimpleHeightMapTexture(mapGen, heightMap);
-			} else if (pY >= windowY_) {
-				// change map
-				mapY--;
-				pY = 0 + screenTileSize_;
-				mapGen->generate(mapX, mapY, windowX_, windowY_, seed);
-				mapGen->renderToFile("terrain.bmp");
-				terrain = SDL_LoadBMP("terrain.bmp");
-				terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
-				heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);;
-				heightMapTexture = getSimpleHeightMapTexture(mapGen, heightMap);
+				if (pY <= 0) {
+					// change map
+					mapY++;
+					pY = windowY_ - screenTileSize_;
+					mapGen->generate(mapX, mapY);
+					generateMapScreen();
+				} else if (pY >= windowY_) {
+					// change map
+					mapY--;
+					pY = 0 + screenTileSize_;
+					mapGen->generate(mapX, mapY);
+					generateMapScreen();
+				}
 			}
 
 			if (heightMapOn) {
