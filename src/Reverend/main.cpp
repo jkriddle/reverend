@@ -91,15 +91,14 @@ void close() {
 
 SDL_Texture* getTileMapTexture(MapGenerator* map, SDL_Renderer* renderer, SDL_Surface* terrain, int x = 0, int y = 0, int scale = 1) {
 	int tileSize = 32;
+	for(int i = 0; i < windowX_; i+=tileSize) { // for 0 through 720, every 32 px
+		for(int j = 0; j < windowY_; j+=tileSize) { // for 0 through 360, every 32 px
 
-	for(int i = 0; i < windowX_; i+=scale) { // for 0 through 72, every 10 px
-		for(int j = 0; j < windowY_; j+=scale) { // for 0 through 36, every 10 px
 			int midX = i;
-			int midY = j;
+			int midY =  j;
 			
-			// we want a single pixel on the height map
-			if (midX > 0) midX = i / scale;
-			if (midY > 0) midY = j / scale;
+			if (midX > 0) midX = i / tileSize / scale;
+			if (midY > 0) midY = j / tileSize / scale;
 			double height = map->getAltitude(midX + x, midY + y);
 
 			// Height goes 0 to 255
@@ -115,7 +114,7 @@ SDL_Texture* getTileMapTexture(MapGenerator* map, SDL_Renderer* renderer, SDL_Su
 			if (height > 230) texture = "rock";
 			if (height > 250) texture = "snow";
 			
-			TextureManager::getInstance()->drawTile(texture.c_str(), 0, 0, i, j, scale, scale, 0, 0, renderer);
+			TextureManager::getInstance()->drawTile(texture.c_str(), 0, 0, i, j, tileSize, tileSize, 0, 0, renderer);
 		}
 	}
 	return SDL_CreateTextureFromSurface(renderer, terrain);
@@ -241,7 +240,7 @@ int main(int argc,char **argv)
 	
 	int x = 0;
 	int y = 0;
-	int scale = 32;
+	int scale = 5;
 
 	tileMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);
 
