@@ -6,10 +6,15 @@
 #include <map>
 
 class MapPoint {
+
 public:
 	int x;
 	int y;
-	double height;
+	int getAltitude() { return altitude_; }
+
+private:
+	int altitude_;
+
 };
 
 class MapGenerator {
@@ -34,19 +39,17 @@ public:
 	
 	// Render the map to specified file
 	void renderToFile(std::string fileName);
-	
-	// Render the map to memory stream
-	void renderToMemory(std::ostringstream &mem);
-
-	void saveToDisk(std::string fileName);
-	void readFromDisk(std::string fileName);
+	void loadAltitudeMap(std::string fileName);
 
 private:
+	
+	Uint32 getPixel(SDL_Surface *surface, int x, int y);
+
 	noise::utils::NoiseMap heightMap_;
 	noise::utils::NoiseMapBuilderSphere heightMapBuilder_;
 	MapRenderer* mapRenderer_;
 	int width_;
 	int height_;
 	int seed_;
-	std::map<int, std::map<int, double>> mapPoints_;
+	SDL_Surface* altitudeMap_;
 };

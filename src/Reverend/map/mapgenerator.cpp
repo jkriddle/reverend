@@ -11,78 +11,39 @@ MapGenerator::MapGenerator(int width, int height, int seed) {
 	seed_ = seed;
 }
 
-void MapGenerator::saveToDisk(std::string fileName) {
-	
-	/*
-	std::ofstream myfile;
-	myfile.clear();
-	myfile.open(fileName);
-	for(int i = 0; i < width_; i++) {
-		for(int j = 0; j < height_; j++) {
-			double h = heightMap_.GetValue(i, j);
-			myfile << std::setw(4) << i << std::setw(4) << j << std::setw(15) << std::setprecision(5) << h << std::endl;
-		}
-	}
-	myfile.close();*/
+Uint32 MapGenerator::getPixel(SDL_Surface *surface, int x, int y)
+{
+    int bpp = surface->format->BytesPerPixel;
+    /* Here p is the address to the pixel we want to retrieve */
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+
+    switch(bpp) {
+    case 1:
+        return *p;
+        break;
+
+    case 2:
+        return *(Uint16 *)p;
+        break;
+
+    case 3:
+        if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+            return p[0] << 16 | p[1] << 8 | p[2];
+        else
+            return p[0] | p[1] << 8 | p[2] << 16;
+        break;
+
+    case 4:
+        return *(Uint32 *)p;
+        break;
+
+    default:
+        return 0;       /* shouldn't happen, but avoids warnings */
+    }
 }
 
-
-void MapGenerator::readFromDisk(std::string fileName) {
-	FILE * pFile;
-	long lSize;
-	char * buffer;
-	size_t result;
-
-	pFile = fopen ( fileName.c_str() , "rb" );
-	if (pFile==NULL) {fputs ("File error",stderr); exit (1);}
-
-	// obtain file size:
-	fseek (pFile , 0 , SEEK_END);
-	lSize = ftell (pFile);
-	rewind (pFile);
-
-	// allocate memory to contain the whole file:
-	buffer = (char*) malloc (sizeof(char)*lSize);
-	if (buffer == NULL) {fputs ("Memory error",stderr); exit (2);}
-
-	// copy the file into the buffer:
-	result = fread (buffer,1,lSize,pFile);
-	if (result != lSize) {fputs ("Reading error",stderr); exit (3);}
-
-	/* the whole file is now loaded in the memory buffer. */
-	std::string contents(buffer);
-	// 4 + 4 + 15 + 2(\r\n)
-
-	// this takes too long. need to just read from raw data
-	for(int i = 0; i < result; i+=25) {
-		// each line is 15 chars long
-		int x = stoi(contents.substr(i, 4));
-		int y = stoi(contents.substr(i+4, 4));
-		double h = stod(contents.substr(i+8, 15));
-		mapPoints_[x][y] = h;
-	}
-	// terminate
-	fclose (pFile);
-	free (buffer);
-	
-
-	/*std::ifstream is (fileName, std::ifstream::binary);
-	if (is) {
-		std::string    line;
-		while(std::getline(is, line))
-		{
-			std::string arr[3];
-			int i = 0;
-			std::stringstream ssin(line);
-			while (ssin.good() && i < 3){
-				ssin >> arr[i];
-				++i;
-			}
-
-			mapPoints_[std::stoi(arr[0])][std::stoi(arr[1])] = std::stod(arr[2]);
-		}
-	}
-	is.close();*/
+void MapGenerator::loadAltitudeMap(std::string fileName) {
+	altitudeMap_ = SDL_LoadBMP(fileName.c_str());
 }
 
 // Generate map (default player view)
@@ -121,13 +82,14 @@ void MapGenerator::generate(int southBound, int northBound, int westBound, int e
 
 // Retrieve map height at location
 double MapGenerator::getAltitude(int x, int y) {
-	return mapPoints_[x][y];
+	Uint32 pixel = getPixel(altitudeMap_, x, y);
+	Uint8 red, green, blue;
+	SDL_GetRGB(pixel, altitudeMap_->format, &red, &green, &blue);
+
+	// since this is all grayscale we only need to return a single value
+	return red;
 }
 	
-
 void MapGenerator::renderToFile(std::string fileName) {
 	mapRenderer_->renderToFile(heightMap_, fileName);
-}
-void MapGenerator::renderToMemory(std::ostringstream &mem) {
-	mapRenderer_->renderToMemory(heightMap_, mem);
 }

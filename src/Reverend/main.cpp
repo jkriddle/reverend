@@ -9,6 +9,7 @@
 #include <SDL\SDL.h>
 #include <SDL\SDL_image.h>
 #include <random>
+#include <tuple>
 #include <time.h>
 #include <noise\noise.h>
 #include "noise\noiseutils.h"
@@ -47,14 +48,14 @@ bool initSystems() {
 	}
 
 	//Create window
-	tileWindow_ = SDL_CreateWindow("Reverend", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowX_, windowY_, SDL_WINDOW_OPENGL); // SDL_mapWindow_FULLSCREEN
+	tileWindow_ = SDL_CreateWindow("Tile Map", 0, 20, windowX_, windowY_, SDL_WINDOW_OPENGL); // SDL_mapWindow_FULLSCREEN
 	if( tileWindow_ == NULL )
 	{
 		printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
 		return false;
 	}
 
-	mapWindow_ = SDL_CreateWindow("Reverend", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowX_, windowY_, SDL_WINDOW_OPENGL); // SDL_mapWindow_FULLSCREEN
+	mapWindow_ = SDL_CreateWindow("Height Map", windowX_/2, 20, windowX_, windowY_, SDL_WINDOW_OPENGL); // SDL_mapWindow_FULLSCREEN
 	if( mapWindow_ == NULL )
 	{
 		printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -143,25 +144,30 @@ void render_player() {
 	SDL_RenderDrawRect(mapRenderer_, rectToDraw);
 }
 
-SDL_Texture* getSimpleHeightMapTexture(SDL_Surface* terrain) {
-	for(int i = 0; i < windowX_; i+=mapTileSize_) {
-		for(int j = 0; j < windowY_; j+=mapTileSize_) {
+SDL_Texture* getSimpleHeightMapTexture(MapGenerator* map, SDL_Renderer* renderer, SDL_Surface* terrain) {
+	for(int i = 0; i < windowX_; i++) {
+		for(int j = 0; j < windowY_; j++) {
 			int midX = i;
 			int midY = j;
-			double height = overviewMapGen->getAltitude(midX, midY);
+			double height = map->getAltitude(midX, midY);
+
+			// Height goes 0 to 255
+			int max = 255;
+			
+
 			utils::Color color = utils::Color (  10, 105, 201, 255); // deeps
-			if (height > -0.050) color = utils::Color (12, 128, 247, 255); // shallows
-			if (height > -0.100) color = utils::Color (221, 203, 117, 255); // sand
-			if (height > 0.0725) color = utils::Color ( 61, 97, 10, 255); // grass
-			if (height > 0.5050) color = utils::Color (104, 75, 46, 255); // dirt
-			if (height > 0.7500) color = utils::Color (114, 112, 100, 255); // rock
-			if (height > 0.9) color = utils::Color (255, 255, 255, 255); // snow
+			if (height > 120) color = utils::Color (12, 128, 247, 255); // shallows
+			if (height > 130) color = utils::Color (221, 203, 117, 255); // sand
+			if (height > 140) color = utils::Color ( 61, 97, 10, 255); // grass
+			if (height > 210) color = utils::Color (104, 75, 46, 255); // dirt
+			if (height > 230) color = utils::Color (114, 112, 100, 255); // rock
+			if (height > 250) color = utils::Color (255, 255, 255, 255); // snow*/
 
 			SDL_Rect rectToDraw = { i, j, mapTileSize_, mapTileSize_};
 			SDL_FillRect(terrain, &rectToDraw, SDL_MapRGBA(terrain->format, color.red, color.green, color.blue, 1.0));
 		}
 	}
-	return SDL_CreateTextureFromSurface(mapRenderer_, terrain);
+	return SDL_CreateTextureFromSurface(renderer, terrain);
 }
 
 void generateMapScreen() {
@@ -212,15 +218,67 @@ int main(int argc,char **argv)
 	TextureManager::getInstance()->load("assets/textures/snow.png", "snow", tileRenderer_);
 	
 	////////////////////////////// HEIGHT MAP ///////////////////////////////////////////
+	// Let's make a large world map of 720*2 by 360*2 (scale of 2..i.e. each pixel is 2 screens)
 	overviewMapGen = new MapGenerator(windowX_, windowY_, seed);
-	overviewMapGen->generate(0, 0);
-	overviewMapGen->renderToFile("terrain.bmp");
-	terrain = SDL_LoadBMP("terrain.bmp");
-	terrainTexture = SDL_CreateTextureFromSurface(mapRenderer_, terrain);
+	//overviewMapGen->generate(-90, 90, -180, 180);
+	//overviewMapGen->renderToFile("overworld.bmp");
 
+	// Now read the image
+	/* load BMP file */
+	overviewMapGen->loadAltitudeMap("overworld.bmp");
+	
+	heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);
+	heightMapTexture = getSimpleHeightMapTexture(overviewMapGen, mapRenderer_, heightMap);
+
+	//-------------------------------------------------------
+	tileMapGen = new MapGenerator(windowX_, windowY_, seed);
+	//tileMapGen->generate(0, 30, 0, 30);
+	//tileMapGen->renderToFile("player_map.bmp");
+
+	// Now read the image
+	/* load BMP file */
+	tileMapGen->loadAltitudeMap("player_map.bmp");
+	
+	tileMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);
+	tileMapTexture = getSimpleHeightMapTexture(tileMapGen, tileRenderer_, tileMap);
+	
+	
+	SDL_RenderClear(mapRenderer_);
+	SDL_RenderCopyEx(mapRenderer_, heightMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
+	SDL_RenderPresent( mapRenderer_ );
+
+	SDL_RenderClear(tileRenderer_);
+	SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
+	SDL_RenderPresent( tileRenderer_ );
+
+	SDL_Event evt;
+	bool q=  false;
+	while (!q) {
+		while (SDL_PollEvent(&evt)) {
+			switch(evt.key.type) {
+				case SDL_QUIT:
+					q = true;
+					break;
+				default:
+					SDL_RenderClear(mapRenderer_);
+					SDL_RenderCopyEx(mapRenderer_, heightMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
+					SDL_RenderPresent( mapRenderer_ );
+
+					SDL_RenderClear(tileRenderer_);
+					SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
+					SDL_RenderPresent( tileRenderer_ );
+
+					break;
+			}
+		}
+	}
 
 	SDL_Quit();
 	return 0;
+	
+	//terrain = SDL_LoadBMP("terrain.bmp");
+	//terrainTexture = SDL_CreateTextureFromSurface(mapRenderer_, terrain);
+
 	//overviewMapGen->saveToDisk("mapdata.txt");
 
 	//overviewMapGen->readFromDisk("mapdata.txt");
@@ -238,7 +296,7 @@ int main(int argc,char **argv)
 	
 	// Render Height Map
 	heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);
-	heightMapTexture = getSimpleHeightMapTexture(heightMap);
+	heightMapTexture = getSimpleHeightMapTexture(overviewMapGen, mapRenderer_, heightMap);
 
 	bool zoomedOut = true;
 	SDL_Keycode keyPressed = NULL;
