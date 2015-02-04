@@ -3,6 +3,14 @@
 #include <noise\noise.h>
 #include "..\noise\noiseutils.h"
 #include "maprenderer.h"
+#include <map>
+
+class MapPoint {
+public:
+	int x;
+	int y;
+	double height;
+};
 
 class MapGenerator {
 
@@ -30,6 +38,9 @@ public:
 	// Render the map to memory stream
 	void renderToMemory(std::ostringstream &mem);
 
+	void saveToDisk(std::string fileName);
+	void readFromDisk(std::string fileName);
+
 private:
 	noise::utils::NoiseMap heightMap_;
 	noise::utils::NoiseMapBuilderSphere heightMapBuilder_;
@@ -37,4 +48,5 @@ private:
 	int width_;
 	int height_;
 	int seed_;
+	std::map<int, std::map<int, double>> mapPoints_;
 };

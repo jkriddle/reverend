@@ -30,7 +30,8 @@ SDL_Texture* heightMapTexture;
 const int windowX_ = 720; // 720;
 const int windowY_ = 360; // 360;
 const int mapTileSize_ = 2; //(windowX_ / (double)windowY_);
-MapGenerator* mapGen;
+MapGenerator* overviewMapGen;
+MapGenerator* tileMapGen;
 int mapX = 0; //-90 to 90
 int mapY = 3; //-180 to 180
 
@@ -46,13 +47,6 @@ bool initSystems() {
 	}
 
 	//Create window
-	mapWindow_ = SDL_CreateWindow("Reverend", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowX_, windowY_, SDL_WINDOW_OPENGL); // SDL_mapWindow_FULLSCREEN
-	if( mapWindow_ == NULL )
-	{
-		printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
-		return false;
-	}
-	
 	tileWindow_ = SDL_CreateWindow("Reverend", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowX_, windowY_, SDL_WINDOW_OPENGL); // SDL_mapWindow_FULLSCREEN
 	if( tileWindow_ == NULL )
 	{
@@ -60,17 +54,24 @@ bool initSystems() {
 		return false;
 	}
 
-	mapRenderer_ = SDL_CreateRenderer(mapWindow_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (mapRenderer_ == nullptr){
-		SDL_DestroyWindow(mapWindow_);
-		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
-		SDL_Quit();
+	mapWindow_ = SDL_CreateWindow("Reverend", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowX_, windowY_, SDL_WINDOW_OPENGL); // SDL_mapWindow_FULLSCREEN
+	if( mapWindow_ == NULL )
+	{
+		printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
 		return false;
 	}
 
 	tileRenderer_ = SDL_CreateRenderer(tileWindow_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (tileRenderer_ == nullptr){
 		SDL_DestroyWindow(tileWindow_);
+		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
+		SDL_Quit();
+		return false;
+	}
+
+	mapRenderer_ = SDL_CreateRenderer(mapWindow_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (mapRenderer_ == nullptr){
+		SDL_DestroyWindow(mapWindow_);
 		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
 		SDL_Quit();
 		return false;
@@ -96,7 +97,7 @@ SDL_Texture* getTileMapTexture(SDL_Surface* terrain) {
 			int x = i * (tileSize / mapTileSize_);
 			int y = j * (tileSize / mapTileSize_);
 
-			double height = mapGen->getAltitude(x, y);
+			double height = tileMapGen->getAltitude(x, y);
 
 			std::string texture = "water";
 			if (height > -0.050) 
@@ -147,7 +148,7 @@ SDL_Texture* getSimpleHeightMapTexture(SDL_Surface* terrain) {
 		for(int j = 0; j < windowY_; j+=mapTileSize_) {
 			int midX = i;
 			int midY = j;
-			double height = mapGen->getAltitude(midX, midY);
+			double height = overviewMapGen->getAltitude(midX, midY);
 			utils::Color color = utils::Color (  10, 105, 201, 255); // deeps
 			if (height > -0.050) color = utils::Color (12, 128, 247, 255); // shallows
 			if (height > -0.100) color = utils::Color (221, 203, 117, 255); // sand
@@ -164,13 +165,11 @@ SDL_Texture* getSimpleHeightMapTexture(SDL_Surface* terrain) {
 }
 
 void generateMapScreen() {
-	mapGen->renderToFile("terrain.bmp");
 	terrain = SDL_LoadBMP("terrain.bmp");
 	terrainTexture = SDL_CreateTextureFromSurface(mapRenderer_, terrain);
+}
 
-	//heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);;
-	//heightMapTexture = getSimpleHeightMapTexture(heightMap);
-	
+void generateTileMapScreen() {
 	tileMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);;
 	tileMapTexture = getTileMapTexture(tileMap);
 }
@@ -196,12 +195,14 @@ int main(int argc,char **argv)
 	seed = 0; // testing only	
 	
 	srand(seed);
+
+	
     SDL_SetRenderDrawColor( mapRenderer_, 0, 0, 0, 1.0);
     SDL_RenderClear( mapRenderer_ );
 
-	
     SDL_SetRenderDrawColor( tileRenderer_, 0, 0, 0, 1.0);
     SDL_RenderClear( tileRenderer_ );
+
 	TextureManager::getInstance()->load("assets/textures/water.png", "water", tileRenderer_);
 	TextureManager::getInstance()->load("assets/textures/shallows.png", "shallows", tileRenderer_);
 	TextureManager::getInstance()->load("assets/textures/sand.png", "sand", tileRenderer_);
@@ -209,121 +210,65 @@ int main(int argc,char **argv)
 	TextureManager::getInstance()->load("assets/textures/dirt.png", "dirt", tileRenderer_);
 	TextureManager::getInstance()->load("assets/textures/rock.png", "rock", tileRenderer_);
 	TextureManager::getInstance()->load("assets/textures/snow.png", "snow", tileRenderer_);
-
-	////////////////////////////// HEIGHT MAP ///////////////////////////////////////////
-	mapGen = new MapGenerator(windowX_, windowY_, seed);
-	mapGen->generate(-90, 90, -180, 180);
-	mapGen->renderToFile("terrain.bmp");
 	
-	// Not working yet
-	//mapGen->renderToMemory(mem);
-	//SDL_RWops* rwop = SDL_RWFromMem(mem, sizeof(mem));
-	//terrain = SDL_LoadBMP_RW( rwop, 0 );
-	//terrainTexture = SDL_CreateTextureFromSurface(mapRenderer_, terrain);
-
+	////////////////////////////// HEIGHT MAP ///////////////////////////////////////////
+	overviewMapGen = new MapGenerator(windowX_, windowY_, seed);
+	overviewMapGen->generate(0, 0);
+	overviewMapGen->renderToFile("terrain.bmp");
 	terrain = SDL_LoadBMP("terrain.bmp");
 	terrainTexture = SDL_CreateTextureFromSurface(mapRenderer_, terrain);
 
-	// Render Height Map
-	//heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);
-	//heightMapTexture = getSimpleHeightMapTexture(heightMap);
+
+	SDL_Quit();
+	return 0;
+	//overviewMapGen->saveToDisk("mapdata.txt");
+
+	//overviewMapGen->readFromDisk("mapdata.txt");
 	
-	tileMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);
-	tileMapTexture = getTileMapTexture(tileMap);
+	//tileMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);
+	//tileMapTexture = getTileMapTexture(tileMap);
 	
 	bool quit = false;
 	SDL_Event ev;
 
 	double numTilesPerScreenX = windowX_; // windowX_ / screenTileSize_; // 1280 / 64 = 20
 	double numTilesPerScreenY = windowY_; // windowY_ / screenTileSize_; // 720 / 64 = 11.25
+	
+	//overviewMapGen->generate(mapX, mapY);
+	
+	// Render Height Map
+	heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);
+	heightMapTexture = getSimpleHeightMapTexture(heightMap);
 
-	bool heightMapOn = true;
-	bool zoomedOut = false;
+	bool zoomedOut = true;
 	SDL_Keycode keyPressed = NULL;
 	generateMapScreen();
-	bool update = true;
 	
-	mapGen->generate(mapX, mapY);
-
+	//generateTileMapScreen();
+	
 	while (!quit) {
 		while (SDL_PollEvent(&ev)) {
-
-			SDL_RenderClear(tileRenderer_);
-			SDL_RenderClear(mapRenderer_);
-			
-			// Zero clue why this needs to be flipped.
-			if (!heightMapOn) SDL_RenderCopyEx(mapRenderer_, terrainTexture, NULL, NULL, NULL, NULL, SDL_FLIP_HORIZONTAL);
-
-			switch(ev.type) {
+			switch(ev.key.type) {
 				case SDL_QUIT:
 					quit = true;
 					break;
-				case SDL_KEYDOWN:
-					update = true;
-					keyPressed = ev.key.keysym.sym;
-					switch (keyPressed)
-					{
-						case SDLK_a:
-							mapX--;
-							break;
-						case SDLK_s:
-							mapY++;
-							break;
-						case SDLK_d:
-							mapX++;
-							break;
-						case SDLK_w:
-							mapY--;
-							break;
-						case SDLK_h:
-							heightMapOn = !heightMapOn;
-							break;
-						case SDLK_z:
-							// zoom out to world
-							if (!zoomedOut) {
-								std::cout << "Zooming out..." << std::endl;
-								zoomedOut = true;
-								mapGen->generate(-90, 90, -180, 180);
-								generateMapScreen();
-							} else {
-								std::cout << "Zooming in..." << std::endl;
-								zoomedOut = false;
-							}
-							break;
-					}
-					break;
 				default:
+					SDL_RenderClear(tileRenderer_);
+					SDL_RenderClear(mapRenderer_);
+			
+					SDL_RenderCopyEx(mapRenderer_, heightMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
+					SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
+
+					render_player();
+			
+					SDL_RenderPresent( tileRenderer_ );
+					SDL_RenderPresent( mapRenderer_ );
 					break;
 			}
-			
-			if (update) {
-				if (mapX < -180) mapX = 180;
-				else if (mapX > 180) mapX = -180;
-			
-				if (mapY < -90) mapY = 90;
-				else if (mapY > 90) mapY = -90;
-			
-				std::cout << "Map position: " << mapX << "," << mapY << std::endl;
-				
-				if (zoomedOut) {
-					render_player();
-				} else {
-					std::cout << "Rendering map and tiles";
-					mapGen->generate(mapX, mapY);
-					generateMapScreen();
-				}
-
-				if (heightMapOn) {
-					//SDL_RenderCopyEx(mapRenderer_, heightMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
-					SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
-				}
-			
-				SDL_RenderPresent( tileRenderer_ );
-				SDL_RenderPresent( mapRenderer_ );
-			}
-			update = false;
 		}
 	}
+	
+	SDL_Delay(3000);
 	
     SDL_FreeSurface( mapScreen );
     SDL_FreeSurface( tileScreen );
