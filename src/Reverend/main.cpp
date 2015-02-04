@@ -23,16 +23,13 @@ SDL_Surface* heightMap;
 SDL_Texture* heightMapTexture;
 
 
-const int windowX_ = 720;
-const int windowY_ = 360;
-const int screenTileSize_ = 64;
-const int mapTileSize_ = 2;
+const int windowX_ = 1280; // 720;
+const int windowY_ = 720; // 360;
+const int mapTileSize_ = 2; //(windowX_ / (double)windowY_);
 MapGenerator* mapGen;
 int mapX = 0;
 int mapY = 0;
 int seed;
-int pX = 0;
-int pY = 0;
 
 bool initSystems() {
 	
@@ -69,7 +66,7 @@ void close() {
 	SDL_Quit();
 }
 
-void render_player(int x, int y, int tileSize) {
+void render_player() {
 
 	// Render screen view window
 	/*double r = (double)windowX_ / (double)windowY_;  // 1280/720 = 1.7777
@@ -81,13 +78,16 @@ void render_player(int x, int y, int tileSize) {
 
 	// Render character
 	SDL_Rect* rectToDraw = new SDL_Rect();
+	
+	int x = (windowX_ / 2) + (mapX * mapTileSize_) - (mapTileSize_ / (double)2); // get centerpoint of screen and add the map coordinates
+	int y = (windowY_ / 2) + (-mapY * mapTileSize_) - (mapTileSize_ / (double)2); // get centerpoint of screen and add the map coordinates (mapY flipped since map coords are opposite for Y)
+
 	rectToDraw->x = x;
 	rectToDraw->y = y;
 	rectToDraw->w = mapTileSize_;
 	rectToDraw->h = mapTileSize_;
 	SDL_SetRenderDrawColor(renderer_, 255, 0, 0, 1.0);
 	SDL_RenderDrawRect(renderer_, rectToDraw);
-
 }
 
 SDL_Texture* getSimpleHeightMapTexture(MapGenerator* mapGen, SDL_Surface* terrain) {
@@ -127,8 +127,6 @@ int main(int argc,char **argv)
 		return 0;
 	}
 	
-	pX = 360;
-	pY = 180;
 	mapX = 0; //-90 to 90
 	mapY = 0; //-180 to 180
 
@@ -150,7 +148,7 @@ int main(int argc,char **argv)
 
 	////////////////////////////// HEIGHT MAP ///////////////////////////////////////////
 	mapGen = new MapGenerator(windowX_, windowY_, seed);
-	mapGen->generate(mapX, mapY);
+	mapGen->generate(-90, 90, -180, 180);
 	mapGen->renderToFile("terrain.bmp");
 	
 	// Not working yet
@@ -168,18 +166,17 @@ int main(int argc,char **argv)
 	
 	bool quit = false;
 	SDL_Event ev;
-	render_player(pX, pY, mapTileSize_);
-	SDL_RenderPresent( renderer_ );
 
-	double numTilesPerScreenX = windowX_ / screenTileSize_; // 1280 / 64 = 20
-	double numTilesPerScreenY = windowY_ / screenTileSize_; // 720 / 64 = 11.25
+	double numTilesPerScreenX = windowX_; // windowX_ / screenTileSize_; // 1280 / 64 = 20
+	double numTilesPerScreenY = windowY_; // windowY_ / screenTileSize_; // 720 / 64 = 11.25
 
-	bool heightMapOn = false;
-	bool rerenderMap = false;
-	bool zoomedOut = false;
+	bool heightMapOn = true;
+	bool zoomedOut = true;
+	
+	generateMapScreen();
+
 	while (!quit) {
 		while (SDL_PollEvent(&ev)) {
-			rerenderMap = true;
 			SDL_RenderClear(renderer_);
 			SDL_RenderCopy(renderer_, terrainTexture, NULL, NULL);
 
@@ -192,16 +189,16 @@ int main(int argc,char **argv)
 					switch (keyPressed)
 					{
 						case SDLK_a:
-							pX-= numTilesPerScreenX;
+							mapX--;
 							break;
 						case SDLK_s:
-							pY+=numTilesPerScreenY;
+							mapY--;
 							break;
 						case SDLK_d:
-							pX+= numTilesPerScreenX;
+							mapX++;
 							break;
 						case SDLK_w:
-							pY-= numTilesPerScreenY;
+							mapY++;
 							break;
 						case SDLK_h:
 							heightMapOn = !heightMapOn;
@@ -213,55 +210,33 @@ int main(int argc,char **argv)
 								zoomedOut = true;
 								mapGen->generate(-90, 90, -180, 180);
 								generateMapScreen();
-								rerenderMap = false;
 							} else {
 								std::cout << "Zooming in..." << std::endl;
 								zoomedOut = false;
-								rerenderMap = false;
-								mapGen->generate(mapX, mapY);
-								generateMapScreen();
 							}
 							break;
 					}
 					break;
-				
 			}
-
-			if (rerenderMap) {
-				if (pX <= 0) {
-					// change map
-					mapX--;
-					pX = windowX_ - screenTileSize_;
-					mapGen->generate(mapX, mapY);
-					generateMapScreen();
-				} else if (pX >= windowX_) {
-					// change map
-					mapX++;
-					pX = 0 + screenTileSize_;
-					mapGen->generate(mapX, mapY);
-					generateMapScreen();
-				}
-
-				if (pY <= 0) {
-					// change map
-					mapY++;
-					pY = windowY_ - screenTileSize_;
-					mapGen->generate(mapX, mapY);
-					generateMapScreen();
-				} else if (pY >= windowY_) {
-					// change map
-					mapY--;
-					pY = 0 + screenTileSize_;
-					mapGen->generate(mapX, mapY);
-					generateMapScreen();
-				}
-			}
+			
+			if (mapX < -180) mapX = 180;
+			else if (mapX > 180) mapX = -180;
+			
+			if (mapY < -90) mapY = 90;
+			else if (mapY > 90) mapY = -90;
+			
+			std::cout << "Map position: " << mapX << "," << mapY << std::endl;
 
 			if (heightMapOn) {
 				SDL_RenderCopyEx(renderer_, heightMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_VERTICAL);
 			}
 
-			render_player(pX, pY, mapTileSize_);
+			if (zoomedOut) {
+				render_player();
+			} else {
+				mapGen->generate(mapX, mapY);
+				generateMapScreen();
+			}
 			
 			SDL_RenderPresent( renderer_ );
 		}
