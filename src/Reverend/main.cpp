@@ -15,16 +15,18 @@
 #include "vector2d.h"
 #include "map\mapgenerator.h"
 
-SDL_Window* window_;
-SDL_Renderer* renderer_;
+SDL_Window* mapWindow_;
+SDL_Window* tileWindow_;
+SDL_Renderer* mapRenderer_;
+SDL_Renderer* tileRenderer_;
 SDL_Surface* terrain;
 SDL_Texture* terrainTexture;
 SDL_Surface* heightMap;
 SDL_Texture* heightMapTexture;
 
 
-const int windowX_ = 1280; // 720;
-const int windowY_ = 720; // 360;
+const int windowX_ = 720; // 720;
+const int windowY_ = 360; // 360;
 const int mapTileSize_ = 2; //(windowX_ / (double)windowY_);
 MapGenerator* mapGen;
 int mapX = 0;
@@ -41,16 +43,31 @@ bool initSystems() {
 	}
 
 	//Create window
-	window_ = SDL_CreateWindow("Reverend", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowX_, windowY_, SDL_WINDOW_OPENGL); // SDL_WINDOW_FULLSCREEN
-	if( window_ == NULL )
+	mapWindow_ = SDL_CreateWindow("Reverend", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowX_, windowY_, SDL_WINDOW_OPENGL); // SDL_mapWindow_FULLSCREEN
+	if( mapWindow_ == NULL )
+	{
+		printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
+		return false;
+	}
+	
+	tileWindow_ = SDL_CreateWindow("Reverend", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowX_, windowY_, SDL_WINDOW_OPENGL); // SDL_mapWindow_FULLSCREEN
+	if( tileWindow_ == NULL )
 	{
 		printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
 		return false;
 	}
 
-	renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (renderer_ == nullptr){
-		SDL_DestroyWindow(window_);
+	mapRenderer_ = SDL_CreateRenderer(mapWindow_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (mapRenderer_ == nullptr){
+		SDL_DestroyWindow(mapWindow_);
+		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
+		SDL_Quit();
+		return false;
+	}
+
+	tileRenderer_ = SDL_CreateRenderer(tileWindow_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (tileRenderer_ == nullptr){
+		SDL_DestroyWindow(tileWindow_);
 		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
 		SDL_Quit();
 		return false;
@@ -60,34 +77,35 @@ bool initSystems() {
 }
 
 void close() {
-	window_ = NULL;
-	renderer_ = NULL;
-
+	mapWindow_ = NULL;
+	mapRenderer_ = NULL;
+	tileWindow_ = NULL;
+	tileRenderer_ = NULL;
 	SDL_Quit();
 }
 
 void render_player() {
 
-	// Render screen view window
+	// Render mapScreen view window
 	/*double r = (double)windowX_ / (double)windowY_;  // 1280/720 = 1.7777
 	double numTilesPerScreenX = windowX_ / screenTileSize_; // 1280 / 64 = 20
 	double numTilesPerScreenY = windowY_ / screenTileSize_; // 720 / 64 = 11.25
 */
-	// so we know that every screen is 20x11 tiles (of 64x64 size)
-	// in this world map, each screen = 1 pixel. Thus we want a rectangle of 20x11
+	// so we know that every mapScreen is 20x11 tiles (of 64x64 size)
+	// in this world map, each mapScreen = 1 pixel. Thus we want a rectangle of 20x11
 
 	// Render character
 	SDL_Rect* rectToDraw = new SDL_Rect();
 	
-	int x = (windowX_ / 2) + (mapX * mapTileSize_) - (mapTileSize_ / (double)2); // get centerpoint of screen and add the map coordinates
-	int y = (windowY_ / 2) + (-mapY * mapTileSize_) - (mapTileSize_ / (double)2); // get centerpoint of screen and add the map coordinates (mapY flipped since map coords are opposite for Y)
+	int x = (windowX_ / 2) + (mapX * mapTileSize_) - (mapTileSize_ / (double)2); // get centerpoint of mapScreen and add the map coordinates
+	int y = (windowY_ / 2) + (-mapY * mapTileSize_) - (mapTileSize_ / (double)2); // get centerpoint of mapScreen and add the map coordinates (mapY flipped since map coords are opposite for Y)
 
 	rectToDraw->x = x;
 	rectToDraw->y = y;
 	rectToDraw->w = mapTileSize_;
 	rectToDraw->h = mapTileSize_;
-	SDL_SetRenderDrawColor(renderer_, 255, 0, 0, 1.0);
-	SDL_RenderDrawRect(renderer_, rectToDraw);
+	SDL_SetRenderDrawColor(mapRenderer_, 255, 0, 0, 1.0);
+	SDL_RenderDrawRect(mapRenderer_, rectToDraw);
 }
 
 SDL_Texture* getSimpleHeightMapTexture(MapGenerator* mapGen, SDL_Surface* terrain) {
@@ -108,14 +126,14 @@ SDL_Texture* getSimpleHeightMapTexture(MapGenerator* mapGen, SDL_Surface* terrai
 			SDL_FillRect(terrain, &rectToDraw, SDL_MapRGBA(terrain->format, color.red, color.green, color.blue, 1.0));
 		}
 	}
-	SDL_Texture* terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
+	SDL_Texture* terrainTexture = SDL_CreateTextureFromSurface(mapRenderer_, terrain);
 	return terrainTexture;
 }
 
 void generateMapScreen() {
 	mapGen->renderToFile("terrain.bmp");
 	terrain = SDL_LoadBMP("terrain.bmp");
-	terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
+	terrainTexture = SDL_CreateTextureFromSurface(mapRenderer_, terrain);
 	heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);;
 	heightMapTexture = getSimpleHeightMapTexture(mapGen, heightMap);
 }
@@ -129,8 +147,9 @@ int main(int argc,char **argv)
 	
 	mapX = 0; //-90 to 90
 	mapY = 0; //-180 to 180
-
-	SDL_Surface* screen = SDL_GetWindowSurface(window_);
+	
+	SDL_Surface* mapScreen = SDL_GetWindowSurface(mapWindow_);
+	SDL_Surface* tileScreen = SDL_GetWindowSurface(tileWindow_);
 
 	/* Initialize random seed. Need larger seed than rand_max */
 	srand(static_cast<int>(time(0)));
@@ -143,8 +162,8 @@ int main(int argc,char **argv)
 	seed = 0; // testing only	
 	
 	srand(seed);
-    SDL_SetRenderDrawColor( renderer_, 0, 0, 0, 1.0);
-    SDL_RenderClear( renderer_ );
+    SDL_SetRenderDrawColor( mapRenderer_, 0, 0, 0, 1.0);
+    SDL_RenderClear( mapRenderer_ );
 
 	////////////////////////////// HEIGHT MAP ///////////////////////////////////////////
 	mapGen = new MapGenerator(windowX_, windowY_, seed);
@@ -155,10 +174,10 @@ int main(int argc,char **argv)
 	//mapGen->renderToMemory(mem);
 	//SDL_RWops* rwop = SDL_RWFromMem(mem, sizeof(mem));
 	//terrain = SDL_LoadBMP_RW( rwop, 0 );
-	//terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
+	//terrainTexture = SDL_CreateTextureFromSurface(mapRenderer_, terrain);
 
 	terrain = SDL_LoadBMP("terrain.bmp");
-	terrainTexture = SDL_CreateTextureFromSurface(renderer_, terrain);
+	terrainTexture = SDL_CreateTextureFromSurface(mapRenderer_, terrain);
 
 	// Render Height Map
 	heightMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);
@@ -177,8 +196,8 @@ int main(int argc,char **argv)
 
 	while (!quit) {
 		while (SDL_PollEvent(&ev)) {
-			SDL_RenderClear(renderer_);
-			SDL_RenderCopy(renderer_, terrainTexture, NULL, NULL);
+			SDL_RenderClear(mapRenderer_);
+			SDL_RenderCopy(mapRenderer_, terrainTexture, NULL, NULL);
 
 			switch(ev.type) {
 				case SDL_QUIT:
@@ -228,7 +247,7 @@ int main(int argc,char **argv)
 			std::cout << "Map position: " << mapX << "," << mapY << std::endl;
 
 			if (heightMapOn) {
-				SDL_RenderCopyEx(renderer_, heightMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_VERTICAL);
+				SDL_RenderCopyEx(mapRenderer_, heightMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_VERTICAL);
 			}
 
 			if (zoomedOut) {
@@ -238,17 +257,21 @@ int main(int argc,char **argv)
 				generateMapScreen();
 			}
 			
-			SDL_RenderPresent( renderer_ );
+			SDL_RenderPresent( mapRenderer_ );
 		}
 	}
 	
-    SDL_FreeSurface( screen );
+    SDL_FreeSurface( mapScreen );
+    SDL_FreeSurface( tileScreen );
     SDL_FreeSurface( terrain );
-    screen = NULL;
+    mapScreen = NULL;
+    tileScreen = NULL;
 
-    //Destroy window
-    SDL_DestroyWindow( window_ );
-    window_ = NULL;
+    //Destroy windows
+    SDL_DestroyWindow( mapWindow_ );
+    mapWindow_ = NULL;
+    SDL_DestroyWindow( tileWindow_ );
+    tileWindow_ = NULL;
 
     //Quit SDL subsystems
     SDL_Quit();
