@@ -89,35 +89,36 @@ void close() {
 	SDL_Quit();
 }
 
-SDL_Texture* getTileMapTexture(SDL_Surface* terrain) {
+SDL_Texture* getTileMapTexture(MapGenerator* map, SDL_Renderer* renderer, SDL_Surface* terrain, int x = 0, int y = 0, int scale = 1) {
 	int tileSize = 32;
 
-	for(int i = 0; i < windowX_; i+=mapTileSize_) {
-		for(int j = 0; j < windowY_; j+=mapTileSize_) {
+	for(int i = 0; i < windowX_; i+=scale) { // for 0 through 72, every 10 px
+		for(int j = 0; j < windowY_; j+=scale) { // for 0 through 36, every 10 px
+			int midX = i;
+			int midY = j;
 			
-			int x = i * (tileSize / mapTileSize_);
-			int y = j * (tileSize / mapTileSize_);
+			// we want a single pixel on the height map
+			if (midX > 0) midX = i / scale;
+			if (midY > 0) midY = j / scale;
+			double height = map->getAltitude(midX + x, midY + y);
 
-			double height = tileMapGen->getAltitude(x, y);
-
+			// Height goes 0 to 255
+			int max = 255;
+			
+			
 			std::string texture = "water";
-			if (height > -0.050) 
-				texture = "shallows";
-			if (height > -0.100) 
-				texture = "sand";
-			if (height > 0.0725) 
-				texture = "grass";
-			if (height > 0.5050) 
-				texture = "dirt";
-			if (height > 0.7500) 
-				texture = "rock";
-			if (height > 0.9) 
-				texture = "snow";
-			TextureManager::getInstance()->drawTile(texture.c_str(), 0, 0, x, y, 32, 32, 0, 0, tileRenderer_);
+
+			if (height > 120) texture = "shallows";
+			if (height > 130) texture = "sand";
+			if (height > 140) texture = "grass";
+			if (height > 210) texture = "dirt";
+			if (height > 230) texture = "rock";
+			if (height > 250) texture = "snow";
+			
+			TextureManager::getInstance()->drawTile(texture.c_str(), 0, 0, i, j, scale, scale, 0, 0, renderer);
 		}
 	}
-
-	return SDL_CreateTextureFromSurface(mapRenderer_, terrain);
+	return SDL_CreateTextureFromSurface(renderer, terrain);
 }
 
 void render_player() {
@@ -177,11 +178,6 @@ SDL_Texture* getSimpleHeightMapTexture(MapGenerator* map, SDL_Renderer* renderer
 void generateMapScreen() {
 	terrain = SDL_LoadBMP("terrain.bmp");
 	terrainTexture = SDL_CreateTextureFromSurface(mapRenderer_, terrain);
-}
-
-void generateTileMapScreen() {
-	tileMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);;
-	tileMapTexture = getTileMapTexture(tileMap);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -245,19 +241,20 @@ int main(int argc,char **argv)
 	
 	int x = 0;
 	int y = 0;
-	int scale = 100;
+	int scale = 32;
 
 	tileMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);
-	tileMapTexture = getSimpleHeightMapTexture(tileMapGen, tileRenderer_, tileMap, x, y, scale);
+
 	
 	SDL_RenderClear(mapRenderer_);
 	SDL_RenderCopyEx(mapRenderer_, heightMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
 	SDL_RenderPresent( mapRenderer_ );
 
 	SDL_RenderClear(tileRenderer_);
-	SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
+	tileMapTexture = getTileMapTexture(tileMapGen, tileRenderer_, tileMap, 0, 0, scale);
+	//SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
 	SDL_RenderPresent( tileRenderer_ );
-
+	SDL_Delay(3000);
 	SDL_Event evt;
 	bool q =  false;
 	while (!q) {
@@ -273,8 +270,8 @@ int main(int argc,char **argv)
 						std::cout << x << std::endl;
 						
 						SDL_RenderClear(tileRenderer_);
-						tileMapTexture = getSimpleHeightMapTexture(tileMapGen, tileRenderer_, tileMap, x, y, scale);
-						SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
+						tileMapTexture = getTileMapTexture(tileMapGen, tileRenderer_, tileMap, x, y, scale);
+						//SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
 						SDL_RenderPresent( tileRenderer_ );
 
 						break;
@@ -283,8 +280,8 @@ int main(int argc,char **argv)
 						std::cout << x << std::endl;
 						
 						SDL_RenderClear(tileRenderer_);
-						tileMapTexture = getSimpleHeightMapTexture(tileMapGen, tileRenderer_, tileMap, x, y, scale);
-						SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
+						tileMapTexture = getTileMapTexture(tileMapGen, tileRenderer_, tileMap, x, y, scale);
+						//SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
 						SDL_RenderPresent( tileRenderer_ );
 
 						break;
@@ -294,8 +291,8 @@ int main(int argc,char **argv)
 						std::cout << x << std::endl;
 						
 						SDL_RenderClear(tileRenderer_);
-						tileMapTexture = getSimpleHeightMapTexture(tileMapGen, tileRenderer_, tileMap, x, y, scale);
-						SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
+						tileMapTexture = getTileMapTexture(tileMapGen, tileRenderer_, tileMap, x, y, scale);
+						//SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
 						SDL_RenderPresent( tileRenderer_ );
 
 						break;
@@ -304,8 +301,8 @@ int main(int argc,char **argv)
 						std::cout << x << std::endl;
 						
 						SDL_RenderClear(tileRenderer_);
-						tileMapTexture = getSimpleHeightMapTexture(tileMapGen, tileRenderer_, tileMap, x, y, scale);
-						SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
+						tileMapTexture = getTileMapTexture(tileMapGen, tileRenderer_, tileMap, x, y, scale);
+						//SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
 						SDL_RenderPresent( tileRenderer_ );
 
 						break;
@@ -317,7 +314,8 @@ int main(int argc,char **argv)
 					SDL_RenderPresent( mapRenderer_ );
 
 					SDL_RenderClear(tileRenderer_);
-					SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
+						tileMapTexture = getTileMapTexture(tileMapGen, tileRenderer_, tileMap, x, y, scale);
+					//SDL_RenderCopyEx(tileRenderer_, tileMapTexture, NULL, NULL, NULL, NULL, SDL_FLIP_NONE);
 					SDL_RenderPresent( tileRenderer_ );
 
 					break;
