@@ -70,6 +70,11 @@ void Camera::update()
 	//Find x and y
 	x = (float)(target_.getX() - position_.getX());
 	y = (float)(target_.getY() - position_.getY());
+	
+	// No animation for now
+	position_.setX(target_.getX());
+	position_.setY(target_.getY());
+	return;
 
 	//If we're within 1 pixel of the target_ already, just snap
 	//to target_ and stay there. Otherwise, continue
@@ -101,7 +106,7 @@ void Camera::update()
 
 		//Then update camera's position_ and we're done
 		position_.setX(position_.getX() + vx);
-		position_.setX(position_.getY() + vy);
+		position_.setY(position_.getY() + vy);
 	}
 }
 

@@ -52,7 +52,7 @@ public:
 	//Updates camera position
 	void update();
 
-	Vector2d getPosition() { return Vector2d((int)position_.getX(), (int)position_.getX()); }
+	Vector2d getPosition() { return Vector2d((int)position_.getX(), (int)position_.getY()); }
 	
 	//Helper function for retreiving camera's offset from
 	//nearest tile
