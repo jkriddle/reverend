@@ -69,6 +69,9 @@
     <ClCompile Include="map\maprenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\images\grass.png">
@@ -163,6 +166,9 @@
     <ClInclude Include="map\maprenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sounds\fast_swipe.wav">
@@ -173,5 +179,10 @@
     <Text Include="mains\game.main.txt" />
     <Text Include="mains\voronoi.main.txt" />
     <Text Include="mains\mapgen.main.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xsd Include="mains\cam.xsd">
+      <Filter>Header Files</Filter>
+    </Xsd>
   </ItemGroup>
 </Project>

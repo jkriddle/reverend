@@ -15,7 +15,8 @@ public:
 	static const Vector2d* SOUTH_WEST;
 	static const Vector2d* WEST;
 	static const Vector2d* NORTH_WEST;
-
+	
+	Vector2d() : x_(0), y_(0) {}
 	Vector2d(float x, float y): x_(x), y_(y) {}
 	float getX() { return x_; }
 	float getY() { return y_; }
