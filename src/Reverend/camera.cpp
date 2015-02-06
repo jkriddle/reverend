@@ -56,11 +56,15 @@ void Camera::goToCenter(int x, int y)
 	target_.setY(y);
 }
 
-//This function allows us to do a cool camera
-//scrolling effect by moving towards a target_
-//position_ over time.
+// This function allows us to do a scrolling effect by moving towards a target_
+// position_ over time. NOT CURRENTLY USED.
 void Camera::update()
 {
+	// No animation for now
+	position_.setX(target_.getX());
+	position_.setY(target_.getY());
+	return;
+
 	//X distance to target_, Y distance to target_, and Euclidean distance
 	float x, y, d;
 
@@ -70,11 +74,6 @@ void Camera::update()
 	//Find x and y
 	x = (float)(target_.getX() - position_.getX());
 	y = (float)(target_.getY() - position_.getY());
-	
-	// No animation for now
-	position_.setX(target_.getX());
-	position_.setY(target_.getY());
-	return;
 
 	//If we're within 1 pixel of the target_ already, just snap
 	//to target_ and stay there. Otherwise, continue

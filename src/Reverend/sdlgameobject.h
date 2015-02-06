@@ -16,6 +16,8 @@ public:
 	virtual void draw();
 	virtual void update();
 	virtual void clean();
+	virtual int getX();
+	virtual int getY();
 
 protected:
 	Vector2d position_;

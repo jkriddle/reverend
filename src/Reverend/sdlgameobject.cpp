@@ -16,9 +16,24 @@ SDLGameObject::SDLGameObject(const LoaderParams* params) : GameObject(params),
 	currentTextureFrame_ = 1;
 }
 
+int SDLGameObject::getX()
+{
+	return position_.getX();
+}
+
+int SDLGameObject::getY()
+{
+	return position_.getY();
+}
+
 void SDLGameObject::draw()
 {
-	TextureManager::getInstance()->drawFrame(textureId_, (int)position_.getX(), (int)position_.getY(), width_, height_, 
+	int cx = Game::getInstance()->getCamera()->getPosition().getX();
+	int cy = Game::getInstance()->getCamera()->getPosition().getY();
+	int x = (int)position_.getX() - cx;
+	int y = (int)position_.getY() - cy;
+
+	TextureManager::getInstance()->drawFrame(textureId_, x, y, width_, height_, 
 		currentTextureRow_, currentTextureFrame_, Game::getInstance()->getRenderer());
 }
 

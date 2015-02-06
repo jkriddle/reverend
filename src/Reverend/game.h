@@ -12,7 +12,9 @@
 #include "inputhandler.h"
 #include "playstate.h"
 #include "pausestate.h"
+#include "camera.h"
 #include "gamestatemachine.h"
+#include "map/mapgenerator.h"
 
 class Game {
 public:
@@ -38,6 +40,9 @@ public:
 
 	SDL_Renderer* getRenderer() const { return renderer_; }
 	GameStateMachine* getStateMachine(){ return gameStateMachine_; }
+	Camera* getCamera(){ return camera_; }
+	int getScreenWidth() { return screenWidth_; }
+	int getScreenHeight() { return screenHeight_; }
 
 private:
 	Game() {
@@ -46,11 +51,14 @@ private:
 		screenWidth_ = 640;
 		screenHeight_ = 480;
 		isRunning_ = true;
+		camera_ = new Camera(screenWidth_, screenHeight_, 1.0f);
 	}
 
 	static Game* instance_;
 
 	bool initSystems();
+	bool initWorld();
+	void renderTileMap();
 
 	bool isRunning_;
 	
@@ -61,11 +69,15 @@ private:
 	SDL_Renderer* renderer_;
 	SDL_Surface* screen_;
 	GameStateMachine* gameStateMachine_;
+	Camera* camera_;
 	
 	std::vector<GameObject*> gameObjects_;
 
 	GameObject* player_;
 	GameObject* enemy_;
+
+	int seed_;
+	MapGenerator* map_;
 	
 };
 

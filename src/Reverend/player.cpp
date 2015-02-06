@@ -1,7 +1,7 @@
 #pragma warning(disable: 4244) // conversion of Vector2d float to int
 
+#include "game.h"
 #include "player.h"
-
 
 Player::Player(const LoaderParams* pParams) : SDLGameObject(pParams)
 {
@@ -28,6 +28,8 @@ void Player::update()
 	else currentTextureFrame_ = 1;
 
 	SDLGameObject::update();
+	
+	Game::getInstance()->getCamera()->goToCenter(position_.getX(), position_.getY());
 }
 
 void Player::clean()
