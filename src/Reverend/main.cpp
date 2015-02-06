@@ -30,13 +30,11 @@ SDL_Surface* heightMap;
 SDL_Texture* heightMapTexture;
 Camera* camera;
 
-const int windowX_ = 720; // 720;
-const int windowY_ = 360; // 360;
+const int windowX_ = 640; // 720;
+const int windowY_ = 320; // 360;
 const int mapTileSize_ = 2; //(windowX_ / (double)windowY_);
 MapGenerator* overviewMapGen;
 MapGenerator* tileMapGen;
-int mapX = 0; //-90 to 90
-int mapY = 3; //-180 to 180
 int pX = 0;
 int pY = 0;
 
@@ -96,21 +94,21 @@ int rm = 0;
 int lm = 0;
 void renderTileMap(MapGenerator* map, SDL_Renderer* renderer, SDL_Surface* terrain, int scale = 1) {
 	int tileSize = 32;
-	
-	if (camera->getPosition().getX() < -5) {
-		int f = 3;
-	}
-	
-	if (camera->getPosition().getX() < -10) {
-		int f = 3;
-	}
-
-	int startX = (-1 * tileSize) - camera->getPosition().getX();
-	int startY = (-1 * tileSize) - camera->getPosition().getY();
+	/*
+	int startX = (-1 * tileSize) + camera->getPosition().getX();
+	int startY = (-1 * tileSize) + camera->getPosition().getY();
 
 	// always render one extra tile since movement is non-tile based. Thus we could have half of a tile shown (or up to 31 pixels of the prev/next tile)
-	int mX = windowX_ + startX + tileSize;
-	int mY = windowY_ + startY + tileSize;
+	int mX = startX + windowX_ + (2 * tileSize);
+	int mY = startY + windowY_ + (2 * tileSize);
+	*/
+	
+	int startX = (-1*tileSize) + camera->getPosition().getX(); // (-1 * tileSize) + camera->getPosition().getX();
+	int startY = (-1*tileSize) + camera->getPosition().getY(); //(-1 * tileSize) + camera->getPosition().getY();
+
+	// always render one extra tile since movement is non-tile based. Thus we could have half of a tile shown (or up to 31 pixels of the prev/next tile)
+	int mX = startX + windowX_ + (1 * tileSize);
+	int mY = startY + windowY_ + (1 * tileSize);
 
 	// if we are showing tiles
 	// 100, 100, 120, 120
@@ -129,16 +127,18 @@ void renderTileMap(MapGenerator* map, SDL_Renderer* renderer, SDL_Surface* terra
 			// we have this tile, but we need to shift the position based on the camera position
 			int offsetX = (startX % tileSize);
 			int offsetY = (startY % tileSize);
-			int cX = i + camera->getPosition().getX() - offsetX;
-			int cY = j + camera->getPosition().getY() - offsetY;
+			int cX = i - camera->getPosition().getX() - offsetX;
+			int cY = j - camera->getPosition().getY() - offsetY;
 			
+			// an equator bug exists where when you are within a few "tileSize" Y values of 0, the lower tiles are drawn a tilesize too high.
+
 			if (lm != pX || rm != pY) {
-				std::cout << "startX % 32: " << (startX % tileSize) << std::endl;
-				std::cout << "startY % 32: " << (startY % tileSize) << std::endl;
 				std::cout << "x, y: " << camera->getPosition().getX() << "," << camera->getPosition().getY() << std::endl;
 				std::cout << "startX, startY: " << startX << "," << startY << std::endl;
 				std::cout << "mX, mY: " << mX << "," << mY << std::endl;
-				std::cout << "mapAltX, mapAltX: " << mapAltX << "," << mapAltY << std::endl;
+				//std::cout << "mapAltX, mapAltX: " << mapAltX << "," << mapAltY << std::endl;
+				std::cout << "offsetX: " << offsetX << std::endl;
+				std::cout << "offsetY: " << offsetY << std::endl;
 				std::cout << "cX, cY: " << cX << "," << cY << std::endl << std::endl;
 				lm = pX;
 				rm = pY;
@@ -271,6 +271,9 @@ int main(int argc,char **argv)
 	// Now read the image
 	tileMapGen->loadAltitudeMap("overworld.bmp");
 	tileMap = SDL_CreateRGBSurface(SDL_SWSURFACE, windowX_, windowY_, 16 ,0,0,0,0);
+	
+	camera->goTo(pX, pY);
+	camera->update();
 
 	SDL_Event evt;
 	bool q =  false;
