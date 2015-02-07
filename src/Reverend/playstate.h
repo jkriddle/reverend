@@ -20,7 +20,7 @@ public:
 private:
 	static const std::string id_;
 	std::vector<GameObject*> gameObjects_;
-
+	void renderTileMap();
 };
 
 #endif;

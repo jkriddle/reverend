@@ -29,7 +29,7 @@ private:
 
 	int equippedItem_;
 	int numBeltSlots_;
-	static const int speed_ = 3;
+	static const int speed_ = 15;
 };
 
 #endif

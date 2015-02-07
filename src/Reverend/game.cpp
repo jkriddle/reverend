@@ -98,81 +98,9 @@ void Game::handleEvents() {
 	InputHandler::getInstance()->update();
 }
 
-void Game::renderTileMap() {
-	int tileSize = 32;
-	int scale = 1;
-
-	/*
-	int startX = (-1 * tileSize) + camera->getPosition().getX();
-	int startY = (-1 * tileSize) + camera->getPosition().getY();
-
-	// always render one extra tile since movement is non-tile based. Thus we could have half of a tile shown (or up to 31 pixels of the prev/next tile)
-	int mX = startX + windowX_ + (2 * tileSize);
-	int mY = startY + windowY_ + (2 * tileSize);
-	*/
-	
-	int startX = -64; // (-1 * tileSize) + camera->getPosition().getX();
-	int startY = -64; //(-1 * tileSize) + camera->getPosition().getY();
-
-	// always render one extra tile since movement is non-tile based. Thus we could have half of a tile shown (or up to 31 pixels of the prev/next tile)
-	int mX = startX + screenWidth_ + 64;
-	int mY = startY + screenHeight_ + 64;
-
-	int mapAltX, mapAltY, offsetX, offsetY, cX, cY;
-	double height;
-			
-	std::string texture = "water";
-	
-	for(int i = startX; i <= mX; i+=tileSize) { // for 0 through 720, every 32 px
-		for(int j = startY; j <= mY; j+=tileSize) { // for 0 through 360, every 32 px
-			//srand(seed_ + i + j);
-			mapAltX = i;
-			mapAltY =  j;
-			
-			if (mapAltX != 0) mapAltX = i / tileSize / scale;
-			if (mapAltY != 0) mapAltY = j / tileSize / scale;
-			
-			if (mapAltX != 0) mapAltX = i / tileSize / scale;
-			if (mapAltY != 0) mapAltY = j / tileSize / scale;
-			double f = (double)rand() / RAND_MAX;
-			height = map_->getAltitude(mapAltX, mapAltY);
-
-			// we have this tile, but we need to shift the position based on the camera position
-			offsetX = (startX % tileSize);
-			offsetY = (startY % tileSize);
-			cX = i - camera_->getPosition().getX() - offsetX;
-			cY = j - camera_->getPosition().getY() - offsetY;
-			
-			// an equator bug exists where when you are within a few "tileSize" Y values of 0, the lower tiles are drawn a tilesize too high.
-
-			if (lm != camera_->getPosition().getX() || rm != camera_->getPosition().getY()) {
-				/*std::cout << "x, y: " << camera_->getPosition().getX() << "," << camera_->getPosition().getY() << std::endl;
-				std::cout << "startX, startY: " << startX << "," << startY << std::endl;
-				std::cout << "mX, mY: " << mX << "," << mY << std::endl;
-				//std::cout << "mapAltX, mapAltX: " << mapAltX << "," << mapAltY << std::endl;
-				std::cout << "offsetX: " << offsetX << std::endl;
-				std::cout << "offsetY: " << offsetY << std::endl;
-				std::cout << "cX, cY: " << cX << "," << cY << std::endl << std::endl;*/
-				lm = camera_->getPosition().getX();
-				rm = camera_->getPosition().getY();
-			}
-
-			// Height goes 0 to 255
-			if (height > 120) texture = "shallows";
-			if (height > 130) texture = "sand";
-			if (height > 140) texture = "grass";
-			if (height > 210) texture = "dirt";
-			if (height > 230) texture = "rock";
-			if (height > 250) texture = "snow";
-			
-			TextureManager::getInstance()->draw(texture, cX, cY, tileSize, tileSize, renderer_);
-		}
-	}
-}
 
 void Game::draw() {
 	SDL_RenderClear(renderer_);
-	renderTileMap();
 	gameStateMachine_->draw();
     SDL_RenderPresent(renderer_); 
 }

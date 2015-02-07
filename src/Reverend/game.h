@@ -41,6 +41,7 @@ public:
 	SDL_Renderer* getRenderer() const { return renderer_; }
 	GameStateMachine* getStateMachine(){ return gameStateMachine_; }
 	Camera* getCamera(){ return camera_; }
+	MapGenerator* getMap(){ return map_; }
 	int getScreenWidth() { return screenWidth_; }
 	int getScreenHeight() { return screenHeight_; }
 
@@ -58,10 +59,9 @@ private:
 
 	bool initSystems();
 	bool initWorld();
-	void renderTileMap();
-
-	bool isRunning_;
 	
+	bool isRunning_;
+	int seed_;
 	SDL_Window* window_;
 	int screenWidth_;
 	int screenHeight_;
@@ -70,17 +70,9 @@ private:
 	SDL_Surface* screen_;
 	GameStateMachine* gameStateMachine_;
 	Camera* camera_;
-	int lm;
-	int rm;
+	MapGenerator* map_;
 
 	std::vector<GameObject*> gameObjects_;
-
-	GameObject* player_;
-	GameObject* enemy_;
-
-	int seed_;
-	MapGenerator* map_;
-	
 };
 
 #endif
