@@ -4,7 +4,7 @@
 
 #include "sdlgameobject.h"
 
-class Tile : SDLGameObject {
+class Tile : public SDLGameObject {
 
 public:
 	Tile(const LoaderParams* pParams);
