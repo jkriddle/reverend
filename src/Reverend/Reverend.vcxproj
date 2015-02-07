@@ -90,7 +90,6 @@
     <ClCompile Include="soundmanager.cpp" />
     <ClCompile Include="texturemanager.cpp" />
     <ClCompile Include="vector2d.cpp" />
-    <ClCompile Include="voronoi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\textures\enemy.png" />
@@ -131,7 +130,6 @@
     <ClInclude Include="texturemanager.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="vector2d.h" />
-    <ClInclude Include="voronoi.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sounds\fast_swipe.wav" />

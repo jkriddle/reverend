@@ -44,23 +44,22 @@ void Player::handleKeyboardInput() {
 	// Digital Pad
 	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_A)) {
 		// Left
-		std::cout << " left" << std::endl;
-		velocity_.setX(-1);
+		velocity_.setX(-1 * speed_);
 	}
 		
 	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_D)) {
 		// Right
-		velocity_.setX(1);
+		velocity_.setX(speed_);
 	}
 		
 	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_W)) {
 		// Up
-		velocity_.setY(-1);
+		velocity_.setY(-1 * speed_);
 	}
 		
 	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_S)) {
 		// Down
-		velocity_.setY(1);
+		velocity_.setY(speed_);
 	}
 
 	if (InputHandler::getInstance()->isKeyPressed(SDL_SCANCODE_E)) {

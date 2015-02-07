@@ -5,6 +5,7 @@
 
 class CameraRect
 {
+
 public:
 	CameraRect(int x, int y, int w, int h) {
 		x_ = x;
@@ -24,42 +25,40 @@ private:
 class Camera
 {
 private:
-	//Absolute position of camera (number of
-	//pixels from origin of level map)
+	// Absolute position of camera (number of
+	// pixels from origin of level map)
 	Vector2d position_;
 
-	//Target position camera is moving towards
+	// Target position camera is moving towards
 	Vector2d target_;
 
-	//Size of camera
+	// Size of camera
 	Vector2d size_;
 
-	//Speed of camera, a value between 0.0 and 1.0
+	// Speed of camera, a value between 0.0 and 1.0
 	float speed_;
 
 public:
 	Camera(int w, int h, float speed);
 	~Camera();
 
-	//Moves camera immediately to coordinates
+	// Moves camera immediately to coordinates
 	void move(int x, int y);
 	void moveCenter(int x, int y);
 
-	//Sets camera target
+	// Sets camera target
 	void goTo(int x, int y);
 	void goToCenter(int x, int y);
 
-	//Updates camera position
+	// Updates camera position
 	void update();
 
 	Vector2d getPosition() { return Vector2d((int)position_.getX(), (int)position_.getY()); }
 	
-	//Helper function for retreiving camera's offset from
-	//nearest tile
+	// Helper function for retreiving camera's offset from nearest tile
 	Vector2d getTileOffset(int tileSize) { return Vector2d((int)(position_.getX()) % tileSize, (int)(position_.getX()) % tileSize); }
 
-	//Helper function for retreiving a rectangle defining
-	//which tiles are visible through camera
+	// Helper function for retreiving a rectangle definingf which tiles are visible through camera
 	CameraRect getTileBounds(int tileSize);
 };
 

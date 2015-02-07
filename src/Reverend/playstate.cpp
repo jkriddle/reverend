@@ -43,8 +43,8 @@ bool PlayState::onEnter()
 	TextureManager::getInstance()->load("assets/textures/snow.png", "snow", Game::getInstance()->getRenderer());
 	SoundManager::getInstance()->load("assets/sounds/fast_swipe.wav", "short_swipe", SoundType::SOUND_SFX);
 	
-	int pX = Game::getInstance()->getScreenHeight() / (double)2;
-	int pY = Game::getInstance()->getScreenHeight() / (double)2;
+	int pX = 0;
+	int pY = 0;
 
 	Player* player_ = new Player(new LoaderParams(pX, pY, 64, 64, "player"));
 	//Enemy* enemy_ = new Enemy(new LoaderParams(64*2, 64*2, 64, 64, "enemy"));

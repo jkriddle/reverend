@@ -57,9 +57,6 @@
     <ClCompile Include="soundmanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="voronoi.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="noise\noiseutils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -152,9 +149,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soundmanager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="voronoi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="noise\noiseutils.h">

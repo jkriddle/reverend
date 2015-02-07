@@ -82,7 +82,7 @@ void Game::close() {
 	screen_ = NULL;
 	window_ = NULL;
 	renderer_ = NULL;
-
+	map_ = NULL;
 	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
@@ -125,7 +125,7 @@ void Game::renderTileMap() {
 	
 	for(int i = startX; i <= mX; i+=tileSize) { // for 0 through 720, every 32 px
 		for(int j = startY; j <= mY; j+=tileSize) { // for 0 through 360, every 32 px
-
+			//srand(seed_ + i + j);
 			mapAltX = i;
 			mapAltY =  j;
 			
@@ -134,6 +134,7 @@ void Game::renderTileMap() {
 			
 			if (mapAltX != 0) mapAltX = i / tileSize / scale;
 			if (mapAltY != 0) mapAltY = j / tileSize / scale;
+			double f = (double)rand() / RAND_MAX;
 			height = map_->getAltitude(mapAltX, mapAltY);
 
 			// we have this tile, but we need to shift the position based on the camera position
@@ -142,9 +143,12 @@ void Game::renderTileMap() {
 			cX = i - camera_->getPosition().getX() - offsetX;
 			cY = j - camera_->getPosition().getY() - offsetY;
 			
+			if (camera_->getPosition().getX() > 32) cX += 32;
+			if (camera_->getPosition().getX() == -32) cX += 32;
+			
 			// an equator bug exists where when you are within a few "tileSize" Y values of 0, the lower tiles are drawn a tilesize too high.
 
-			/*if (lm != pX || rm != pY) {
+			if (lm != camera_->getPosition().getX() || rm != camera_->getPosition().getY()) {
 				std::cout << "x, y: " << camera_->getPosition().getX() << "," << camera_->getPosition().getY() << std::endl;
 				std::cout << "startX, startY: " << startX << "," << startY << std::endl;
 				std::cout << "mX, mY: " << mX << "," << mY << std::endl;
@@ -152,9 +156,9 @@ void Game::renderTileMap() {
 				std::cout << "offsetX: " << offsetX << std::endl;
 				std::cout << "offsetY: " << offsetY << std::endl;
 				std::cout << "cX, cY: " << cX << "," << cY << std::endl << std::endl;
-				lm = pX;
-				rm = pY;
-			}*/
+				lm = camera_->getPosition().getX();
+				rm = camera_->getPosition().getY();
+			}
 
 			// Height goes 0 to 255
 			if (height > 120) texture = "shallows";

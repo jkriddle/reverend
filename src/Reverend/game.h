@@ -70,7 +70,9 @@ private:
 	SDL_Surface* screen_;
 	GameStateMachine* gameStateMachine_;
 	Camera* camera_;
-	
+	int lm;
+	int rm;
+
 	std::vector<GameObject*> gameObjects_;
 
 	GameObject* player_;
