@@ -10,10 +10,10 @@
 #include "texturemanager.h"
 #include "cleanup.h"
 #include "inputhandler.h"
-#include "playstate.h"
-#include "pausestate.h"
+#include "state/gamestatemachine.h"
+#include "state/playstate.h"
+#include "state/pausestate.h"
 #include "camera.h"
-#include "gamestatemachine.h"
 #include "map/mapgenerator.h"
 
 class Game {

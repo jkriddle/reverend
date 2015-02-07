@@ -1,12 +1,13 @@
+#pragma once
 #ifndef PAUSESTATE_H
 #define PAUSESTATE_H
 
-#include "game.h"
-#include "gameobject.h"
+#include "../game.h"
+#include "../objects/gameobject.h"
 #include "gamestate.h"
-#include "button.h"
-#include "inputhandler.h"
-#include "animatedgraphic.h"
+#include "../button.h"
+#include "../inputhandler.h"
+#include "../animatedgraphic.h"
 #include <iostream>
 
 class PauseState : public GameState {

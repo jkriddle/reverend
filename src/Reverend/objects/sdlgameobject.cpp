@@ -1,6 +1,6 @@
 #pragma warning(disable: 4244) // conversion of Vector2d float to int
 
-#include "game.h"
+#include "../game.h"
 #include "sdlgameobject.h"
 
 SDLGameObject::SDLGameObject(const LoaderParams* params) : GameObject(params), 

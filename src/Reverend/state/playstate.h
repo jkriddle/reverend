@@ -1,12 +1,9 @@
+#pragma once
 #ifndef PLAYSTATE_H
 #define PLAYSTATE_H
 
-#include "game.h"
-#include "gameobject.h"
-#include "player.h"
-#include "enemy.h"
 #include "gamestate.h"
-#include "soundmanager.h"
+#include "../objects/gameobject.h"
 #include <iostream>
 
 class PlayState : public GameState {

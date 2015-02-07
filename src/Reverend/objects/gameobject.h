@@ -1,10 +1,11 @@
+#pragma once
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
 #include <SDL/SDL.h>
 #include <string>
-#include "texturemanager.h"
-#include "loaderparams.h"
+#include "../texturemanager.h"
+#include "../loaderparams.h"
 
 class GameObject {
 public:

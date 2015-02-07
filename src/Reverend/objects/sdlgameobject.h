@@ -5,8 +5,8 @@
 
 #include <SDL/SDL.h>
 #include "gameobject.h"
-#include "vector2d.h"
-#include "inputhandler.h"
+#include "../vector2d.h"
+#include "../inputhandler.h"
 
 class SDLGameObject : public GameObject
 {
