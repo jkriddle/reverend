@@ -3,7 +3,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "sdlgameobject.h"
+#include "object/sdlgameobject.h"
 #include "soundmanager.h"
 
 class Player : public SDLGameObject {
@@ -29,6 +29,7 @@ private:
 
 	int equippedItem_;
 	int numBeltSlots_;
+	static const int speed_ = 15;
 };
 
 #endif

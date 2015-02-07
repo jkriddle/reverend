@@ -1,16 +1,9 @@
-//
-//  AnimatedGraphic.h
-//  SDL Game Programming Book
-//
-//  Created by shaun mitchell on 17/02/2013.
-//  Copyright (c) 2013 shaun mitchell. All rights reserved.
-//
-
+#pragma once
 #ifndef ANIMATEDGRAPHIC_H
 #define ANIMATEDGRAPHIC_H
 
 #include <iostream>
-#include "sdlgameobject.h"
+#include "object/sdlgameobject.h"
 
 class AnimatedGraphic : public SDLGameObject
 {

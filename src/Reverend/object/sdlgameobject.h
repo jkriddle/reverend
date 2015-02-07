@@ -5,8 +5,8 @@
 
 #include <SDL/SDL.h>
 #include "gameobject.h"
-#include "vector2d.h"
-#include "inputhandler.h"
+#include "../vector2d.h"
+#include "../inputhandler.h"
 
 class SDLGameObject : public GameObject
 {
@@ -16,6 +16,9 @@ public:
 	virtual void draw();
 	virtual void update();
 	virtual void clean();
+	virtual int getX();
+	virtual int getY();
+	const std::string& getTextureId() { return textureId_; }
 
 protected:
 	Vector2d position_;

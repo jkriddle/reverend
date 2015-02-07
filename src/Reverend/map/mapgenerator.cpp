@@ -1,4 +1,5 @@
 #include "mapgenerator.h"
+#include "../cleanup.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -9,6 +10,9 @@ MapGenerator::MapGenerator(int width, int height, int seed) {
 	width_ = width;
 	height_ = height;
 	seed_ = seed;
+}
+MapGenerator::~MapGenerator() {
+	cleanup(altitudeMap_);
 }
 
 Uint32 MapGenerator::getPixel(SDL_Surface *surface, int x, int y)

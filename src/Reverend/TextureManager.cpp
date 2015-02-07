@@ -2,7 +2,7 @@
 
 TextureManager* TextureManager::instance_ = 0;
 
-bool TextureManager::load(std::string fileName, std::string id, SDL_Renderer* pRenderer) {
+bool TextureManager::load(const std::string& fileName, const std::string& id, SDL_Renderer* pRenderer) {
 	SDL_Surface* tempSurface = IMG_Load(fileName.c_str());
 	if(tempSurface == 0) {
 		return false;
@@ -20,7 +20,7 @@ bool TextureManager::load(std::string fileName, std::string id, SDL_Renderer* pR
 	return false;
 }
 
-void TextureManager::draw(std::string id, int x, int y, int width, int height, SDL_Renderer* pRenderer, SDL_RendererFlip flip) {
+void TextureManager::draw(const std::string& id, int x, int y, int width, int height, SDL_Renderer* pRenderer, SDL_RendererFlip flip) {
 	SDL_Rect srcRect;
 	SDL_Rect destRect;
 	srcRect.x = 0;
@@ -32,7 +32,7 @@ void TextureManager::draw(std::string id, int x, int y, int width, int height, S
 	SDL_RenderCopyEx(pRenderer, textureMap_[id], &srcRect, &destRect, 0, 0, flip);
 }
 
-void TextureManager::drawFrame(std::string id, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer *pRenderer, SDL_RendererFlip flip) {
+void TextureManager::drawFrame(const std::string& id, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer *pRenderer, SDL_RendererFlip flip) {
 	SDL_Rect srcRect;
 	SDL_Rect destRect;
 	srcRect.x = width * currentFrame;
@@ -45,7 +45,7 @@ void TextureManager::drawFrame(std::string id, int x, int y, int width, int heig
 	&destRect, 0, 0, flip);
 }
 
-void TextureManager::drawTile(std::string id, int margin, int spacing, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer *pRenderer)
+void TextureManager::drawTile(const std::string& id, int margin, int spacing, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer *pRenderer)
 {
     SDL_Rect srcRect;
     SDL_Rect destRect;
@@ -64,7 +64,7 @@ void TextureManager::clearTextureMap()
     textureMap_.clear();
 }
 
-void TextureManager::clearFromTextureMap(std::string id)
+void TextureManager::clearFromTextureMap(const std::string& id)
 {
     textureMap_.erase(id);
 }

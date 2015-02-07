@@ -27,22 +27,10 @@
     <ClCompile Include="enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sdlgameobject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="inputhandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vector2d.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gamestatemachine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pausestate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="playstate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="texturemanager.cpp">
@@ -57,9 +45,6 @@
     <ClCompile Include="soundmanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="voronoi.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="noise\noiseutils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -67,6 +52,33 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="map\maprenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="state\gamestatemachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="state\pausestate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="state\playstate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="object\objectlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="object\sdlgameobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="object\terrainlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="object\terrainlayer.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="object\tile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -106,9 +118,6 @@
     <ClInclude Include="game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gameobject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="texturemanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -121,25 +130,10 @@
     <ClInclude Include="loaderparams.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sdlgameobject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="vector2d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inputhandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gamestatemachine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gamestate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pausestate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="playstate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="button.h">
@@ -151,9 +145,6 @@
     <ClInclude Include="soundmanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="voronoi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="noise\noiseutils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -163,6 +154,39 @@
     <ClInclude Include="map\maprenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ltimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="state\gamestate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="state\gamestatemachine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="state\pausestate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="state\playstate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="object\gameobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="object\layer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="object\objectlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="object\sdlgameobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="object\tile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sounds\fast_swipe.wav">
@@ -170,8 +194,8 @@
     </Media>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="mains\game.main.txt" />
-    <Text Include="mains\voronoi.main.txt" />
-    <Text Include="mains\mapgen.main.txt" />
+    <Xsd Include="mains\cam.xsd">
+      <Filter>Header Files</Filter>
+    </Xsd>
   </ItemGroup>
 </Project>

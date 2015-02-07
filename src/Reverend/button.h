@@ -1,8 +1,9 @@
+#pragma once
 #ifndef BUTTON_H
 #define BUTTON_H
 
 #include <SDL\SDL.h>
-#include "sdlgameobject.h"
+#include "object/sdlgameobject.h"
 #include "loaderparams.h"
 #include "vector2d.h"
 

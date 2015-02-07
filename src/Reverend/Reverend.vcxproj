@@ -39,19 +39,21 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\Projects\reverend\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Projects\reverend\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>D:\Projects\reverend\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ShowIncludes>
+      </ShowIncludes>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>D:\Projects\reverend\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL/SDL2.lib;SDL/SDL2main.lib;SDL/SDL2_image.lib;SDL/SDL2_mixer.lib;noise/libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
@@ -74,22 +76,26 @@
   <ItemGroup>
     <ClCompile Include="animatedgraphic.cpp" />
     <ClCompile Include="button.cpp" />
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="gamestatemachine.cpp" />
+    <ClCompile Include="object\objectlayer.cpp" />
+    <ClCompile Include="object\tile.cpp" />
+    <ClCompile Include="state\gamestatemachine.cpp" />
     <ClCompile Include="inputhandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map\mapgenerator.cpp" />
     <ClCompile Include="map\maprenderer.cpp" />
     <ClCompile Include="noise\noiseutils.cpp" />
-    <ClCompile Include="pausestate.cpp" />
+    <ClCompile Include="object\terrainlayer.cpp" />
+    <ClCompile Include="object\terrainlayer.h" />
+    <ClCompile Include="state\pausestate.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="playstate.cpp" />
-    <ClCompile Include="sdlgameobject.cpp" />
+    <ClCompile Include="state\playstate.cpp" />
+    <ClCompile Include="object\sdlgameobject.cpp" />
     <ClCompile Include="soundmanager.cpp" />
     <ClCompile Include="texturemanager.cpp" />
     <ClCompile Include="vector2d.cpp" />
-    <ClCompile Include="voronoi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\textures\enemy.png" />
@@ -109,33 +115,38 @@
   <ItemGroup>
     <ClInclude Include="animatedgraphic.h" />
     <ClInclude Include="button.h" />
+    <ClInclude Include="camera.h" />
     <ClInclude Include="cleanup.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="gameobject.h" />
-    <ClInclude Include="gamestate.h" />
-    <ClInclude Include="gamestatemachine.h" />
+    <ClInclude Include="object\gameobject.h" />
+    <ClInclude Include="object\tile.h" />
+    <ClInclude Include="state\gamestate.h" />
+    <ClInclude Include="state\gamestatemachine.h" />
     <ClInclude Include="inputhandler.h" />
     <ClInclude Include="loaderparams.h" />
+    <ClInclude Include="ltimer.h" />
     <ClInclude Include="map\mapgenerator.h" />
     <ClInclude Include="map\maprenderer.h" />
     <ClInclude Include="noise\noiseutils.h" />
-    <ClInclude Include="pausestate.h" />
+    <ClInclude Include="object\layer.h" />
+    <ClInclude Include="object\objectlayer.h" />
+    <ClInclude Include="state\pausestate.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="playstate.h" />
-    <ClInclude Include="sdlgameobject.h" />
+    <ClInclude Include="state\playstate.h" />
+    <ClInclude Include="object\sdlgameobject.h" />
     <ClInclude Include="soundmanager.h" />
     <ClInclude Include="texturemanager.h" />
     <ClInclude Include="vector2d.h" />
-    <ClInclude Include="voronoi.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sounds\fast_swipe.wav" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="mains\game.main.txt" />
-    <Text Include="mains\mapgen.main.txt" />
-    <Text Include="mains\voronoi.main.txt" />
+    <Xsd Include="mains\cam.xsd">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Xsd>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

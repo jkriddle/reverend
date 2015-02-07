@@ -21,6 +21,7 @@ class MapGenerator {
 
 public:
 	MapGenerator(int width, int height, int seed);
+	~MapGenerator();
 
 	// Generate a new map based on provided seed
 	void generate(int x, int y);
