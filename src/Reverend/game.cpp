@@ -111,12 +111,12 @@ void Game::renderTileMap() {
 	int mY = startY + windowY_ + (2 * tileSize);
 	*/
 	
-	int startX = (-1*tileSize) + camera_->getPosition().getX(); // (-1 * tileSize) + camera->getPosition().getX();
-	int startY = (-1*tileSize) + camera_->getPosition().getY(); //(-1 * tileSize) + camera->getPosition().getY();
+	int startX = -64; // (-1 * tileSize) + camera->getPosition().getX();
+	int startY = -64; //(-1 * tileSize) + camera->getPosition().getY();
 
 	// always render one extra tile since movement is non-tile based. Thus we could have half of a tile shown (or up to 31 pixels of the prev/next tile)
-	int mX = startX + screenWidth_ + (1 * tileSize);
-	int mY = startY + screenHeight_ + (1 * tileSize);
+	int mX = startX + screenWidth_ + 64;
+	int mY = startY + screenHeight_ + 64;
 
 	int mapAltX, mapAltY, offsetX, offsetY, cX, cY;
 	double height;
@@ -143,19 +143,16 @@ void Game::renderTileMap() {
 			cX = i - camera_->getPosition().getX() - offsetX;
 			cY = j - camera_->getPosition().getY() - offsetY;
 			
-			if (camera_->getPosition().getX() > 32) cX += 32;
-			if (camera_->getPosition().getX() == -32) cX += 32;
-			
 			// an equator bug exists where when you are within a few "tileSize" Y values of 0, the lower tiles are drawn a tilesize too high.
 
 			if (lm != camera_->getPosition().getX() || rm != camera_->getPosition().getY()) {
-				std::cout << "x, y: " << camera_->getPosition().getX() << "," << camera_->getPosition().getY() << std::endl;
+				/*std::cout << "x, y: " << camera_->getPosition().getX() << "," << camera_->getPosition().getY() << std::endl;
 				std::cout << "startX, startY: " << startX << "," << startY << std::endl;
 				std::cout << "mX, mY: " << mX << "," << mY << std::endl;
 				//std::cout << "mapAltX, mapAltX: " << mapAltX << "," << mapAltY << std::endl;
 				std::cout << "offsetX: " << offsetX << std::endl;
 				std::cout << "offsetY: " << offsetY << std::endl;
-				std::cout << "cX, cY: " << cX << "," << cY << std::endl << std::endl;
+				std::cout << "cX, cY: " << cX << "," << cY << std::endl << std::endl;*/
 				lm = camera_->getPosition().getX();
 				rm = camera_->getPosition().getY();
 			}

@@ -43,7 +43,7 @@ bool PlayState::onEnter()
 	TextureManager::getInstance()->load("assets/textures/snow.png", "snow", Game::getInstance()->getRenderer());
 	SoundManager::getInstance()->load("assets/sounds/fast_swipe.wav", "short_swipe", SoundType::SOUND_SFX);
 	
-	int pX = 0;
+	int pX = -32;
 	int pY = 0;
 
 	Player* player_ = new Player(new LoaderParams(pX, pY, 64, 64, "player"));

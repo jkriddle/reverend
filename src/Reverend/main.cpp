@@ -3,7 +3,7 @@
 #include "game.h"
 #include "ltimer.h"
 
-const int FPS = 30;
+const int FPS = 60;
 const int DELAY_TIME = 1000.0f / FPS;
 const int SCREEN_TICKS_PER_FRAME = 1000 / FPS;
 
