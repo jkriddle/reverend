@@ -1,4 +1,5 @@
 #include "playstate.h"
+#include "pausestate.h"
 
 const std::string PlayState::id_ = "PLAY";
 

@@ -11,8 +11,6 @@
 #include "cleanup.h"
 #include "inputhandler.h"
 #include "state/gamestatemachine.h"
-#include "state/playstate.h"
-#include "state/pausestate.h"
 #include "camera.h"
 #include "map/mapgenerator.h"
 
@@ -54,6 +52,7 @@ private:
 		screenHeight_ = 480;
 		isRunning_ = true;
 		camera_ = new Camera(screenWidth_, screenHeight_, 1.0f);
+		gameStateMachine_ = new GameStateMachine();
 	}
 
 	static Game* instance_;

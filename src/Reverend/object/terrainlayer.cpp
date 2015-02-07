@@ -8,7 +8,12 @@ Tile* TerrainLayer::getCachedTile(int x, int y) {
 
 // Remove any distance tiles that no longer need to be stored in memory
 void TerrainLayer::flushCache(int x, int y) {
-	const int minX = tileCache_.rbegin()->first;
+	// TODO:
+	// The code below causes huge lag due to having to loop through the entire Y cache constantly.
+	// Find a better way to do this. There has to be an easy way to create an index of item so we can quickly
+	// just say "delete [x][i]"
+
+	/*const int minX = tileCache_.rbegin()->first;
 
 	std::map<int, std::map<int, Tile*>>::iterator xi = tileCache_.begin();
 	std::map<int, Tile*>::iterator yi;
@@ -16,18 +21,20 @@ void TerrainLayer::flushCache(int x, int y) {
 	std::map<int, Tile*>::iterator toEraseY;
 
 	while (xi != tileCache_.end()) {
-		if (xi->first < TerrainLayer::CACHE_RANGE || xi->first > TerrainLayer::CACHE_RANGE) {
+		if (xi->first < (x - TerrainLayer::CACHE_RANGE) || xi->first > (x + TerrainLayer::CACHE_RANGE)) {
 		   toEraseX = xi;
 		   ++xi;
 		   tileCache_.erase(toEraseX);
+		   std::cout << "Erasing cache outside of " << x << std::endl;
 		} else {
 			// X is valid, what about Y?
 			yi = xi->second.begin();
 			while (yi != xi->second.end()) {
-				if (yi->first < TerrainLayer::CACHE_RANGE || yi->first > TerrainLayer::CACHE_RANGE) {
+				if (yi->first < (y - TerrainLayer::CACHE_RANGE) || yi->first > (y + TerrainLayer::CACHE_RANGE)) {
 				   toEraseY = yi;
 				   ++yi;
 				   xi->second.erase(toEraseY);
+		   std::cout << "Erasing cache outside of " << y << std::endl;
 				} else {
 					// X is valid, what about Y?
 				   ++yi;
@@ -35,7 +42,7 @@ void TerrainLayer::flushCache(int x, int y) {
 			}
 		   ++xi;
 		}
-	}
+	}*/
 }
 
 // This may seem pointless right now since we're still just using the altitude map,

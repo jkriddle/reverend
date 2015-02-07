@@ -1,4 +1,5 @@
 #include "game.h"
+#include "state/playstate.h"
 #include "ltimer.h"
 
 const int FPS = 60;
@@ -17,9 +18,9 @@ int main(int argc,char **argv)
     int countedFrames = 0;
     fpsTimer.start();
 	bool quit = false;
-	SDL_Event e;
 
 	Game::getInstance()->init();
+	Game::getInstance()->getStateMachine()->changeState(new PlayState());
 
 	while(Game::getInstance()->running()) {
 		

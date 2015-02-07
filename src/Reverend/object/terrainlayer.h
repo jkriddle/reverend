@@ -20,7 +20,7 @@ private:
 	std::vector<GameObject*> gameObjects_;
 	std::map<int, std::map<int, Tile*>> tileCache_;
 	void flushCache(int x, int y);
-	static const int CACHE_RANGE = 200;
+	static const int CACHE_RANGE = 5000;
 };
 
 #endif;

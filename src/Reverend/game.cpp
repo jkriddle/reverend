@@ -19,11 +19,7 @@ bool Game::initWorld() {
 
 void Game::init() {
 	if (initSystems()) {
-
 		initWorld();
-
-		gameStateMachine_ = new GameStateMachine();
-		gameStateMachine_->changeState(new PlayState());
 	} else {
 		SDL_Quit();
 	}
