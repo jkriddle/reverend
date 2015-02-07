@@ -26,8 +26,6 @@ public:
 	void draw();
 	bool running() { return isRunning_; }
 
-	static int getTileSize() { return 64; }
-
 	static Game* getInstance()
 	{
 		if(instance_ == 0)
@@ -44,6 +42,9 @@ public:
 	MapGenerator* getMap(){ return map_; }
 	int getScreenWidth() { return screenWidth_; }
 	int getScreenHeight() { return screenHeight_; }
+
+	static const int getTileSize() { return 32; }
+	static const int getScale() { return 4; }
 
 private:
 	Game() {

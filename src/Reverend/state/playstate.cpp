@@ -1,10 +1,4 @@
 #include "playstate.h"
-#include "../game.h"
-#include "../player.h"
-#include "../enemy.h"
-#include "../object/objectlayer.h"
-#include "../object/terrainlayer.h"
-#include "../soundmanager.h"
 
 const std::string PlayState::id_ = "PLAY";
 

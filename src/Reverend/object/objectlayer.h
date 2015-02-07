@@ -10,9 +10,9 @@ class ObjectLayer : public Layer
 {
 public:
 	void add(GameObject* object);
-	void update();
-	void draw();
-	void clean();
+	virtual void update();
+	virtual void draw();
+	virtual void clean();
 	std::vector<GameObject*>* getGameObjects()
 	{
 		return &gameObjects_;

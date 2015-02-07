@@ -3,10 +3,15 @@
 #define PLAYSTATE_H
 
 #include "gamestate.h"
+#include <iostream>
 #include "../object/gameobject.h"
 #include "../object/layer.h"
+#include "../game.h"
 #include "../player.h"
-#include <iostream>
+#include "../enemy.h"
+#include "../object/objectlayer.h"
+#include "../object/terrainlayer.h"
+#include "../soundmanager.h"
 
 class PlayState : public GameState {
 

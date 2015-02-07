@@ -1,14 +1,42 @@
-#include "terrainlayer.h"
+#include "TerrainLayer.h"
+#include <iostream>
 #include "../game.h"
+
+
+Tile* TerrainLayer::getCachedTile(int x, int y) {
+	return nullptr;
+}
+
+// This may seem pointless right now since we're still just using the altitude map,
+// but eventually each tile is goingto be calculated by altitude, moisture, other tiles around
+// it, randomeness, etc. Re-calculating this for every tile every frame would kill the CPU. 
+// Thus we will only calculate tiles once ever, and store them in memory.
+// Eventually we'll use a disk cache to offload the memory and re-load blocks as appropriate.
+Tile* TerrainLayer::getTile(int x, int y) {
+	Tile* tile = nullptr;
+	tile = getCachedTile(x, y);
+	if (tile != nullptr) return tile;
+
+	int mapAltX = x;
+	int mapAltY =  y;
+			
+	if (mapAltX != 0) mapAltX = x / Game::getTileSize() / Game::getScale();
+	if (mapAltY != 0) mapAltY = y / Game::getTileSize() / Game::getScale();
+			
+	float height = Game::getInstance()->getMap()->getAltitude(mapAltX, mapAltY);
+
+	tile = new Tile(new LoaderParams(x, y, 32, 32, "grass"));
+	tileCache_[x][y] = tile;
+	return tile;
+}
 
 void TerrainLayer::update() {
 	ObjectLayer::update();
 }
 
-// Draw all tiles in range
 void TerrainLayer::draw() {
-	int tileSize = 32;
-	int scale = 4;
+	int tileSize = Game::getTileSize();
+	int scale = Game::getScale();
 
 	int cameraX = Game::getInstance()->getCamera()->getPosition().getX();
 	int cameraY = Game::getInstance()->getCamera()->getPosition().getY();
