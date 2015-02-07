@@ -77,6 +77,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="objects\objectlayer.cpp" />
     <ClCompile Include="state\gamestatemachine.cpp" />
     <ClCompile Include="inputhandler.cpp" />
     <ClCompile Include="main.cpp" />

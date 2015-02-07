@@ -4,6 +4,8 @@
 
 #include "gamestate.h"
 #include "../objects/gameobject.h"
+#include "../objects/layer.h"
+#include "../player.h"
 #include <iostream>
 
 class PlayState : public GameState {
@@ -16,8 +18,9 @@ public:
 	virtual std::string getStateId() const { return id_; }
 private:
 	static const std::string id_;
-	std::vector<GameObject*> gameObjects_;
 	void renderTileMap();
+	std::vector<Layer*> layers_;
+	Player* player_;
 };
 
 #endif;

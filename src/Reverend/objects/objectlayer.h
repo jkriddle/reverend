@@ -9,15 +9,17 @@
 class ObjectLayer : public Layer
 {
 public:
+	void add(GameObject* object);
+	virtual void clean();
 	virtual void update();
-	virtual void render();
+	virtual void draw();
 	std::vector<GameObject*>* getGameObjects()
 	{
-		return &m_gameObjects;
+		return &gameObjects_;
 	}
 
 private:
-	std::vector<GameObject*> m_gameObjects;
+	std::vector<GameObject*> gameObjects_;
 };
 
 #endif;

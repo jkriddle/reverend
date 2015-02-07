@@ -1,7 +1,13 @@
 #include "terrainlayer.h"
 
-void TerrainLayer::render() {
+void TerrainLayer::update() {
+	ObjectLayer::update();
 }
 
-void TerrainLayer::update() {
+void TerrainLayer::draw() {
+	ObjectLayer::draw();
+}
+
+void TerrainLayer::clean() {
+	ObjectLayer::clean();
 }

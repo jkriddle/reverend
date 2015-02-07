@@ -2,6 +2,8 @@
 #include "../game.h"
 #include "../player.h"
 #include "../enemy.h"
+#include "../objects/objectlayer.h"
+#include "../objects/terrainlayer.h"
 #include "../soundmanager.h"
 
 const std::string PlayState::id_ = "PLAY";
@@ -20,8 +22,8 @@ void PlayState::update() {
 		Game::getInstance()->close();
 	}
 
-	for(unsigned int i = 0; i < gameObjects_.size(); i++) {
-		gameObjects_[i]->update();
+	for(unsigned int i = 0; i < layers_.size(); i++) {
+		layers_[i]->update();
 	}
 }
 
@@ -92,8 +94,8 @@ void PlayState::renderTileMap() {
 void PlayState::draw() {
 	renderTileMap();
 
-	for(unsigned int i = 0; i < gameObjects_.size(); i++) {
-		gameObjects_[i]->draw();
+	for(unsigned int i = 0; i < layers_.size(); i++) {
+		layers_[i]->draw();
 	}
 }
 
@@ -115,23 +117,26 @@ bool PlayState::onEnter()
 	int pX = 9000;
 	int pY = 9000;
 
-	Player* player_ = new Player(new LoaderParams(pX, pY, 64, 64, "player"));
-	//Enemy* enemy_ = new Enemy(new LoaderParams(64*2, 64*2, 64, 64, "enemy"));
-
-	Game::getInstance()->getCamera()->goTo(player_->getX(), player_->getY());
-
-	gameObjects_.push_back(player_);
-	//gameObjects_.push_back(enemy_);
+	// Player init
+	player_ = new Player(new LoaderParams(pX, pY, 64, 64, "player"));
+	Game::getInstance()->getCamera()->goTo(pX, pY);
+	
+	// Setup layers
+	ObjectLayer* actorLayer = new ObjectLayer();
+	actorLayer->add(player_);
+	actorLayer->add(new Enemy(new LoaderParams(64*2, 64*2, 64, 64, "enemy")));
+	layers_.push_back(actorLayer);
 
 	return true;
 }
 
 bool PlayState::onExit()
 {
-	for(unsigned int i = 0; i < gameObjects_.size(); i++) {
-		gameObjects_[i]->clean();
+	for(unsigned int i = 0; i < layers_.size(); i++) {
+		layers_[i]->clean();
 	}
-	gameObjects_.clear();
+	layers_.clear();
+	
 	TextureManager::getInstance()->clearFromTextureMap("player");
 	TextureManager::getInstance()->clearFromTextureMap("enemy");
 	TextureManager::getInstance()->clearFromTextureMap("water");

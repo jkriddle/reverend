@@ -5,8 +5,9 @@
 #include "objectlayer.h"
 
 class TerrainLayer : ObjectLayer {
+	virtual void clean();
 	virtual void update();
-	virtual void render();
+	virtual void draw();
 };
 
 #endif
