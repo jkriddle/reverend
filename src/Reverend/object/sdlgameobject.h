@@ -18,7 +18,7 @@ public:
 	virtual void clean();
 	virtual int getX();
 	virtual int getY();
-	 std::string getTextureId() { return textureId_; }
+	const std::string& getTextureId() { return textureId_; }
 
 protected:
 	Vector2d position_;

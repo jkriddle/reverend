@@ -19,6 +19,8 @@ private:
 	Tile* getCachedTile(int x, int y);
 	std::vector<GameObject*> gameObjects_;
 	std::map<int, std::map<int, Tile*>> tileCache_;
+	void flushCache(int x, int y);
+	static const int CACHE_RANGE = 200;
 };
 
 #endif;

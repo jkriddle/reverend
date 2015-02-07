@@ -3,8 +3,8 @@
 
 Camera::Camera(int w, int h, float speed)
 {
-	size_.setX(w);
-	size_.setY(h);
+	size_.setX((float)w);
+	size_.setY((float)h);
 
 	if(speed < 0.0)
 		speed = 0.0;
@@ -21,39 +21,39 @@ Camera::~Camera()
 //Moves camera to coordinates
 void Camera::move(int x, int y)
 {
-	position_.setX(x);
-	position_.setY(y);
-	target_.setX(x);
-	target_.setY(y);
+	position_.setX((float)x);
+	position_.setY((float)y);
+	target_.setX((float)x);
+	target_.setY((float)y);
 }
 
 //Centers camera at coordinates
 void Camera::moveCenter(int x, int y)
 {
-	x = x - (size_.getX() / 2);
-	y = y - (size_.getY() / 2);
+	x = x - (int)(size_.getX() / 2);
+	y = y - (int)(size_.getY() / 2);
 
-	position_.setX(x);
-	position_.setY(y);
-	target_.setX(x);
-	target_.setY(y);
+	position_.setX((float)x);
+	position_.setY((float)y);
+	target_.setX((float)x);
+	target_.setY((float)y);
 }
 
 //Sets target_ to coordinates
 void Camera::goTo(int x, int y)
 {
-	target_.setX(x);
-	target_.setY(y);
+	target_.setX((float)x);
+	target_.setY((float)y);
 }
 
 //Centers target_ at coordinates
 void Camera::goToCenter(int x, int y)
 {
-	x = x - (size_.getX() / 2);
-	y = y - (size_.getY() / 2);
+	x = x - (int)(size_.getX() / 2);
+	y = y - (int)(size_.getY() / 2);
 
-	target_.setX(x);
-	target_.setY(y);
+	target_.setX((float)x);
+	target_.setY((float)y);
 }
 
 // This function allows us to do a scrolling effect by moving towards a target_
@@ -107,24 +107,4 @@ void Camera::update()
 		position_.setX(position_.getX() + vx);
 		position_.setY(position_.getY() + vy);
 	}
-}
-
-CameraRect Camera::getTileBounds(int tilesize_)
-{
-	int x = (int)(position_.getX() / tilesize_);
-	int y = (int)(position_.getY() / tilesize_);
-
-	//+1 in case camera size_ isn't divisible by tilesize_
-	//And +1 again because these values start at 0, and
-	//we want them to start at one
-	int w = (int)(size_.getX() / tilesize_ + 2);
-	int h = (int)(size_.getY() / tilesize_ + 2);
-
-	//And +1 again if we're offset from the tile
-	if(x % tilesize_ != 0)
-		w++;
-	if(y % tilesize_ != 0)
-		h++;
-
-	return CameraRect(x, y, w, h);
 }

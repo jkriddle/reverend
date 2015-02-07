@@ -1,3 +1,5 @@
+#pragma warning(disable: 4244) // conversion of Vector2d float to int
+
 // noiseutils.h
 //
 // Copyright (C) 2003-2005 Jason Bevins

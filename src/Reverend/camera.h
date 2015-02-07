@@ -53,13 +53,8 @@ public:
 	// Updates camera position
 	void update();
 
-	Vector2d getPosition() { return Vector2d((int)position_.getX(), (int)position_.getY()); }
+	Vector2d getPosition() { return Vector2d(position_.getX(), position_.getY()); }
 	
-	// Helper function for retreiving camera's offset from nearest tile
-	Vector2d getTileOffset(int tileSize) { return Vector2d((int)(position_.getX()) % tileSize, (int)(position_.getX()) % tileSize); }
-
-	// Helper function for retreiving a rectangle definingf which tiles are visible through camera
-	CameraRect getTileBounds(int tileSize);
 };
 
 #endif

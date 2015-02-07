@@ -2,9 +2,40 @@
 #include <iostream>
 #include "../game.h"
 
-
 Tile* TerrainLayer::getCachedTile(int x, int y) {
 	return tileCache_[x][y];
+}
+
+// Remove any distance tiles that no longer need to be stored in memory
+void TerrainLayer::flushCache(int x, int y) {
+	const int minX = tileCache_.rbegin()->first;
+
+	std::map<int, std::map<int, Tile*>>::iterator xi = tileCache_.begin();
+	std::map<int, Tile*>::iterator yi;
+	std::map<int, std::map<int, Tile*>>::iterator toEraseX;
+	std::map<int, Tile*>::iterator toEraseY;
+
+	while (xi != tileCache_.end()) {
+		if (xi->first < TerrainLayer::CACHE_RANGE || xi->first > TerrainLayer::CACHE_RANGE) {
+		   toEraseX = xi;
+		   ++xi;
+		   tileCache_.erase(toEraseX);
+		} else {
+			// X is valid, what about Y?
+			yi = xi->second.begin();
+			while (yi != xi->second.end()) {
+				if (yi->first < TerrainLayer::CACHE_RANGE || yi->first > TerrainLayer::CACHE_RANGE) {
+				   toEraseY = yi;
+				   ++yi;
+				   xi->second.erase(toEraseY);
+				} else {
+					// X is valid, what about Y?
+				   ++yi;
+				}
+			}
+		   ++xi;
+		}
+	}
 }
 
 // This may seem pointless right now since we're still just using the altitude map,
@@ -23,7 +54,7 @@ Tile* TerrainLayer::getTile(int x, int y) {
 	if (mapAltX != 0) mapAltX = x / Game::getTileSize() / Game::getScale();
 	if (mapAltY != 0) mapAltY = y / Game::getTileSize() / Game::getScale();
 			
-	float height = Game::getInstance()->getMap()->getAltitude(mapAltX, mapAltY);
+	double height = Game::getInstance()->getMap()->getAltitude(mapAltX, mapAltY);
 	
 	std::string texture = "water";
 	// Height goes 0 to 255
@@ -46,19 +77,18 @@ void TerrainLayer::draw() {
 	int tileSize = Game::getTileSize();
 	int scale = Game::getScale();
 
-	int cameraX = Game::getInstance()->getCamera()->getPosition().getX();
-	int cameraY = Game::getInstance()->getCamera()->getPosition().getY();
+	int cameraX = (int)Game::getInstance()->getCamera()->getPosition().getX();
+	int cameraY = (int)Game::getInstance()->getCamera()->getPosition().getY();
 	
 	int startX = cameraX - tileSize;
 	int startY =  cameraY - tileSize;
 	
 	// Always render one extra tile since movement is non-tile based. 
 	// Thus we could have half of a tile shown (or up to 31 pixels of the prev/next tile)
-	int mX = startX +  Game::getInstance()->getScreenWidth() + tileSize;
-	int mY = startY +  Game::getInstance()->getScreenHeight() + tileSize;
+	int mX = startX +  (int)Game::getInstance()->getScreenWidth() + tileSize;
+	int mY = startY +  (int)Game::getInstance()->getScreenHeight() + tileSize;
 
-	int mapAltX, mapAltY, offsetX, offsetY, cX, cY;
-	double height;
+	int offsetX, offsetY, cX, cY;
 	
 	for(int i = startX; i <= mX; i+=tileSize) { // for 0 through 720, every 32 px
 		for(int j = startY; j <= mY; j+=tileSize) { // for 0 through 360, every 32 px
@@ -79,6 +109,8 @@ void TerrainLayer::draw() {
 			TextureManager::getInstance()->draw(tile->getTextureId(), cX, cY, tileSize, tileSize, Game::getInstance()->getRenderer());
 		}
 	}
+
+	flushCache(cameraX, cameraY);
 }
 
 void TerrainLayer::clean() {
