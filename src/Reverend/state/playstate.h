@@ -3,8 +3,8 @@
 #define PLAYSTATE_H
 
 #include "gamestate.h"
-#include "../objects/gameobject.h"
-#include "../objects/layer.h"
+#include "../object/gameobject.h"
+#include "../object/layer.h"
 #include "../player.h"
 #include <iostream>
 

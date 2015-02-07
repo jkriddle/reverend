@@ -3,7 +3,7 @@
 #define PAUSESTATE_H
 
 #include "../game.h"
-#include "../objects/gameobject.h"
+#include "../object/gameobject.h"
 #include "gamestate.h"
 #include "../button.h"
 #include "../inputhandler.h"

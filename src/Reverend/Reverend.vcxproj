@@ -77,19 +77,20 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="objects\objectlayer.cpp" />
+    <ClCompile Include="object\objectlayer.cpp" />
+    <ClCompile Include="object\tile.cpp" />
     <ClCompile Include="state\gamestatemachine.cpp" />
     <ClCompile Include="inputhandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map\mapgenerator.cpp" />
     <ClCompile Include="map\maprenderer.cpp" />
     <ClCompile Include="noise\noiseutils.cpp" />
-    <ClCompile Include="objects\terrainlayer.cpp" />
-    <ClCompile Include="objects\terrainlayer.h" />
+    <ClCompile Include="object\terrainlayer.cpp" />
+    <ClCompile Include="object\terrainlayer.h" />
     <ClCompile Include="state\pausestate.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="state\playstate.cpp" />
-    <ClCompile Include="objects\sdlgameobject.cpp" />
+    <ClCompile Include="object\sdlgameobject.cpp" />
     <ClCompile Include="soundmanager.cpp" />
     <ClCompile Include="texturemanager.cpp" />
     <ClCompile Include="vector2d.cpp" />
@@ -116,7 +117,8 @@
     <ClInclude Include="cleanup.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="objects\gameobject.h" />
+    <ClInclude Include="object\gameobject.h" />
+    <ClInclude Include="object\tile.h" />
     <ClInclude Include="state\gamestate.h" />
     <ClInclude Include="state\gamestatemachine.h" />
     <ClInclude Include="inputhandler.h" />
@@ -125,24 +127,18 @@
     <ClInclude Include="map\mapgenerator.h" />
     <ClInclude Include="map\maprenderer.h" />
     <ClInclude Include="noise\noiseutils.h" />
-    <ClInclude Include="objects\layer.h" />
-    <ClInclude Include="objects\objectlayer.h" />
+    <ClInclude Include="object\layer.h" />
+    <ClInclude Include="object\objectlayer.h" />
     <ClInclude Include="state\pausestate.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="state\playstate.h" />
-    <ClInclude Include="objects\sdlgameobject.h" />
+    <ClInclude Include="object\sdlgameobject.h" />
     <ClInclude Include="soundmanager.h" />
     <ClInclude Include="texturemanager.h" />
-    <ClInclude Include="tile.h" />
     <ClInclude Include="vector2d.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sounds\fast_swipe.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="mains\game.main.txt" />
-    <Text Include="mains\mapgen.main.txt" />
-    <Text Include="mains\voronoi.main.txt" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="mains\cam.xsd">

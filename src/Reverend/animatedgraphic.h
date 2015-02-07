@@ -3,7 +3,7 @@
 #define ANIMATEDGRAPHIC_H
 
 #include <iostream>
-#include "objects/sdlgameobject.h"
+#include "object/sdlgameobject.h"
 
 class AnimatedGraphic : public SDLGameObject
 {

@@ -3,7 +3,7 @@
 #define BUTTON_H
 
 #include <SDL\SDL.h>
-#include "objects/sdlgameobject.h"
+#include "object/sdlgameobject.h"
 #include "loaderparams.h"
 #include "vector2d.h"
 

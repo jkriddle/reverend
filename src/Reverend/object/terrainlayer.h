@@ -4,10 +4,15 @@
 
 #include "objectlayer.h"
 
-class TerrainLayer : ObjectLayer {
-	virtual void clean();
+class TerrainLayer : public ObjectLayer {
+
+public:
 	virtual void update();
 	virtual void draw();
+	virtual void clean();
+
+private:
+	std::vector<GameObject*> gameObjects_;
 };
 
 #endif
