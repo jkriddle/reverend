@@ -118,25 +118,29 @@ void Game::renderTileMap() {
 	int mX = startX + screenWidth_ + (1 * tileSize);
 	int mY = startY + screenHeight_ + (1 * tileSize);
 
-	// if we are showing tiles
-	// 100, 100, 120, 120
-	// we want to actualy load 80, 80, 140, 140
+	int mapAltX, mapAltY, offsetX, offsetY, cX, cY;
+	double height;
+			
+	std::string texture = "water";
 	
 	for(int i = startX; i <= mX; i+=tileSize) { // for 0 through 720, every 32 px
 		for(int j = startY; j <= mY; j+=tileSize) { // for 0 through 360, every 32 px
 
-			int mapAltX = i;
-			int mapAltY =  j;
+			mapAltX = i;
+			mapAltY =  j;
 			
 			if (mapAltX != 0) mapAltX = i / tileSize / scale;
 			if (mapAltY != 0) mapAltY = j / tileSize / scale;
-			double height = map_->getAltitude(mapAltX, mapAltY);
+			
+			if (mapAltX != 0) mapAltX = i / tileSize / scale;
+			if (mapAltY != 0) mapAltY = j / tileSize / scale;
+			height = map_->getAltitude(mapAltX, mapAltY);
 
 			// we have this tile, but we need to shift the position based on the camera position
-			int offsetX = (startX % tileSize);
-			int offsetY = (startY % tileSize);
-			int cX = i - camera_->getPosition().getX() - offsetX;
-			int cY = j - camera_->getPosition().getY() - offsetY;
+			offsetX = (startX % tileSize);
+			offsetY = (startY % tileSize);
+			cX = i - camera_->getPosition().getX() - offsetX;
+			cY = j - camera_->getPosition().getY() - offsetY;
 			
 			// an equator bug exists where when you are within a few "tileSize" Y values of 0, the lower tiles are drawn a tilesize too high.
 
@@ -153,9 +157,6 @@ void Game::renderTileMap() {
 			}*/
 
 			// Height goes 0 to 255
-			int max = 255;
-			
-			std::string texture = "water";
 			if (height > 120) texture = "shallows";
 			if (height > 130) texture = "sand";
 			if (height > 140) texture = "grass";
@@ -163,7 +164,7 @@ void Game::renderTileMap() {
 			if (height > 230) texture = "rock";
 			if (height > 250) texture = "snow";
 			
-			TextureManager::getInstance()->draw(texture.c_str(), cX, cY, tileSize, tileSize, renderer_);
+			TextureManager::getInstance()->draw(texture, cX, cY, tileSize, tileSize, renderer_);
 		}
 	}
 }

@@ -39,19 +39,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\Projects\reverend\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Projects\reverend\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>D:\Projects\reverend\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>D:\Projects\reverend\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL/SDL2.lib;SDL/SDL2main.lib;SDL/SDL2_image.lib;SDL/SDL2_mixer.lib;noise/libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
@@ -119,6 +119,7 @@
     <ClInclude Include="gamestatemachine.h" />
     <ClInclude Include="inputhandler.h" />
     <ClInclude Include="loaderparams.h" />
+    <ClInclude Include="ltimer.h" />
     <ClInclude Include="map\mapgenerator.h" />
     <ClInclude Include="map\maprenderer.h" />
     <ClInclude Include="noise\noiseutils.h" />

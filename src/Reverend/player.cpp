@@ -24,7 +24,7 @@ void Player::update()
 
 	// TODO - if we want idle animation remove the if condition here. I'm just using a static frame
 	// for now despite the sprite sheet having it (MORE LOGIC)
-	if (forward_ != *Vector2d::ZERO) currentTextureFrame_ = int(((SDL_GetTicks() / 100) % 12));
+	if (forward_ != Vector2d::ZERO) currentTextureFrame_ = int(((SDL_GetTicks() / 100) % 12));
 	else currentTextureFrame_ = 1;
 
 	SDLGameObject::update();
@@ -44,6 +44,7 @@ void Player::handleKeyboardInput() {
 	// Digital Pad
 	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_A)) {
 		// Left
+		std::cout << " left" << std::endl;
 		velocity_.setX(-1);
 	}
 		
@@ -114,21 +115,21 @@ void Player::handleKeyboardInput() {
 		// 0/360 degrees is due West
 		if (degree >= 30 && degree < 75) {
 			// NW
-			forward_ = *Vector2d::NORTH_WEST;
+			forward_ = Vector2d::NORTH_WEST;
 		} else if (degree >= 75 && degree < 120) {
-			forward_ = *Vector2d::NORTH;
+			forward_ = Vector2d::NORTH;
 		} else if (degree >= 120 && degree < 165) {
-			forward_ = *Vector2d::NORTH_EAST;
+			forward_ = Vector2d::NORTH_EAST;
 		} else if (degree >= 165 && degree < 210) {
-			forward_ = *Vector2d::EAST;
+			forward_ = Vector2d::EAST;
 		} else if (degree >= 210 && degree < 255) {
-			forward_ = *Vector2d::SOUTH_EAST;
+			forward_ = Vector2d::SOUTH_EAST;
 		} else if (degree >= 255 && degree < 300) {
-			forward_ = *Vector2d::SOUTH;
+			forward_ = Vector2d::SOUTH;
 		} else if (degree >= 300 && degree < 345) {
-			forward_ = *Vector2d::SOUTH_WEST;
+			forward_ = Vector2d::SOUTH_WEST;
 		} else if (degree >= 345 || degree < 30) {
-			forward_ = *Vector2d::WEST;
+			forward_ = Vector2d::WEST;
 		}
 	}
 
@@ -143,46 +144,46 @@ void Player::getWalkingDirection() {
 
 	if (velocity_.getX() == 0 && velocity_.getY() == 0) {
 		// Idle
-		forward_ = *Vector2d::ZERO;
+		forward_ = Vector2d::ZERO;
 	} else if (velocity_.getX() == 0 && velocity_.getY() < 0) {
 		// N
-		forward_ = *Vector2d::NORTH;
+		forward_ = Vector2d::NORTH;
 	} else if (velocity_.getX() > 0 && velocity_.getY() < 0) {
 		// NE
-		forward_ = *Vector2d::NORTH_EAST;
+		forward_ = Vector2d::NORTH_EAST;
 	} else if (velocity_.getX() > 0 && velocity_.getY() == 0) {
 		// E
-		forward_ = *Vector2d::EAST;
+		forward_ = Vector2d::EAST;
 	} else if (velocity_.getX() > 0 && velocity_.getY() > 0) {
 		// SE
-		forward_ = *Vector2d::SOUTH_EAST;
+		forward_ = Vector2d::SOUTH_EAST;
 	} else if (velocity_.getX() == 0 && velocity_.getY() > 0) {
 		// S
-		forward_ = *Vector2d::SOUTH;
+		forward_ = Vector2d::SOUTH;
 	} else if (velocity_.getX() < 0 && velocity_.getY() > 0) {
 		// SW
-		forward_ = *Vector2d::SOUTH_WEST;
+		forward_ = Vector2d::SOUTH_WEST;
 	} else if (velocity_.getX() < 0 && velocity_.getY() == 0) {
 		// W
-		forward_ = *Vector2d::WEST;
+		forward_ = Vector2d::WEST;
 	} else if (velocity_.getX() < 0 && velocity_.getY() < 0) {
 		// NW
-		forward_ = *Vector2d::NORTH_WEST;
+		forward_ = Vector2d::NORTH_WEST;
 	}
 }
 
 void Player::updateForwardTexture() {
-	if (forward_ == *Vector2d::ZERO) {
+	if (forward_ == Vector2d::ZERO) {
 		currentTextureRow_ = 42; // Idle frame
 	}
-	if (forward_ == *Vector2d::NORTH) currentTextureRow_ = 1;
-	if (forward_ == *Vector2d::NORTH_EAST) currentTextureRow_ = 3;
-	if (forward_ == *Vector2d::EAST) currentTextureRow_ = 5;
-	if (forward_ == *Vector2d::SOUTH_EAST) currentTextureRow_ = 7;
-	if (forward_ == *Vector2d::SOUTH) currentTextureRow_ = 9;
-	if (forward_ == *Vector2d::SOUTH_WEST) currentTextureRow_ = 11;
-	if (forward_ == *Vector2d::WEST) currentTextureRow_ = 13;
-	if (forward_ == *Vector2d::NORTH_WEST) currentTextureRow_ = 15;
+	if (forward_ == Vector2d::NORTH) currentTextureRow_ = 1;
+	if (forward_ == Vector2d::NORTH_EAST) currentTextureRow_ = 3;
+	if (forward_ == Vector2d::EAST) currentTextureRow_ = 5;
+	if (forward_ == Vector2d::SOUTH_EAST) currentTextureRow_ = 7;
+	if (forward_ == Vector2d::SOUTH) currentTextureRow_ = 9;
+	if (forward_ == Vector2d::SOUTH_WEST) currentTextureRow_ = 11;
+	if (forward_ == Vector2d::WEST) currentTextureRow_ = 13;
+	if (forward_ == Vector2d::NORTH_WEST) currentTextureRow_ = 15;
 }
 
 void Player::handleInput()
@@ -210,25 +211,25 @@ void Player::handleInput()
 		} else if (InputHandler::getInstance()->getAxisX(0, 2) > 0) {
 			// RS - Right
 			if (InputHandler::getInstance()->getAxisY(0, 2) > 0) {
-				forward_ = *Vector2d::NORTH_EAST;
+				forward_ = Vector2d::NORTH_EAST;
 			} else if (InputHandler::getInstance()->getAxisY(0, 2) < 0) {
-				forward_ = *Vector2d::SOUTH_EAST;
+				forward_ = Vector2d::SOUTH_EAST;
 			} else {
-				forward_ = *Vector2d::EAST;
+				forward_ = Vector2d::EAST;
 			}
 		} else if (InputHandler::getInstance()->getAxisX(0, 2) < 0) {
 			// RS - Left
 			if (InputHandler::getInstance()->getAxisY(0, 2) > 0) {
-				forward_ = *Vector2d::SOUTH_WEST;
+				forward_ = Vector2d::SOUTH_WEST;
 			} else if (InputHandler::getInstance()->getAxisY(0, 2) < 0) {
-				forward_ = *Vector2d::NORTH_WEST;
+				forward_ = Vector2d::NORTH_WEST;
 			} else {
-				forward_ = *Vector2d::WEST;
+				forward_ = Vector2d::WEST;
 			}
 		} else if (InputHandler::getInstance()->getAxisY(0, 2) > 0) {
-			forward_ = *Vector2d::SOUTH;
+			forward_ = Vector2d::SOUTH;
 		} else if (InputHandler::getInstance()->getAxisY(0, 2) < 0) {
-			forward_ = *Vector2d::NORTH;
+			forward_ = Vector2d::NORTH;
 		}
 
 		// If we're not looking at something, look in the direction we're walking

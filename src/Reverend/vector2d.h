@@ -6,15 +6,15 @@
 class Vector2d {
 
 public:
-	static const Vector2d* ZERO;
-	static const Vector2d* NORTH;
-	static const Vector2d* NORTH_EAST;
-	static const Vector2d* EAST;
-	static const Vector2d* SOUTH_EAST;
-	static const Vector2d* SOUTH;
-	static const Vector2d* SOUTH_WEST;
-	static const Vector2d* WEST;
-	static const Vector2d* NORTH_WEST;
+	static const Vector2d ZERO;
+	static const Vector2d NORTH;
+	static const Vector2d NORTH_EAST;
+	static const Vector2d EAST;
+	static const Vector2d SOUTH_EAST;
+	static const Vector2d SOUTH;
+	static const Vector2d SOUTH_WEST;
+	static const Vector2d WEST;
+	static const Vector2d NORTH_WEST;
 	
 	Vector2d() : x_(0), y_(0) {}
 	Vector2d(float x, float y): x_(x), y_(y) {}
