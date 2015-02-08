@@ -18,7 +18,7 @@ int main(int argc,char **argv)
     int countedFrames = 0;
     fpsTimer.start();
 	bool quit = false;
-
+	
 	Game::getInstance()->init();
 	Game::getInstance()->getStateMachine()->changeState(new PlayState());
 

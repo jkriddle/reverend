@@ -78,8 +78,9 @@
     <ClCompile Include="animatedgraphic.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="camera.cpp" />
-    <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="object\enemy.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="object\objectfactory.cpp" />
     <ClCompile Include="object\objectlayer.cpp" />
     <ClCompile Include="object\tile.cpp" />
     <ClCompile Include="state\gamestatemachine.cpp" />
@@ -90,7 +91,7 @@
     <ClCompile Include="noise\noiseutils.cpp" />
     <ClCompile Include="object\terrainlayer.cpp" />
     <ClCompile Include="state\pausestate.cpp" />
-    <ClCompile Include="player.cpp" />
+    <ClCompile Include="object\player.cpp" />
     <ClCompile Include="state\playstate.cpp" />
     <ClCompile Include="object\sdlgameobject.cpp" />
     <ClCompile Include="soundmanager.cpp" />
@@ -117,9 +118,14 @@
     <ClInclude Include="button.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="cleanup.h" />
-    <ClInclude Include="enemy.h" />
+    <ClInclude Include="component\boxcollider.h" />
+    <ClInclude Include="component\boxtrigger.h" />
+    <ClInclude Include="component\component.h" />
+    <ClInclude Include="component\message.h" />
+    <ClInclude Include="object\enemy.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="object\gameobject.h" />
+    <ClInclude Include="object\objectfactory.h" />
     <ClInclude Include="object\tile.h" />
     <ClInclude Include="state\gamestate.h" />
     <ClInclude Include="state\gamestatemachine.h" />
@@ -133,7 +139,7 @@
     <ClInclude Include="object\layer.h" />
     <ClInclude Include="object\objectlayer.h" />
     <ClInclude Include="state\pausestate.h" />
-    <ClInclude Include="player.h" />
+    <ClInclude Include="object\player.h" />
     <ClInclude Include="state\playstate.h" />
     <ClInclude Include="object\sdlgameobject.h" />
     <ClInclude Include="soundmanager.h" />

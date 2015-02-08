@@ -1,11 +1,11 @@
 #include "playstate.h"
-#include "pausestate.h"
+//#include "pausestate.h"
 
 const std::string PlayState::id_ = "PLAY";
 
 void PlayState::update() {
 	if(InputHandler::getInstance()->getButtonState(0, 4) || InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_RETURN)) {
-		Game::getInstance()->getStateMachine()->pushState(new PauseState());
+		//Game::getInstance()->getStateMachine()->pushState(new PauseState());
 	}
 
 	// Inventory
@@ -16,19 +16,21 @@ void PlayState::update() {
 	if(InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
 		Game::getInstance()->close();
 	}
-
+	
 	for(unsigned int i = 0; i < layers_.size(); i++) {
 		layers_[i]->update();
 	}
-}
-
-
-void PlayState::renderTileMap() {
 	
+	// check collisions
+	/*for(unsigned int i = 0; i < layers_.size(); i++) {
+		std::vector<GameObject*>* gameObjects = layers_[i]->getGameObjects();
+		for(unsigned int j = 0; j < gameObjects->size(); j++) {
+
+		}
+	}*/
 }
 
 void PlayState::draw() {
-	renderTileMap();
 
 	for(unsigned int i = 0; i < layers_.size(); i++) {
 		layers_[i]->draw();
@@ -39,6 +41,7 @@ bool PlayState::onEnter()
 {
 	std::cout << "entering PlayState\n";
 	
+	// Load Textures
 	TextureManager::getInstance()->load("assets/textures/player.png", "player", Game::getInstance()->getRenderer());
 	TextureManager::getInstance()->load("assets/textures/enemy.png", "enemy", Game::getInstance()->getRenderer());
 	TextureManager::getInstance()->load("assets/textures/water.png", "water", Game::getInstance()->getRenderer());
@@ -49,12 +52,15 @@ bool PlayState::onEnter()
 	TextureManager::getInstance()->load("assets/textures/rock.png", "rock", Game::getInstance()->getRenderer());
 	TextureManager::getInstance()->load("assets/textures/snow.png", "snow", Game::getInstance()->getRenderer());
 	SoundManager::getInstance()->load("assets/sounds/fast_swipe.wav", "short_swipe", SoundType::SOUND_SFX);
+
+	// Load Objects
+	ObjectFactory::registerType("player", new PlayerCreator());
+	ObjectFactory::registerType("enemy", new EnemyCreator());
 	
 	int pX = 9000;
 	int pY = 9000;
 
 	// Player init
-	player_ = new Player(new LoaderParams(pX, pY, 64, 64, "player"));
 	Game::getInstance()->getCamera()->goTo(pX, pY);
 	
 	// Setup layers - first is lowest in z-index
@@ -62,8 +68,8 @@ bool PlayState::onEnter()
 	layers_.push_back(terrainLayer);
 
 	ObjectLayer* actorLayer = new ObjectLayer();
-	actorLayer->add(player_);
-	actorLayer->add(new Enemy(new LoaderParams(64*2, 64*2, 64, 64, "enemy")));
+	actorLayer->add(ObjectFactory::create("player", new LoaderParams(pX, pY, 64, 64, "player")));
+	actorLayer->add(ObjectFactory::create("enemy", new LoaderParams(pX, pY, 64, 64, "enemy")));
 	layers_.push_back(actorLayer);
 
 	return true;

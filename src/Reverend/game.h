@@ -5,14 +5,14 @@
 #include <SDL/SDL_image.h>
 #include <iostream>
 #include <vector>
-#include "player.h"
-#include "enemy.h"
 #include "texturemanager.h"
 #include "cleanup.h"
 #include "inputhandler.h"
 #include "state/gamestatemachine.h"
 #include "camera.h"
 #include "map/mapgenerator.h"
+
+class GameObject;
 
 class Game {
 public:

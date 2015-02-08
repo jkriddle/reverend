@@ -4,11 +4,9 @@
 
 #include "gamestate.h"
 #include <iostream>
-#include "../object/gameobject.h"
-#include "../object/layer.h"
 #include "../game.h"
-#include "../player.h"
-#include "../enemy.h"
+#include "../object/objectfactory.h"
+#include "../object/layer.h"
 #include "../object/objectlayer.h"
 #include "../object/terrainlayer.h"
 #include "../soundmanager.h"
@@ -23,9 +21,7 @@ public:
 	virtual std::string getStateId() const { return id_; }
 private:
 	static const std::string id_;
-	void renderTileMap();
-	std::vector<Layer*> layers_;
-	Player* player_;
+	std::vector<ObjectLayer*> layers_;
 };
 
 #endif;

@@ -3,7 +3,7 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "object/sdlgameobject.h"
+#include "sdlgameobject.h"
 
 class Enemy : public SDLGameObject {
 public:
@@ -12,5 +12,6 @@ public:
 	virtual void update();
 	virtual void clean();
 };
+
 
 #endif

@@ -3,8 +3,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "object/sdlgameobject.h"
-#include "soundmanager.h"
+#include "sdlgameobject.h"
 
 class Player : public SDLGameObject {
 

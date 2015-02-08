@@ -1,7 +1,8 @@
 #pragma warning(disable: 4244) // conversion of Vector2d float to int
 
-#include "game.h"
 #include "player.h"
+#include "../game.h"
+#include "../soundmanager.h"
 
 Player::Player(const LoaderParams* pParams) : SDLGameObject(pParams)
 {
