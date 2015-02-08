@@ -49,6 +49,7 @@
       <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ShowIncludes>
       </ShowIncludes>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -88,7 +89,6 @@
     <ClCompile Include="map\maprenderer.cpp" />
     <ClCompile Include="noise\noiseutils.cpp" />
     <ClCompile Include="object\terrainlayer.cpp" />
-    <ClCompile Include="object\terrainlayer.h" />
     <ClCompile Include="state\pausestate.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="state\playstate.cpp" />
@@ -126,6 +126,7 @@
     <ClInclude Include="inputhandler.h" />
     <ClInclude Include="loaderparams.h" />
     <ClInclude Include="ltimer.h" />
+    <ClInclude Include="object\terrainlayer.h" />
     <ClInclude Include="map\mapgenerator.h" />
     <ClInclude Include="map\maprenderer.h" />
     <ClInclude Include="noise\noiseutils.h" />

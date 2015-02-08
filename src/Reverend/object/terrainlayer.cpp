@@ -72,7 +72,9 @@ Tile* TerrainLayer::getTile(int x, int y) {
 	if (height > 230) texture = "rock";
 	if (height > 250) texture = "snow";
 
+	// TODO load from file
 	tile = new Tile(new LoaderParams(x, y, 32, 32, texture));
+
 	tileCache_[x][y] = tile;
 	return tile;
 }

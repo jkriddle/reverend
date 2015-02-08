@@ -3,7 +3,6 @@
 #define TERRAINLAYER_H
 
 #include "objectlayer.h"
-#include "gameobject.h"
 #include "tile.h"
 #include <map>
 
