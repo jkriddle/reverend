@@ -2,25 +2,29 @@
 #ifndef BOXTRIGGER_H
 #define BOXTRIGGER_H
 
-#include "../object/gameobject.h"
+#include "../object/sdlgameobject.h"
+#include "../object/objectfactory.h"
 #include "component.h"
 
 class BoxTrigger : public Component {
 public:
-	virtual void update(GameObject &parent) {
-		std::cout << "BoxCollider updating.. NEED TO IMLPEMENT ACTUAL COLLISION DETECTION" << std::endl;
+	void update(SDLGameObject &parent) {
+		std::cout << "BoxTrigger updating.. NEED TO IMLPEMENT ACTUAL COLLISION DETECTION" << std::endl;
 		if (checkCollision(parent)) {
 			std::cout << "TRIGGER DETECTED" << std::endl;
 		}
-
-		/*if (parent.x > 5) {
-			std::cout << "TRIGGER DETECTED" << std::endl;
-			parent.sendMessage(new Message(3, MessageType::CollisionEnter, &parent));
-		}*/
-
 	}
 protected:
-	bool checkCollision(GameObject &parent) {
+	bool checkCollision(SDLGameObject &parent) {
+		// iterator->first = key
+		// iterator->second = value
+		// Repeat if you also want to iterate through the second map.
+		if (parent.getX() > 9500) {
+			parent.sendMessage(new Message(3, MessageType::TriggerEnter, &parent));
+			return true;
+		}
+
+		return false;
 	}
 };
 

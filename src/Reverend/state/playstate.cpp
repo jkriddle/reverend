@@ -20,14 +20,7 @@ void PlayState::update() {
 	for(unsigned int i = 0; i < layers_.size(); i++) {
 		layers_[i]->update();
 	}
-	
-	// check collisions
-	/*for(unsigned int i = 0; i < layers_.size(); i++) {
-		std::vector<GameObject*>* gameObjects = layers_[i]->getGameObjects();
-		for(unsigned int j = 0; j < gameObjects->size(); j++) {
 
-		}
-	}*/
 }
 
 void PlayState::draw() {
@@ -81,6 +74,8 @@ bool PlayState::onExit()
 		layers_[i]->clean();
 	}
 	layers_.clear();
+
+	ObjectFactory::clear();
 	
 	TextureManager::getInstance()->clearFromTextureMap("player");
 	TextureManager::getInstance()->clearFromTextureMap("enemy");

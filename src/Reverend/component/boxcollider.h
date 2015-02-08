@@ -6,12 +6,14 @@
 #include "boxtrigger.h"
 #include "component.h"
 
-class BoxCollisder : public BoxTrigger {
+class BoxCollider : public BoxTrigger {
 public:
-	virtual void update(GameObject &parent) {
+	void update(SDLGameObject &parent) {
 		std::cout << "BoxCollider updating" << std::endl;
 		if (checkCollision(parent)) {
 			std::cout << "COLLISION DETECTED" << std::endl;
+			// undo last movement
+			parent.setPosition(parent.getPosition() - parent.getVelocity());
 			parent.sendMessage(new Message(3, MessageType::CollisionEnter, &parent));
 		}
 	}

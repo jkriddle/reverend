@@ -3,23 +3,23 @@
 #define OBJECTLAYER_H
 
 #include "layer.h"
-#include "gameobject.h"
+#include "sdlgameobject.h"
 #include <vector>
 
 class ObjectLayer : public Layer
 {
 public:
-	void add(GameObject* object);
+	void add(SDLGameObject* object);
 	virtual void update();
 	virtual void draw();
 	virtual void clean();
-	std::vector<GameObject*>* getGameObjects()
+	std::vector<SDLGameObject*>* getGameObjects()
 	{
 		return &gameObjects_;
 	}
 
 private:
-	std::vector<GameObject*> gameObjects_;
+	std::vector<SDLGameObject*> gameObjects_;
 };
 
 #endif;

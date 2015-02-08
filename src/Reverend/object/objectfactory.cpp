@@ -2,7 +2,7 @@
 
 std::map<std::string, Creator*> ObjectFactory::map_;
 
-GameObject* ObjectFactory::create(std::string type, const LoaderParams* pParams) {
+SDLGameObject* ObjectFactory::create(std::string type, const LoaderParams* pParams) {
 	return map_[type]->create(pParams);
 }
 
@@ -10,12 +10,16 @@ void ObjectFactory::registerType(const std::string& type, Creator* creator) {
 	map_[type] = creator;
 }
 
-GameObject *PlayerCreator::create( const LoaderParams* pParams )
+void ObjectFactory::clear() {
+	map_.clear();
+}
+
+SDLGameObject *PlayerCreator::create( const LoaderParams* pParams )
 {
 	return new Player(pParams);
 }
 
-GameObject *EnemyCreator::create( const LoaderParams* pParams )
+SDLGameObject *EnemyCreator::create( const LoaderParams* pParams )
 {
 	return new Enemy(pParams);
 }

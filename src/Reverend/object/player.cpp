@@ -3,12 +3,14 @@
 #include "player.h"
 #include "../game.h"
 #include "../soundmanager.h"
+#include "../component/boxcollider.h"
 
 Player::Player(const LoaderParams* pParams) : SDLGameObject(pParams)
 {
 	currentTextureRow_ = 4;
 	numBeltSlots_ = 3;
 	equippedItem_ = 0;
+	addComponent(new BoxCollider());
 }
 
 void Player::draw()

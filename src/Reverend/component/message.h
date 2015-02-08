@@ -5,7 +5,8 @@
 class GameObject;
 
 enum MessageType {
-	CollisionEnter
+	CollisionEnter,
+	TriggerEnter
 };
 
 class Message {

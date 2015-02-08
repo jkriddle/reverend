@@ -1,7 +1,9 @@
 #include "enemy.h"
+#include "../component/boxcollider.h"
 
 Enemy::Enemy(const LoaderParams* pParams) : SDLGameObject(pParams)
 {
+	addComponent(new BoxCollider());
 }
 
 void Enemy::draw()
