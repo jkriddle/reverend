@@ -10,7 +10,7 @@ Player::Player(const LoaderParams* pParams) : SDLGameObject(pParams)
 	currentTextureRow_ = 4;
 	numBeltSlots_ = 3;
 	equippedItem_ = 0;
-	addComponent(new BoxCollider());
+	addComponent(new BoxCollider(20, 10, 34, 44));
 }
 
 void Player::draw()

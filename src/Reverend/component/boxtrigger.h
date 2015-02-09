@@ -9,12 +9,22 @@
 
 class BoxTrigger : public Component {
 public:
+	BoxTrigger(int x, int y, int w, int h) : boundingBox_(x, y, w, h) {
+	}
+
+	GameRect getBounds() { return boundingBox_; }
+
 	void update(SDLGameObject &parent) {
-		std::cout << "BoxTrigger updating.. NEED TO IMLPEMENT ACTUAL COLLISION DETECTION" << std::endl;
+		boundingBox_.setPosition(parent.getX(), parent.getY());
 		for(SDLGameObject* o : ObjectFactory::getObjects()) {
-			if (PhysicsSystem::checkCollision(parent, *o)) {
-				parent.sendMessage(new Message(3, MessageType::TriggerEnter, &parent));
-				std::cout << "TRIGGER DETECTED" << std::endl;
+			if (&parent == o) continue;
+			BoxTrigger* pTrigger = parent.getComponent<BoxTrigger>();
+			BoxTrigger* oTrigger = o->getComponent<BoxTrigger>();
+			if (pTrigger != nullptr && oTrigger != nullptr) {
+				if (PhysicsSystem::checkCollision(pTrigger->getBounds(), oTrigger->getBounds())) {
+					// trigger entry detected
+					parent.sendMessage(new Message(3, MessageType::TriggerEnter, &parent));
+				}
 			}
 		}
 	}
@@ -24,7 +34,7 @@ public:
 	}
 
 protected:
-
+	GameRect boundingBox_;
 };
 
 #endif

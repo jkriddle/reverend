@@ -7,6 +7,7 @@
 #include "gameobject.h"
 #include "../vector2d.h"
 #include "../inputhandler.h"
+#include "../gamerect.h"
 
 class SDLGameObject : public GameObject
 {
@@ -26,6 +27,9 @@ public:
 	virtual Vector2d getAcceleration() { return acceleration_;	}
 	Vector2d SDLGameObject::getPosition(){ return position_; }
 	void setPosition(Vector2d position){ position_ = position; }
+	GameRect getBounds() { 
+		return GameRect(position_.getX(), position_.getY(), width_, height_);
+	}
 	const std::string& getTextureId() { return textureId_; }
 	
 	void addComponent(Component* component) {
@@ -34,6 +38,16 @@ public:
 
 	std::vector<Component*> getComponents() {
 		return components_;
+	}
+	
+	// Retrieve the first component of a specific type
+	template <typename T>
+	T* getComponent() {
+		for(Component* c : components_) {
+			T* cType = dynamic_cast<T*>(c);
+			if (cType != nullptr) return cType;
+		}
+		return nullptr;
 	}
 
 	void sendMessage(Message* message)

@@ -3,7 +3,7 @@
 
 Enemy::Enemy(const LoaderParams* pParams) : SDLGameObject(pParams)
 {
-	addComponent(new BoxCollider());
+	addComponent(new BoxCollider(20, 10, 34, 44));
 }
 
 void Enemy::draw()

@@ -208,16 +208,14 @@
     <ClInclude Include="object\player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gamerect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sounds\fast_swipe.wav">
       <Filter>Resource Files</Filter>
     </Media>
-  </ItemGroup>
-  <ItemGroup>
-    <Xsd Include="mains\cam.xsd">
-      <Filter>Header Files</Filter>
-    </Xsd>
   </ItemGroup>
   <ItemGroup>
     <None Include="physicssystem.h" />

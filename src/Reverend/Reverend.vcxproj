@@ -123,6 +123,7 @@
     <ClInclude Include="component\boxtrigger.h" />
     <ClInclude Include="component\component.h" />
     <ClInclude Include="component\message.h" />
+    <ClInclude Include="gamerect.h" />
     <ClInclude Include="object\enemy.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="object\gameobject.h" />
@@ -149,12 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sounds\fast_swipe.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <Xsd Include="mains\cam.xsd">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </Xsd>
   </ItemGroup>
   <ItemGroup>
     <None Include="physicssystem.h" />
