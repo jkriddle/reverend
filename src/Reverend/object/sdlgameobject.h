@@ -18,8 +18,12 @@ public:
 	virtual void clean();
 	virtual int getX();
 	virtual int getY();
+	virtual int getHeight() { return height_; }
+	virtual int getWidth() { return width_; }
 	virtual Vector2d getVelocity() { return velocity_;	}
 	virtual void setVelocity(Vector2d velocity) { velocity_ = velocity;	}
+	virtual void setAcceleration(Vector2d acceleration) { acceleration_ = acceleration;	}
+	virtual Vector2d getAcceleration() { return acceleration_;	}
 	Vector2d SDLGameObject::getPosition(){ return position_; }
 	void setPosition(Vector2d position){ position_ = position; }
 	const std::string& getTextureId() { return textureId_; }

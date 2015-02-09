@@ -81,6 +81,9 @@
     <ClCompile Include="object\objectfactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="physicssystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\images\grass.png">
@@ -215,5 +218,8 @@
     <Xsd Include="mains\cam.xsd">
       <Filter>Header Files</Filter>
     </Xsd>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="physicssystem.h" />
   </ItemGroup>
 </Project>

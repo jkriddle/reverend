@@ -3,7 +3,7 @@
 #define OBJECT_FACTORY_H
 
 #include <map>
-
+#include <vector>
 #include "player.h"
 #include "enemy.h"
 
@@ -34,9 +34,11 @@ class ObjectFactory {
 public:
 	static SDLGameObject* create(std::string type, const LoaderParams* pParams);
 	static void registerType(const std::string& type, Creator* creator);
+	static std::vector<SDLGameObject*> getObjects();
 	static void clear();
 private:
 	static std::map<std::string, Creator*> ObjectFactory::map_;
+	static std::vector<SDLGameObject*> ObjectFactory::objects_;
 };
 
 #endif

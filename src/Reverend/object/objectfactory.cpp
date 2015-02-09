@@ -1,9 +1,15 @@
 #include "objectfactory.h"
 
 std::map<std::string, Creator*> ObjectFactory::map_;
+std::vector<SDLGameObject*> ObjectFactory::objects_;
 
 SDLGameObject* ObjectFactory::create(std::string type, const LoaderParams* pParams) {
-	return map_[type]->create(pParams);
+	objects_.push_back(map_[type]->create(pParams));
+	return objects_.back();
+}
+
+std::vector<SDLGameObject*> ObjectFactory::getObjects() {
+	return objects_;
 }
 
 void ObjectFactory::registerType(const std::string& type, Creator* creator) {

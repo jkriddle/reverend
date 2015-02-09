@@ -62,7 +62,7 @@ bool PlayState::onEnter()
 
 	ObjectLayer* actorLayer = new ObjectLayer();
 	actorLayer->add(ObjectFactory::create("player", new LoaderParams(pX, pY, 64, 64, "player")));
-	actorLayer->add(ObjectFactory::create("enemy", new LoaderParams(pX, pY, 64, 64, "enemy")));
+	actorLayer->add(ObjectFactory::create("enemy", new LoaderParams(pX - 128, pY - 128, 64, 64, "enemy")));
 	layers_.push_back(actorLayer);
 
 	return true;

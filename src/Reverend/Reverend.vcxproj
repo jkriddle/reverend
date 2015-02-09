@@ -83,6 +83,7 @@
     <ClCompile Include="object\objectfactory.cpp" />
     <ClCompile Include="object\objectlayer.cpp" />
     <ClCompile Include="object\tile.cpp" />
+    <ClCompile Include="physicssystem.cpp" />
     <ClCompile Include="state\gamestatemachine.cpp" />
     <ClCompile Include="inputhandler.cpp" />
     <ClCompile Include="main.cpp" />
@@ -154,6 +155,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </Xsd>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="physicssystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
