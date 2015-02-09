@@ -106,35 +106,6 @@ void Player::handleKeyboardInput() {
 		action();
 	}
 
-	if (look) {
-		Vector2d* mousePos = InputHandler::getInstance()->getMousePosition();
-
-		// Mouse is active
-		Vector2d delta = *mousePos - position_;
-		float radian = atan2(delta.getY(), delta.getX()) + M_PI;
-		float degree = radian * 180 / M_PI;
-			
-		// 0/360 degrees is due West
-		if (degree >= 30 && degree < 75) {
-			// NW
-			forward_ = Vector2d::NORTH_WEST;
-		} else if (degree >= 75 && degree < 120) {
-			forward_ = Vector2d::NORTH;
-		} else if (degree >= 120 && degree < 165) {
-			forward_ = Vector2d::NORTH_EAST;
-		} else if (degree >= 165 && degree < 210) {
-			forward_ = Vector2d::EAST;
-		} else if (degree >= 210 && degree < 255) {
-			forward_ = Vector2d::SOUTH_EAST;
-		} else if (degree >= 255 && degree < 300) {
-			forward_ = Vector2d::SOUTH;
-		} else if (degree >= 300 && degree < 345) {
-			forward_ = Vector2d::SOUTH_WEST;
-		} else if (degree >= 345 || degree < 30) {
-			forward_ = Vector2d::WEST;
-		}
-	}
-
 	if (!look) {
 		getWalkingDirection();
 	}
