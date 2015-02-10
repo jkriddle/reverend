@@ -17,12 +17,12 @@ class GameObject {
 
 public:
 	
-	GameObject() : position_(0.0f, 0.0f), velocity_(0.0f, 0.0f), acceleration_(0.0f, 0.0f), forward_(0.0f, 0.0f)
+	GameObject() : position(0.0f, 0.0f), velocity(0.0f, 0.0f), acceleration(0.0f, 0.0f), forward(0.0f, 0.0f)
 	{
 	}
 
-	GameObject(const LoaderParams* params) : position_((float)params->getX(), (float)params->getY()), 
-		velocity_(0.0f, 0.0f), acceleration_(0.0f, 0.0f), forward_(0.0f, 0.0f) {
+	GameObject(const LoaderParams* params) : position((float)params->x, (float)params->y), 
+		velocity(0.0f, 0.0f), acceleration(0.0f, 0.0f), forward(0.0f, 0.0f) {
 		init(params);
 	}
 
@@ -30,40 +30,22 @@ public:
 
 	virtual ~GameObject() {}
 
-	int getX()
-	{
-		return (int)position_.getX();
-	}
-
-	int getY()
-	{
-		return (int)position_.getY();
-	}
-
-	virtual int getHeight() { return height_; }
-	virtual int getWidth() { return width_; }
-	virtual Vector2d getVelocity() { return velocity_;	}
-	virtual void setVelocity(Vector2d velocity) { velocity_ = velocity;	}
-	virtual void setAcceleration(Vector2d acceleration) { acceleration_ = acceleration;	}
-	virtual Vector2d getAcceleration() { return acceleration_;	}
-	Vector2d getPosition(){ return position_; }
-	void setPosition(Vector2d position){ position_ = position; }
 	GameRect getBounds() { 
-		return GameRect((int)position_.getX(), (int)position_.getY(), width_, height_);
+		return GameRect((int)position.x, (int)position.y, width, height);
 	}
 	
 	void addComponent(Component* component) {
-		components_.push_back(component);
+		components.push_back(component);
 	}
 
 	std::vector<Component*> getComponents() {
-		return components_;
+		return components;
 	}
 	
 	// Retrieve the first component of a specific type
 	template <typename T>
 	T* getComponent() {
-		for(Component* c : components_) {
+		for(Component* c : components) {
 			T* cType = dynamic_cast<T*>(c);
 			if (cType != nullptr) return cType;
 		}
@@ -73,7 +55,7 @@ public:
 	template <typename T>
 	std::vector<T*> getComponents() {
 		std::vector<T*> matching;
-		for(Component* c : components_) {
+		for(Component* c : components) {
 			T* cType = dynamic_cast<T*>(c);
 			if (cType != nullptr) {
 				matching.push_back(cType);
@@ -84,23 +66,24 @@ public:
 
 	void sendMessage(Message* message)
 	{
-		for(Component* c : components_)
+		for(Component* c : components)
 		{
 			c->receiveMessage(message);
 		}	
 	}
+	
+	Vector2d position;
+	Vector2d velocity;
+	Vector2d acceleration;
+	Vector2d forward;
+
+	int width;
+	int height;
+	std::vector<Component*> components;
 
 protected:
 
-	Vector2d position_;
-	Vector2d velocity_;
-	Vector2d acceleration_;
-	Vector2d forward_;
-
-	int width_;
-	int height_;
 	
-	std::vector<Component*> components_;
 };
 
 #endif

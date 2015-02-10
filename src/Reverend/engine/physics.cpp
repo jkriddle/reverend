@@ -3,15 +3,15 @@
 
 bool Physics::checkCollision(GameObject &a, GameObject &b) {
 	if (&a == &b) return false;
-	int aX = a.getX();
-	int aY = a.getY();
-	int aW = a.getWidth();
-	int aH = a.getHeight();
+	int aX = a.position.x;
+	int aY = a.position.y;
+	int aW = a.width;
+	int aH = a.height;
 
-	int bX = b.getX();
-	int bY = b.getY();
-	int bW = b.getWidth();
-	int bH = b.getHeight();
+	int bX = b.position.x;
+	int bY = b.position.y;
+	int bW = b.width;
+	int bH = b.height;
 
 	if (aX < bX + bW &&
 		aX + aW > bX &&
@@ -25,15 +25,15 @@ bool Physics::checkCollision(GameObject &a, GameObject &b) {
 
 bool Physics::checkCollision(GameRect &a, GameRect &b) {
 	if (&a == &b) return false;
-	int aX = a.getX();
-	int aY = a.getY();
-	int aW = a.getWidth();
-	int aH = a.getHeight();
+	int aX = a.x;
+	int aY = a.y;
+	int aW = a.width;
+	int aH = a.height;
 
-	int bX = b.getX();
-	int bY = b.getY();
-	int bW = b.getWidth();
-	int bH = b.getHeight();
+	int bX = b.x;
+	int bY = b.y;
+	int bW = b.width;
+	int bH = b.height;
 
 	if (aX < bX + bW &&
 		aX + aW > bX &&

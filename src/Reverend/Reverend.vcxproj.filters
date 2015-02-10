@@ -30,12 +30,6 @@
     <ClCompile Include="state\playstate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="actors\enemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="actors\player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="engine\soundmanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -46,9 +40,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="engine\object.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\inputhandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="engine\graphics.cpp">
@@ -82,6 +73,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="engine\physics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="component\playerinput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -127,12 +124,6 @@
     <ClInclude Include="state\playstate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="actors\enemy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="actors\player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="engine\vector2d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -149,9 +140,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="engine\loaderparams.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\inputhandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="engine\graphics.h">
@@ -197,6 +185,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="reverend.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="component\playerinput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

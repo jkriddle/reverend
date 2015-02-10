@@ -1,5 +1,5 @@
-#ifndef INPUTHANDLER_H
-#define INPUTHANDLER_H
+#ifndef Input_H
+#define Input_H
 
 #include <iostream>
 #include <vector>
@@ -14,15 +14,15 @@ enum MouseButtons
     RIGHT = 2
 };
 
-class InputHandler
+class Input
 {
 public:
     
-    static InputHandler* getInstance()
+    static Input* getInstance()
     {
         if(instance_ == 0)
         {
-            instance_ = new InputHandler();
+            instance_ = new Input();
         }
         
         return instance_;
@@ -61,11 +61,11 @@ public:
 
 private:
     
-    InputHandler();
-    ~InputHandler();
+    Input();
+    ~Input();
     
-    InputHandler(const InputHandler&);
-	InputHandler& operator=(const InputHandler&);
+    Input(const Input&);
+	Input& operator=(const Input&);
     
     // private functions to handle different event types
     
@@ -107,9 +107,9 @@ private:
 	bool quitting_;
     
     // singleton
-    static InputHandler* instance_;
+    static Input* instance_;
 };
-typedef InputHandler InputHandler;
+typedef Input Input;
 
 
 #endif 

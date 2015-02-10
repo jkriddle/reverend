@@ -54,7 +54,7 @@ bool Game::initSystems() {
 	//Get window surface
 	screen_ = SDL_GetWindowSurface(window_);
 
-	InputHandler::getInstance()->initialiseJoysticks();
+	Input::getInstance()->initialiseJoysticks();
 
 	return true;
 }
@@ -91,8 +91,8 @@ void Game::update() {
 }
 
 void Game::handleEvents() {
-	InputHandler::getInstance()->update();
-	if (InputHandler::getInstance()->isQuitting()) quit();
+	Input::getInstance()->update();
+	if (Input::getInstance()->isQuitting()) quit();
 }
 
 

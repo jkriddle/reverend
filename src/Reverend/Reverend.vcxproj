@@ -75,24 +75,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="component\playerinput.cpp" />
     <ClCompile Include="reverend.cpp" />
     <ClCompile Include="engine\component\animatedsprite.cpp" />
     <ClCompile Include="engine\component\boxcollider.cpp" />
     <ClCompile Include="engine\component\boxtrigger.cpp" />
     <ClCompile Include="engine\component\componentfactory.cpp" />
     <ClCompile Include="engine\component\renderingcomponent.cpp" />
-    <ClCompile Include="actors\enemy.cpp" />
     <ClCompile Include="engine\game.cpp" />
     <ClCompile Include="engine\graphics.cpp" />
     <ClCompile Include="engine\object.cpp" />
     <ClCompile Include="engine\physics.cpp" />
     <ClCompile Include="engine\state\gamestatemachine.cpp" />
-    <ClCompile Include="engine\inputhandler.cpp" />
+    <ClCompile Include="engine\input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map\mapgenerator.cpp" />
     <ClCompile Include="map\maprenderer.cpp" />
     <ClCompile Include="noise\noiseutils.cpp" />
-    <ClCompile Include="actors\player.cpp" />
     <ClCompile Include="state\playstate.cpp" />
     <ClCompile Include="engine\gameobject.cpp" />
     <ClCompile Include="engine\soundmanager.cpp" />
@@ -115,6 +114,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="component\playerinput.h" />
     <ClInclude Include="reverend.h" />
     <ClInclude Include="engine\cleanup.h" />
     <ClInclude Include="engine\component\animatedsprite.h" />
@@ -125,20 +125,18 @@
     <ClInclude Include="engine\component\message.h" />
     <ClInclude Include="engine\component\renderingcomponent.h" />
     <ClInclude Include="engine\gamerect.h" />
-    <ClInclude Include="actors\enemy.h" />
     <ClInclude Include="engine\game.h" />
     <ClInclude Include="engine\gameobject.h" />
     <ClInclude Include="engine\graphics.h" />
     <ClInclude Include="engine\object.h" />
     <ClInclude Include="engine\state\gamestate.h" />
     <ClInclude Include="engine\state\gamestatemachine.h" />
-    <ClInclude Include="engine\inputhandler.h" />
+    <ClInclude Include="engine\input.h" />
     <ClInclude Include="engine\loaderparams.h" />
     <ClInclude Include="engine\ltimer.h" />
     <ClInclude Include="map\mapgenerator.h" />
     <ClInclude Include="map\maprenderer.h" />
     <ClInclude Include="noise\noiseutils.h" />
-    <ClInclude Include="actors\player.h" />
     <ClInclude Include="state\playstate.h" />
     <ClInclude Include="engine\soundmanager.h" />
     <ClInclude Include="engine\texturemanager.h" />

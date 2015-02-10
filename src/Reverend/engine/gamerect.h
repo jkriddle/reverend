@@ -4,30 +4,25 @@
 
 class GameRect {
 public:
-	GameRect() : x_(0), y_(0), w_(0), h_(0) {}
+	GameRect() : x(0), y(0), width(0), height(0) {}
 
-	GameRect(int x, int y, int w, int h) : x_(x), y_(y), w_(w), h_(h) {
+	GameRect(int x, int y, int w, int h) : x(x), y(y), width(w), height(h) {
 	}
 
-	void setPosition(int x, int y) { x_ = x, y_ = y; }
-	int getX() { return x_; }
-	int getY() { return y_; }
-	int getWidth() { return w_; }
-	int getHeight() { return h_;} 
+	void setPosition(int x, int y) { x = x, y = y; }
 	
 	GameRect operator+(const GameRect& v2) const {
-		return GameRect(x_ + v2.x_, y_ + v2.y_, w_ + v2.w_, h_ + v2.h_);
+		return GameRect(x + v2.x, y + v2.y, width + v2.width, height + v2.height);
 	}
 	
 	GameRect operator-(const GameRect& v2) const {
-		return GameRect(x_ - v2.x_, y_ - v2.y_, w_ - v2.w_, h_ - v2.h_);
+		return GameRect(x - v2.x, y - v2.y, width - v2.width, height - v2.height);
 	}
 
-private:
-	int x_;
-	int y_;
-	int w_;
-	int h_;
+	int x;
+	int y;
+	int width;
+	int height;
 };
 
 #endif;

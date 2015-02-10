@@ -13,7 +13,7 @@ public:
 
 	virtual void update() {
 		if (target_ == nullptr) return;
-		position_->set((float)target_->getX(), (float)target_->getY());
+		position_ = target_->position;
 	}
 
 	virtual void receiveMessage(Message* message) {
@@ -21,7 +21,7 @@ public:
 
 private:
 	GameObject* target_;
-	Vector2d* position_;
+	Vector2d position_;
 };
 
 #endif

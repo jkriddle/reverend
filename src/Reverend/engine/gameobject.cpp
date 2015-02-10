@@ -3,6 +3,6 @@
 #include "gameobject.h"
 
 void GameObject::init(const LoaderParams* params) {
-	width_ = params->getWidth();
-	height_ = params->getHeight();
+	width = params->width;
+	height = params->height;
 }

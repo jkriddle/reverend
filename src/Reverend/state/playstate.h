@@ -7,7 +7,6 @@
 #include "../engine/game.h"
 #include "../engine/object.h"
 #include "../engine/soundmanager.h"
-#include "../actors/player.h"
 
 class PlayState : public GameState {
 

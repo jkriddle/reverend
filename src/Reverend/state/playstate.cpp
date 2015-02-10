@@ -1,6 +1,8 @@
 #include "playstate.h"
 //#include "pausestate.h"
 #include "../engine/component/animatedsprite.h"
+#include "../engine/component/boxcollider.h"
+#include "../component/playerinput.h"
 
 const std::string PlayState::id_ = "PLAY";
 
@@ -15,10 +17,15 @@ bool PlayState::onEnter()
 
 	// Load Objects
 	GameObject* player = Object::create<GameObject>();
+	player->addComponent(new PlayerInput(*player));
+
 	AnimatedSprite* sprite = new AnimatedSprite(*player);
 	sprite->maxFrames = 12;
 	sprite->texture = "player";
 	player->addComponent(sprite);
+
+	BoxCollider* collider = new BoxCollider(*player);
+	player->addComponent(collider);
 	player->init(new LoaderParams(pX, pY, 64, 64, "player"));
 
 	//
@@ -43,16 +50,16 @@ bool PlayState::onExit()
 
 
 void PlayState::update() {
-	if(InputHandler::getInstance()->getButtonState(0, 4) || InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_RETURN)) {
-		//Game::getInstance()->getStateMachine()->pushState(new PauseState());
+	if(Input::getInstance()->getButtonState(0, 4) || Input::getInstance()->isKeyDown(SDL_SCANCODE_RETURN)) {
+		//Game::getStateMachine()->pushState(new PauseState());
 	}
 
 	// Inventory
-	if(InputHandler::getInstance()->getButtonState(0, 11) || InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_I)) {
+	if(Input::getInstance()->getButtonState(0, 11) || Input::getInstance()->isKeyDown(SDL_SCANCODE_I)) {
 		std::cout << "show inventory" << std::endl;
 	}
 		
-	if(InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
-		InputHandler::getInstance()->onQuit();
+	if(Input::getInstance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
+		Input::getInstance()->onQuit();
 	}
 }

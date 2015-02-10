@@ -7,7 +7,7 @@
 #include <vector>
 #include "texturemanager.h"
 #include "cleanup.h"
-#include "inputhandler.h"
+#include "input.h"
 #include "state/gamestatemachine.h"
 
 class GameObject;
