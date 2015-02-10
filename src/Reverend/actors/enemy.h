@@ -3,13 +3,12 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "../sdlgameobject.h"
+#include "../gameobject.h"
 
-class Enemy : public SDLGameObject {
+class Enemy : public GameObject {
 public:
+	Enemy();
 	Enemy(const LoaderParams* pParams);
-	virtual void update();
-	virtual void clean();
 };
 
 

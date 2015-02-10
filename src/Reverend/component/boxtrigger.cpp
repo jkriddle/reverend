@@ -1,13 +1,9 @@
 #include "boxtrigger.h"
-
-BoxTrigger::BoxTrigger(SDLGameObject& parent, int x, int y, int w, int h) 
-	: boundingBox_(x, y, w, h), Component(parent) {
-	parent_ = &parent;
-}
+#include "../object.h"
 
 void BoxTrigger::update() {
 	boundingBox_.setPosition(parent_->getX(), parent_->getY());
-	for(SDLGameObject* o : ObjectFactory::getObjects()) {
+	for(GameObject* o : Object::getObjects()) {
 		if (&parent_ == &o) continue;
 		BoxTrigger* pTrigger = parent_->getComponent<BoxTrigger>();
 		BoxTrigger* oTrigger = o->getComponent<BoxTrigger>();

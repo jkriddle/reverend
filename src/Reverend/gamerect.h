@@ -1,5 +1,11 @@
+#pragma once
+#ifndef GAMERECT_H
+#define GAMERECT_H
+
 class GameRect {
 public:
+	GameRect() : x_(0), y_(0), w_(0), h_(0) {}
+
 	GameRect(int x, int y, int w, int h) : x_(x), y_(y), w_(w), h_(h) {
 	}
 
@@ -23,3 +29,5 @@ private:
 	int w_;
 	int h_;
 };
+
+#endif;

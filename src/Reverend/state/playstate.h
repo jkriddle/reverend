@@ -5,9 +5,10 @@
 #include "gamestate.h"
 #include <iostream>
 #include "../game.h"
-#include "../entities/objectfactory.h"
+#include "../object.h"
 #include "../entities/terrain.h"
 #include "../soundmanager.h"
+#include "../actors/player.h"
 
 class PlayState : public GameState {
 

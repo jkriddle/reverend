@@ -3,31 +3,18 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "../sdlgameobject.h"
+#include "../gameobject.h"
+#include "../component/animatedsprite.h"
 
-class Player : public SDLGameObject {
+class Player : public GameObject {
 
 public:
-	Player(const LoaderParams* pParams);
-	virtual void update();
-	virtual void clean();
+	Player();
+	void init(const LoaderParams* pParams);
 
 private:
-	void handleInput();
-	void handleKeyboardInput();
-	void getWalkingDirection();
-	void updateForwardTexture();
+	AnimatedSprite* sprite_;
 
-	void move(Vector2d* direction);
-	void action();
-	void attack();
-	void equip(int slot);
-	void equipPrev();
-	void equipNext();
-
-	int equippedItem_;
-	int numBeltSlots_;
-	static const int speed_ = 3;
 };
 
 #endif

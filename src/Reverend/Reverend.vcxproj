@@ -75,15 +75,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="component\animatedsprite.cpp" />
     <ClCompile Include="component\boxcollider.cpp" />
     <ClCompile Include="component\boxtrigger.cpp" />
+    <ClCompile Include="component\componentfactory.cpp" />
     <ClCompile Include="component\renderingcomponent.cpp" />
     <ClCompile Include="actors\enemy.cpp" />
     <ClCompile Include="entities\terrain.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="entities\objectfactory.cpp" />
     <ClCompile Include="entities\tile.cpp" />
+    <ClCompile Include="graphics.cpp" />
+    <ClCompile Include="object.cpp" />
     <ClCompile Include="physicssystem.cpp" />
     <ClCompile Include="state\gamestatemachine.cpp" />
     <ClCompile Include="inputhandler.cpp" />
@@ -93,7 +95,7 @@
     <ClCompile Include="noise\noiseutils.cpp" />
     <ClCompile Include="actors\player.cpp" />
     <ClCompile Include="state\playstate.cpp" />
-    <ClCompile Include="sdlgameobject.cpp" />
+    <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="soundmanager.cpp" />
     <ClCompile Include="texturemanager.cpp" />
     <ClCompile Include="vector2d.cpp" />
@@ -114,11 +116,12 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="camera.h" />
     <ClInclude Include="cleanup.h" />
+    <ClInclude Include="component\animatedsprite.h" />
     <ClInclude Include="component\boxcollider.h" />
     <ClInclude Include="component\boxtrigger.h" />
     <ClInclude Include="component\component.h" />
+    <ClInclude Include="component\componentfactory.h" />
     <ClInclude Include="component\message.h" />
     <ClInclude Include="component\renderingcomponent.h" />
     <ClInclude Include="entities\terrain.h" />
@@ -126,8 +129,9 @@
     <ClInclude Include="actors\enemy.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameobject.h" />
-    <ClInclude Include="entities\objectfactory.h" />
     <ClInclude Include="entities\tile.h" />
+    <ClInclude Include="graphics.h" />
+    <ClInclude Include="object.h" />
     <ClInclude Include="state\gamestate.h" />
     <ClInclude Include="state\gamestatemachine.h" />
     <ClInclude Include="inputhandler.h" />
@@ -138,7 +142,6 @@
     <ClInclude Include="noise\noiseutils.h" />
     <ClInclude Include="actors\player.h" />
     <ClInclude Include="state\playstate.h" />
-    <ClInclude Include="sdlgameobject.h" />
     <ClInclude Include="soundmanager.h" />
     <ClInclude Include="texturemanager.h" />
     <ClInclude Include="vector2d.h" />

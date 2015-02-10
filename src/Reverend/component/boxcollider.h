@@ -2,14 +2,14 @@
 #ifndef BOXCOLLIDER_H
 #define BOXCOLLIDER_H
 
-#include "../gameobject.h"
+#include "../object.h"
 #include "boxtrigger.h"
 #include "component.h"
 
 class BoxCollider : public BoxTrigger {
 public:
 	
-	BoxCollider(SDLGameObject& parent, int x, int y, int w, int h);
+	BoxCollider(GameObject& parent) : BoxTrigger(parent) {}
 
 	virtual void update();
 	virtual void receiveMessage(Message* m);

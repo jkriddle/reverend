@@ -3,9 +3,9 @@
 #ifndef TILE_H
 #define TILE_H
 
-#include "../sdlgameobject.h"
+#include "../gameobject.h"
 
-class Tile : public SDLGameObject {
+class Tile : public GameObject {
 
 public:
 	Tile(const LoaderParams* pParams);

@@ -6,14 +6,17 @@
 #include <SDL\SDL_image.h>
 #include <map>
 #include "component.h"
+#include "../gameobject.h"
 
 class RenderingComponent : public Component {
 
 public:
-	RenderingComponent(SDLGameObject& parent) : Component(parent) {}
-	void render(SDL_Renderer* renderer);
+	RenderingComponent(GameObject& parent) : Component(parent) {}
+	virtual void render(SDL_Renderer* renderer);
 	virtual void update();
 	virtual void receiveMessage(Message* message);
+	
+	std::string texture;
 };
 
 #endif

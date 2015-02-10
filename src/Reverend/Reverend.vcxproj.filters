@@ -42,9 +42,6 @@
     <ClCompile Include="map\maprenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="state\gamestatemachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -63,22 +60,31 @@
     <ClCompile Include="actors\player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sdlgameobject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="entities\terrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="entities\tile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="entities\objectfactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="component\boxtrigger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="component\boxcollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="component\componentfactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="component\animatedsprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -142,9 +148,6 @@
     <ClInclude Include="map\maprenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ltimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -181,9 +184,6 @@
     <ClInclude Include="actors\player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sdlgameobject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="gameobject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -193,7 +193,16 @@
     <ClInclude Include="entities\tile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="entities\objectfactory.h">
+    <ClInclude Include="component\componentfactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="component\animatedsprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

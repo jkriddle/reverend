@@ -1,7 +1,7 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
-#include "../sdlgameobject.h"
+#include "../gameobject.h"
 #include "../component/component.h"
 #include <string>
 #include <vector>
@@ -15,9 +15,6 @@ public:
     virtual bool onEnter() = 0;
 
     virtual bool onExit() {
-		for(unsigned int i = 0; i < gameObjects_.size(); i++) {
-			gameObjects_[i]->clean();
-		}
 		gameObjects_.clear();
 		return true;
 	}
@@ -26,7 +23,7 @@ public:
     
     virtual std::string getStateId() const = 0;
     
-	virtual void add(SDLGameObject* o) {
+	virtual void add(GameObject* o) {
 		gameObjects_.push_back(o);
 	}
 
@@ -40,7 +37,7 @@ protected:
     bool exiting_;
     
     std::vector<std::string> textureIdList_;
-	std::vector<SDLGameObject*> gameObjects_;
+	std::vector<GameObject*> gameObjects_;
 };
 
 #endif

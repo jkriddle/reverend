@@ -1,15 +1,12 @@
 #include "renderingcomponent.h"
 
 void RenderingComponent::render(SDL_Renderer* renderer) {
-	bool x = true;
-	/*
-	int cx = Game::getInstance()->getCamera()->getPosition().getX();
-	int cy = Game::getInstance()->getCamera()->getPosition().getY();
-	int x = (int)position_.getX() - cx;
-	int y = (int)position_.getY() - cy;
-	TextureManager::getInstance()->drawFrame(textureId_, x, y, width_, height_, 
-		currentTextureRow_, currentTextureFrame_, Game::getInstance()->getRenderer());
-		*/
+	int cx = parent_->getX(); //Game::getInstance()->getCamera()->getPosition().getX();
+	int cy = parent_->getY();
+	int x = (int)parent_->getX() - cx;
+	int y = (int)parent_->getY() - cy;
+	TextureManager::getInstance()->drawFrame(texture, x, y, 
+		parent_->getWidth(), parent_->getHeight(), 0, 0, renderer);
 }
 
 void RenderingComponent::update() {

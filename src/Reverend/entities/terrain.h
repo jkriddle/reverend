@@ -6,7 +6,7 @@
 #include <map>
 #include <vector>
 
-class Terrain : public SDLGameObject
+class Terrain : public GameObject
 {
 public:
 	virtual void update();
@@ -15,7 +15,7 @@ public:
 
 private:
 	Tile* getCachedTile(int x, int y);
-	std::vector<SDLGameObject*> gameObjects_;
+	std::vector<GameObject*> gameObjects_;
 	std::map<int, std::map<int, Tile*>> tileCache_;
 	void flushCache(int x, int y);
 	static const int CACHE_RANGE = 5000;

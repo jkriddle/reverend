@@ -4,7 +4,7 @@
 
 #include "message.h"
 #include <iostream>
-class SDLGameObject;
+class GameObject;
 
 class Component {
 public:
@@ -13,11 +13,11 @@ public:
 
 protected:
 
-	Component(SDLGameObject& parent) {
+	Component(GameObject& parent) {
 		parent_ = &parent;
 	}
 
-	SDLGameObject* parent_;
+	GameObject* parent_;
 
 private:
 };

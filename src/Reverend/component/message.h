@@ -2,7 +2,7 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-class SDLGameObject;
+class GameObject;
 
 enum MessageType {
 	CollisionEnter,
@@ -11,14 +11,14 @@ enum MessageType {
 
 class Message {
 public:
-	Message(int destId, MessageType type, SDLGameObject* caller) : destinationObjectId_(destId), messageType_(type), caller_(caller) {}
+	Message(int destId, MessageType type, GameObject* caller) : destinationObjectId_(destId), messageType_(type), caller_(caller) {}
 	int getDestinationObjectId() { return destinationObjectId_; }
 	MessageType getMessageType() { return messageType_; }
-	SDLGameObject* getCaller() { return caller_; }
+	GameObject* getCaller() { return caller_; }
 private: 
     int destinationObjectId_;
     MessageType messageType_;
-	SDLGameObject* caller_;
+	GameObject* caller_;
 };
 
 #endif

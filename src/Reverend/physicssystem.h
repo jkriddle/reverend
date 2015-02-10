@@ -3,12 +3,12 @@
 #define PHYSICSSYSTEM_H
 
 class GameRect;
-class SDLGameObject;
+class GameObject;
 
 class PhysicsSystem {
 
 public:
-	static bool checkCollision(SDLGameObject &a, SDLGameObject &b);
+	static bool checkCollision(GameObject &a, GameObject &b);
 	static bool checkCollision(GameRect &a, GameRect &b);
 };
 

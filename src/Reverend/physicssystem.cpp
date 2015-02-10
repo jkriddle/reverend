@@ -1,7 +1,7 @@
 #include "physicssystem.h"
-#include "sdlgameobject.h"
+#include "gameobject.h"
 
-bool PhysicsSystem::checkCollision(SDLGameObject &a, SDLGameObject &b) {
+bool PhysicsSystem::checkCollision(GameObject &a, GameObject &b) {
 	if (&a == &b) return false;
 	int aX = a.getX();
 	int aY = a.getY();

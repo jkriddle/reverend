@@ -2,14 +2,13 @@
 #ifndef BOXTRIGGER_H
 #define BOXTRIGGER_H
 
-#include "../sdlgameobject.h"
-#include "../entities/objectfactory.h"
+#include "../gameobject.h"
 #include "component.h"
 #include "../physicssystem.h"
 
 class BoxTrigger : public Component {
 public:
-	BoxTrigger(SDLGameObject& parent, int x, int y, int w, int h);
+	BoxTrigger(GameObject& parent) : Component(parent) {}
 	
 	virtual void update();
 	virtual void receiveMessage(Message* m);

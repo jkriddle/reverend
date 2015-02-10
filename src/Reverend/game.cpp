@@ -1,7 +1,7 @@
 #include "game.h"
 #include <time.h>
-#include "entities\objectfactory.h"
 #include "component\renderingcomponent.h"
+#include "object.h"
 
 Game* Game::instance_ = 0;
 
@@ -88,8 +88,20 @@ void Game::close() {
 
 
 void Game::update() {
+	// Update all components
+	std::vector<GameObject*> objects = Object::getObjects();
+	for(unsigned int i = 0; i < objects.size(); i++) {
+		// check components
+		// definitely going to need to find a more efficient way of this
+		// if we get a lot of object. Maybe move out of play state and just do it once for
+		// all object everywhere.
+		for(Component* c : objects[i]->getComponents())
+		{
+			c->update();
+		}	
+	}
+
 	gameStateMachine_->update();
-	camera_->update();
 }
 
 void Game::handleEvents() {
@@ -100,8 +112,8 @@ void Game::handleEvents() {
 void Game::render() {
 	SDL_RenderClear(renderer_);
 	// TODO loop through components, find renderers, and render them
-	std::vector<SDLGameObject*> gameObjects = ObjectFactory::getObjects();
-	for(SDLGameObject* o : gameObjects) {
+	std::vector<GameObject*> gameObjects = Object::getObjects();
+	for(GameObject* o : gameObjects) {
 		std::vector<RenderingComponent*> renderers = o->getComponents<RenderingComponent>();
 		for(RenderingComponent* r : renderers) {
 			r->render(renderer_);
