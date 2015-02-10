@@ -1,6 +1,6 @@
-#include "game.h"
+#include "reverend.h"
 #include "state/playstate.h"
-#include "ltimer.h"
+#include "engine/ltimer.h"
 
 const int FPS = 60;
 const int DELAY_TIME = 1000.0f / FPS;
@@ -19,10 +19,11 @@ int main(int argc,char **argv)
     fpsTimer.start();
 	bool quit = false;
 	
-	Game::getInstance()->init();
-	Game::getInstance()->getStateMachine()->changeState(new PlayState());
+	Reverend* reverend = new Reverend();
+	reverend->init();
+	reverend->getStateMachine()->changeState(new PlayState());
 
-	while(Game::getInstance()->running()) {
+	while(reverend->running()) {
 		
         //Calculate and correct fps
         float avgFPS = countedFrames / ( fpsTimer.getTicks() / 1000.f );
@@ -33,9 +34,9 @@ int main(int argc,char **argv)
        
 		++countedFrames;
 
-		Game::getInstance()->handleEvents();
-		Game::getInstance()->update();
-		Game::getInstance()->render();
+		reverend->handleEvents();
+		reverend->update();
+		reverend->render();
 
 		//If frame finished early
         int frameTicks = capTimer.getTicks();

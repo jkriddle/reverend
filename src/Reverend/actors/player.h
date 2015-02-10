@@ -3,8 +3,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "../gameobject.h"
-#include "../component/animatedsprite.h"
+#include "../engine/gameobject.h"
+#include "../engine/component/animatedsprite.h"
 
 class Player : public GameObject {
 

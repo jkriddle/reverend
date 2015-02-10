@@ -2,12 +2,11 @@
 #ifndef PLAYSTATE_H
 #define PLAYSTATE_H
 
-#include "gamestate.h"
+#include "../engine/state/gamestate.h"
 #include <iostream>
-#include "../game.h"
-#include "../object.h"
-#include "../entities/terrain.h"
-#include "../soundmanager.h"
+#include "../engine/game.h"
+#include "../engine/object.h"
+#include "../engine/soundmanager.h"
 #include "../actors/player.h"
 
 class PlayState : public GameState {

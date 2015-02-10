@@ -1,6 +1,6 @@
 #include "enemy.h"
-#include "../component/boxcollider.h"
-#include "../component/renderingcomponent.h"
+#include "../engine/component/boxcollider.h"
+#include "../engine/component/renderingcomponent.h"
 
 Enemy::Enemy() : GameObject() {
 }

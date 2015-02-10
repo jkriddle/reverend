@@ -7,7 +7,7 @@ void BoxCollider::update() {
 		BoxCollider* pCollider = parent_->getComponent<BoxCollider>();
 		BoxCollider* oCollider = o->getComponent<BoxCollider>();
 		if (pCollider != nullptr && oCollider != nullptr) {
-			if (PhysicsSystem::checkCollision(pCollider->getBounds(), oCollider->getBounds())) {
+			if (Physics::checkCollision(pCollider->getBounds(), oCollider->getBounds())) {
 				// collision detected
 				Vector2d newPos = parent_->getPosition() - parent_->getVelocity();
 				parent_->setPosition(newPos);

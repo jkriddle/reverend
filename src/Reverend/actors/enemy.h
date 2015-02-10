@@ -3,7 +3,7 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "../gameobject.h"
+#include "../engine/gameobject.h"
 
 class Enemy : public GameObject {
 public:

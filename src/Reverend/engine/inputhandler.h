@@ -55,6 +55,10 @@ public:
     Vector2d* getMousePosition() const;
     Vector2d* getPrevMousePosition() const;
     
+	bool isQuitting() { return quitting_; }
+
+    void onQuit();
+
 private:
     
     InputHandler();
@@ -100,6 +104,7 @@ private:
 	Uint8* prevMouseButtonStates_;
     Vector2d* mousePosition_;
 	Vector2d* prevMousePosition_;
+	bool quitting_;
     
     // singleton
     static InputHandler* instance_;

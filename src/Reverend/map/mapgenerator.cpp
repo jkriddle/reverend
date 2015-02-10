@@ -1,5 +1,5 @@
 #include "mapgenerator.h"
-#include "../cleanup.h"
+#include "../engine/cleanup.h"
 #include <iostream>
 #include <fstream>
 #include <vector>

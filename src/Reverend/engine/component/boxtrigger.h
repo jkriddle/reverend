@@ -4,7 +4,7 @@
 
 #include "../gameobject.h"
 #include "component.h"
-#include "../physicssystem.h"
+#include "../physics.h"
 
 class BoxTrigger : public Component {
 public:

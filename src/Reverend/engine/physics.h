@@ -1,11 +1,11 @@
 #pragma once
-#ifndef PHYSICSSYSTEM_H
-#define PHYSICSSYSTEM_H
+#ifndef PHYSICS_H
+#define PHYSICS_H
 
 class GameRect;
 class GameObject;
 
-class PhysicsSystem {
+class Physics {
 
 public:
 	static bool checkCollision(GameObject &a, GameObject &b);

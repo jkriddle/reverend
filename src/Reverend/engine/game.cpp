@@ -1,27 +1,12 @@
 #include "game.h"
 #include <time.h>
-#include "component\renderingcomponent.h"
+#include "component/renderingcomponent.h"
 #include "object.h"
-
-Game* Game::instance_ = 0;
-
-bool Game::initWorld() {
-	srand(static_cast<int>(time(0)));
-	unsigned int a = (rand() % (int)(RAND_MAX + 1));
-	unsigned int b = (rand() % (int)(RAND_MAX + 1));
-	seed_ = a*(RAND_MAX+1)+b;
-	
-	seed_ = 0; // testing only	
-	srand(seed_);
-
-	map_ = new MapGenerator(screenWidth_, screenHeight_, seed_);
-	map_->loadAltitudeMap("overworld.bmp");
-	return true;
-}
 
 void Game::init() {
 	if (initSystems()) {
-		initWorld();
+		// do other stuff
+		load();
 	} else {
 		SDL_Quit();
 	}
@@ -74,13 +59,14 @@ bool Game::initSystems() {
 	return true;
 }
 
-void Game::close() {
+void Game::quit() {
+	close();
 	isRunning_ = false;
 	cleanup(screen_, window_, renderer_);
 	screen_ = NULL;
 	window_ = NULL;
 	renderer_ = NULL;
-	map_ = NULL;
+//	map_ = NULL;
 	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
@@ -106,6 +92,7 @@ void Game::update() {
 
 void Game::handleEvents() {
 	InputHandler::getInstance()->update();
+	if (InputHandler::getInstance()->isQuitting()) quit();
 }
 
 

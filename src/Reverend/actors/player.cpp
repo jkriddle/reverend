@@ -1,10 +1,10 @@
 #pragma warning(disable: 4244) // conversion of Vector2d float to int
 
 #include "player.h"
-#include "../game.h"
-#include "../soundmanager.h"
-#include "../component/boxcollider.h"
-#include "../component/animatedsprite.h"
+#include "../engine/game.h"
+#include "../engine/soundmanager.h"
+#include "../engine/component/boxcollider.h"
+#include "../engine/component/animatedsprite.h"
 
 Player::Player() : GameObject() {
 }

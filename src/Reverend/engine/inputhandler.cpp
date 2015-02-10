@@ -6,7 +6,8 @@
 
 InputHandler* InputHandler::instance_ = 0;
 
-InputHandler::InputHandler() : keystates_(0), joysticksInitialised_(false), mousePosition_(new Vector2d(0,0)), prevMousePosition_(new Vector2d(0,0))
+InputHandler::InputHandler() : keystates_(0), joysticksInitialised_(false), quitting_(false), 
+	mousePosition_(new Vector2d(0,0)), prevMousePosition_(new Vector2d(0,0))
 {
     // create button states for the mouse
     for(int i = 0; i < 3; i++)
@@ -224,7 +225,7 @@ void InputHandler::update()
         switch (event.type)
         {
             case SDL_QUIT:
-                Game::getInstance()->close();
+                onQuit();
                 break;
                 
             case SDL_JOYAXISMOTION:
@@ -331,6 +332,10 @@ void InputHandler::onMouseButtonUp(SDL_Event &event)
 		prevMouseButtonStates_[RIGHT] = 0;
         mouseButtonStates_[RIGHT] = false;
     }
+}
+
+void InputHandler::onQuit() {
+	quitting_ = true;
 }
 
 void InputHandler::onJoystickAxisMove(SDL_Event &event)

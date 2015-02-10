@@ -18,21 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="inputhandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="vector2d.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="texturemanager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="soundmanager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="noise\noiseutils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,16 +27,7 @@
     <ClCompile Include="map\maprenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="state\gamestatemachine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="state\playstate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="physicssystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="component\renderingcomponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="actors\enemy.cpp">
@@ -60,31 +36,52 @@
     <ClCompile Include="actors\player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="entities\terrain.cpp">
+    <ClCompile Include="engine\soundmanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="entities\tile.cpp">
+    <ClCompile Include="engine\texturemanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="component\boxtrigger.cpp">
+    <ClCompile Include="engine\vector2d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="component\boxcollider.cpp">
+    <ClCompile Include="engine\object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="component\componentfactory.cpp">
+    <ClCompile Include="engine\inputhandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="graphics.cpp">
+    <ClCompile Include="engine\graphics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gameobject.cpp">
+    <ClCompile Include="engine\gameobject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="object.cpp">
+    <ClCompile Include="engine\state\gamestatemachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="component\animatedsprite.cpp">
+    <ClCompile Include="engine\component\animatedsprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\component\boxcollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\component\boxtrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\component\componentfactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\component\renderingcomponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="reverend.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\physics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -118,27 +115,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cleanup.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="texturemanager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="loaderparams.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vector2d.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inputhandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="soundmanager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="noise\noiseutils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -148,34 +124,7 @@
     <ClInclude Include="map\maprenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ltimer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="state\gamestate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="state\gamestatemachine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="state\playstate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="component\component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="component\message.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="component\boxtrigger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="component\boxcollider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gamerect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="component\renderingcomponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="actors\enemy.h">
@@ -184,25 +133,70 @@
     <ClInclude Include="actors\player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gameobject.h">
+    <ClInclude Include="engine\vector2d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="entities\terrain.h">
+    <ClInclude Include="engine\soundmanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="entities\tile.h">
+    <ClInclude Include="engine\texturemanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="component\componentfactory.h">
+    <ClInclude Include="engine\object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="graphics.h">
+    <ClInclude Include="engine\ltimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="object.h">
+    <ClInclude Include="engine\loaderparams.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="component\animatedsprite.h">
+    <ClInclude Include="engine\inputhandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\graphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\gamerect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\gameobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\cleanup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\state\gamestate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\state\gamestatemachine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\component\animatedsprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\component\boxcollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\component\boxtrigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\component\component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\component\componentfactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\component\message.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\component\renderingcomponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="reverend.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -212,6 +206,6 @@
     </Media>
   </ItemGroup>
   <ItemGroup>
-    <None Include="physicssystem.h" />
+    <None Include="engine\physics.h" />
   </ItemGroup>
 </Project>

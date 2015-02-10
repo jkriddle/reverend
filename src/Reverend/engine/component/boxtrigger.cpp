@@ -8,7 +8,7 @@ void BoxTrigger::update() {
 		BoxTrigger* pTrigger = parent_->getComponent<BoxTrigger>();
 		BoxTrigger* oTrigger = o->getComponent<BoxTrigger>();
 		if (pTrigger != nullptr && oTrigger != nullptr) {
-			if (PhysicsSystem::checkCollision(pTrigger->getBounds(), oTrigger->getBounds())) {
+			if (Physics::checkCollision(pTrigger->getBounds(), oTrigger->getBounds())) {
 				// trigger entry detected
 				parent_->sendMessage(new Message(3, MessageType::TriggerEnter, parent_));
 			}

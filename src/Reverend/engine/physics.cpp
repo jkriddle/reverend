@@ -1,7 +1,7 @@
-#include "physicssystem.h"
+#include "physics.h"
 #include "gameobject.h"
 
-bool PhysicsSystem::checkCollision(GameObject &a, GameObject &b) {
+bool Physics::checkCollision(GameObject &a, GameObject &b) {
 	if (&a == &b) return false;
 	int aX = a.getX();
 	int aY = a.getY();
@@ -23,7 +23,7 @@ bool PhysicsSystem::checkCollision(GameObject &a, GameObject &b) {
 	return false;
 }
 
-bool PhysicsSystem::checkCollision(GameRect &a, GameRect &b) {
+bool Physics::checkCollision(GameRect &a, GameRect &b) {
 	if (&a == &b) return false;
 	int aX = a.getX();
 	int aY = a.getY();

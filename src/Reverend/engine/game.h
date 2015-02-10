@@ -9,7 +9,6 @@
 #include "cleanup.h"
 #include "inputhandler.h"
 #include "state/gamestatemachine.h"
-#include "map/mapgenerator.h"
 
 class GameObject;
 
@@ -17,32 +16,23 @@ class Game {
 public:
 
 	void init();
-	void close();
-	void update();
-	void handleEvents();
-	void render();
+	void quit();
+	virtual void update();
+	virtual void handleEvents();
+	virtual void render();
+	virtual void load() = 0;
+	virtual void close() = 0;
 	bool running() { return isRunning_; }
-
-	static Game* getInstance()
-	{
-		if(instance_ == 0)
-		{
-			instance_ = new Game();
-			return instance_;
-		}
-		return instance_;
-	} 
 
 	SDL_Renderer* getRenderer() const { return renderer_; }
 	GameStateMachine* getStateMachine(){ return gameStateMachine_; }
-	MapGenerator* getMap(){ return map_; }
 	int getScreenWidth() { return screenWidth_; }
 	int getScreenHeight() { return screenHeight_; }
 
 	static const int getTileSize() { return 32; }
 	static const int getScale() { return 4; }
 
-private:
+protected:
 	Game() {
 		window_ = nullptr;
 		screen_ = nullptr;
@@ -52,10 +42,8 @@ private:
 		gameStateMachine_ = new GameStateMachine();
 	}
 
-	static Game* instance_;
-
+private:
 	bool initSystems();
-	bool initWorld();
 	
 	bool isRunning_;
 	int seed_;
@@ -66,7 +54,6 @@ private:
 	SDL_Renderer* renderer_;
 	SDL_Surface* screen_;
 	GameStateMachine* gameStateMachine_;
-	MapGenerator* map_;
 };
 
 #endif

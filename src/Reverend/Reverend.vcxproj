@@ -75,30 +75,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="component\animatedsprite.cpp" />
-    <ClCompile Include="component\boxcollider.cpp" />
-    <ClCompile Include="component\boxtrigger.cpp" />
-    <ClCompile Include="component\componentfactory.cpp" />
-    <ClCompile Include="component\renderingcomponent.cpp" />
+    <ClCompile Include="reverend.cpp" />
+    <ClCompile Include="engine\component\animatedsprite.cpp" />
+    <ClCompile Include="engine\component\boxcollider.cpp" />
+    <ClCompile Include="engine\component\boxtrigger.cpp" />
+    <ClCompile Include="engine\component\componentfactory.cpp" />
+    <ClCompile Include="engine\component\renderingcomponent.cpp" />
     <ClCompile Include="actors\enemy.cpp" />
-    <ClCompile Include="entities\terrain.cpp" />
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="entities\tile.cpp" />
-    <ClCompile Include="graphics.cpp" />
-    <ClCompile Include="object.cpp" />
-    <ClCompile Include="physicssystem.cpp" />
-    <ClCompile Include="state\gamestatemachine.cpp" />
-    <ClCompile Include="inputhandler.cpp" />
+    <ClCompile Include="engine\game.cpp" />
+    <ClCompile Include="engine\graphics.cpp" />
+    <ClCompile Include="engine\object.cpp" />
+    <ClCompile Include="engine\physics.cpp" />
+    <ClCompile Include="engine\state\gamestatemachine.cpp" />
+    <ClCompile Include="engine\inputhandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map\mapgenerator.cpp" />
     <ClCompile Include="map\maprenderer.cpp" />
     <ClCompile Include="noise\noiseutils.cpp" />
     <ClCompile Include="actors\player.cpp" />
     <ClCompile Include="state\playstate.cpp" />
-    <ClCompile Include="gameobject.cpp" />
-    <ClCompile Include="soundmanager.cpp" />
-    <ClCompile Include="texturemanager.cpp" />
-    <ClCompile Include="vector2d.cpp" />
+    <ClCompile Include="engine\gameobject.cpp" />
+    <ClCompile Include="engine\soundmanager.cpp" />
+    <ClCompile Include="engine\texturemanager.cpp" />
+    <ClCompile Include="engine\vector2d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\textures\enemy.png" />
@@ -116,41 +115,40 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cleanup.h" />
-    <ClInclude Include="component\animatedsprite.h" />
-    <ClInclude Include="component\boxcollider.h" />
-    <ClInclude Include="component\boxtrigger.h" />
-    <ClInclude Include="component\component.h" />
-    <ClInclude Include="component\componentfactory.h" />
-    <ClInclude Include="component\message.h" />
-    <ClInclude Include="component\renderingcomponent.h" />
-    <ClInclude Include="entities\terrain.h" />
-    <ClInclude Include="gamerect.h" />
+    <ClInclude Include="reverend.h" />
+    <ClInclude Include="engine\cleanup.h" />
+    <ClInclude Include="engine\component\animatedsprite.h" />
+    <ClInclude Include="engine\component\boxcollider.h" />
+    <ClInclude Include="engine\component\boxtrigger.h" />
+    <ClInclude Include="engine\component\component.h" />
+    <ClInclude Include="engine\component\componentfactory.h" />
+    <ClInclude Include="engine\component\message.h" />
+    <ClInclude Include="engine\component\renderingcomponent.h" />
+    <ClInclude Include="engine\gamerect.h" />
     <ClInclude Include="actors\enemy.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="gameobject.h" />
-    <ClInclude Include="entities\tile.h" />
-    <ClInclude Include="graphics.h" />
-    <ClInclude Include="object.h" />
-    <ClInclude Include="state\gamestate.h" />
-    <ClInclude Include="state\gamestatemachine.h" />
-    <ClInclude Include="inputhandler.h" />
-    <ClInclude Include="loaderparams.h" />
-    <ClInclude Include="ltimer.h" />
+    <ClInclude Include="engine\game.h" />
+    <ClInclude Include="engine\gameobject.h" />
+    <ClInclude Include="engine\graphics.h" />
+    <ClInclude Include="engine\object.h" />
+    <ClInclude Include="engine\state\gamestate.h" />
+    <ClInclude Include="engine\state\gamestatemachine.h" />
+    <ClInclude Include="engine\inputhandler.h" />
+    <ClInclude Include="engine\loaderparams.h" />
+    <ClInclude Include="engine\ltimer.h" />
     <ClInclude Include="map\mapgenerator.h" />
     <ClInclude Include="map\maprenderer.h" />
     <ClInclude Include="noise\noiseutils.h" />
     <ClInclude Include="actors\player.h" />
     <ClInclude Include="state\playstate.h" />
-    <ClInclude Include="soundmanager.h" />
-    <ClInclude Include="texturemanager.h" />
-    <ClInclude Include="vector2d.h" />
+    <ClInclude Include="engine\soundmanager.h" />
+    <ClInclude Include="engine\texturemanager.h" />
+    <ClInclude Include="engine\vector2d.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sounds\fast_swipe.wav" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="physicssystem.h" />
+    <None Include="engine\physics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
