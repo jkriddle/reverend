@@ -2,21 +2,20 @@
 #ifndef TERRAINLAYER_H
 #define TERRAINLAYER_H
 
-#include "objectlayer.h"
 #include "tile.h"
 #include <map>
+#include <vector>
 
-class TerrainLayer : public ObjectLayer
+class Terrain : public SDLGameObject
 {
 public:
 	virtual void update();
-	virtual void draw();
 	virtual void clean();
 	Tile* getTile(int x, int y);
 
 private:
 	Tile* getCachedTile(int x, int y);
-	std::vector<GameObject*> gameObjects_;
+	std::vector<SDLGameObject*> gameObjects_;
 	std::map<int, std::map<int, Tile*>> tileCache_;
 	void flushCache(int x, int y);
 	static const int CACHE_RANGE = 5000;

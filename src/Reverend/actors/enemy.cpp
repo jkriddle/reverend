@@ -1,14 +1,11 @@
 #include "enemy.h"
 #include "../component/boxcollider.h"
+#include "../component/renderingcomponent.h"
 
 Enemy::Enemy(const LoaderParams* pParams) : SDLGameObject(pParams)
 {
-	addComponent(new BoxCollider(20, 10, 34, 44));
-}
-
-void Enemy::draw()
-{
-	SDLGameObject::draw();
+	addComponent(new BoxCollider(*this, 20, 10, 34, 44));
+	addComponent(new RenderingComponent(*this));
 }
 
 void Enemy::update()

@@ -4,8 +4,8 @@
 
 #include <map>
 #include <vector>
-#include "player.h"
-#include "enemy.h"
+#include "../actors/player.h"
+#include "../actors/enemy.h"
 
 // Base class
  

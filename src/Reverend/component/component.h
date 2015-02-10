@@ -8,8 +8,18 @@ class SDLGameObject;
 
 class Component {
 public:
-	virtual void update(SDLGameObject& o) = 0;
+	virtual void update() = 0;
 	virtual void receiveMessage(Message* message) = 0;
+
+protected:
+
+	Component(SDLGameObject& parent) {
+		parent_ = &parent;
+	}
+
+	SDLGameObject* parent_;
+
+private:
 };
 
 #endif;

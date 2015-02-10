@@ -12,8 +12,6 @@ public:
     ~GameStateMachine() {}
     
     void update();
-    void draw();
-    
     void pushState(GameState* state);
     void changeState(GameState* state);
     void popState();

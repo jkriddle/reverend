@@ -3,7 +3,7 @@
 #ifndef TILE_H
 #define TILE_H
 
-#include "sdlgameobject.h"
+#include "../sdlgameobject.h"
 
 class Tile : public SDLGameObject {
 

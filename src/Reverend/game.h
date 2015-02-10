@@ -21,7 +21,7 @@ public:
 	void close();
 	void update();
 	void handleEvents();
-	void draw();
+	void render();
 	bool running() { return isRunning_; }
 
 	static Game* getInstance()

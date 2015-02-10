@@ -21,14 +21,6 @@ void GameStateMachine::update()
 	}
 }
 
-void GameStateMachine::draw()
-{
-    if(!gameStates_.empty())
-    {
-        gameStates_.back()->draw();
-    }
-}
-
 void GameStateMachine::pushState(GameState *state)
 {
     gameStates_.push_back(state);

@@ -35,7 +35,7 @@ int main(int argc,char **argv)
 
 		Game::getInstance()->handleEvents();
 		Game::getInstance()->update();
-		Game::getInstance()->draw();
+		Game::getInstance()->render();
 
 		//If frame finished early
         int frameTicks = capTimer.getTicks();

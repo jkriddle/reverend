@@ -3,32 +3,6 @@
 
 const std::string PlayState::id_ = "PLAY";
 
-void PlayState::update() {
-	if(InputHandler::getInstance()->getButtonState(0, 4) || InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_RETURN)) {
-		//Game::getInstance()->getStateMachine()->pushState(new PauseState());
-	}
-
-	// Inventory
-	if(InputHandler::getInstance()->getButtonState(0, 11) || InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_I)) {
-		std::cout << "show inventory" << std::endl;
-	}
-		
-	if(InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
-		Game::getInstance()->close();
-	}
-	
-	for(unsigned int i = 0; i < layers_.size(); i++) {
-		layers_[i]->update();
-	}
-
-}
-
-void PlayState::draw() {
-
-	for(unsigned int i = 0; i < layers_.size(); i++) {
-		layers_[i]->draw();
-	}
-}
 
 bool PlayState::onEnter()
 {
@@ -57,26 +31,20 @@ bool PlayState::onEnter()
 	Game::getInstance()->getCamera()->goTo(pX, pY);
 	
 	// Setup layers - first is lowest in z-index
-	TerrainLayer* terrainLayer = new TerrainLayer();
-	layers_.push_back(terrainLayer);
+	Terrain* terrain = new Terrain();
+	gameObjects_.push_back(terrain);
 
-	ObjectLayer* actorLayer = new ObjectLayer();
-	actorLayer->add(ObjectFactory::create("player", new LoaderParams(pX, pY, 64, 64, "player")));
-	actorLayer->add(ObjectFactory::create("enemy", new LoaderParams(pX - 128, pY - 128, 64, 64, "enemy")));
-	layers_.push_back(actorLayer);
+	gameObjects_.push_back(ObjectFactory::create("player", new LoaderParams(pX, pY, 64, 64, "player")));
+	gameObjects_.push_back(ObjectFactory::create("enemy", new LoaderParams(pX - 128, pY - 128, 64, 64, "enemy")));
 
 	return true;
 }
 
 bool PlayState::onExit()
 {
-	for(unsigned int i = 0; i < layers_.size(); i++) {
-		layers_[i]->clean();
-	}
-	layers_.clear();
+	GameState::onExit();
 
-	ObjectFactory::clear();
-	
+	// TODO - these won't be needed, handled by renderer
 	TextureManager::getInstance()->clearFromTextureMap("player");
 	TextureManager::getInstance()->clearFromTextureMap("enemy");
 	TextureManager::getInstance()->clearFromTextureMap("water");
@@ -88,4 +56,33 @@ bool PlayState::onExit()
 	TextureManager::getInstance()->clearFromTextureMap("snow");
 	std::cout << "exiting PlayState\n";
 	return true;
+}
+
+
+void PlayState::update() {
+	if(InputHandler::getInstance()->getButtonState(0, 4) || InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_RETURN)) {
+		//Game::getInstance()->getStateMachine()->pushState(new PauseState());
+	}
+
+	// Inventory
+	if(InputHandler::getInstance()->getButtonState(0, 11) || InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_I)) {
+		std::cout << "show inventory" << std::endl;
+	}
+		
+	if(InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
+		Game::getInstance()->close();
+	}
+
+	for(unsigned int i = 0; i < gameObjects_.size(); i++) {
+		gameObjects_[i]->update();
+	
+		// check components
+		// definitely going to need to find a more efficient way of this
+		// if we get a lot of object. Maybe move out of play state and just do it once for
+		// all object everywhere.
+		for(Component* c : gameObjects_[i]->getComponents())
+		{
+			c->update();
+		}	
+	}
 }

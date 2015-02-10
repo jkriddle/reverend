@@ -1,5 +1,5 @@
 #include "physicssystem.h"
-#include "object/sdlgameobject.h"
+#include "sdlgameobject.h"
 
 bool PhysicsSystem::checkCollision(SDLGameObject &a, SDLGameObject &b) {
 	if (&a == &b) return false;

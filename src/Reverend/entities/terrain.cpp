@@ -1,13 +1,13 @@
-#include "TerrainLayer.h"
+#include "terrain.h"
 #include <iostream>
 #include "../game.h"
 
-Tile* TerrainLayer::getCachedTile(int x, int y) {
+Tile* Terrain::getCachedTile(int x, int y) {
 	return tileCache_[x][y];
 }
 
 // Remove any distance tiles that no longer need to be stored in memory
-void TerrainLayer::flushCache(int x, int y) {
+void Terrain::flushCache(int x, int y) {
 	// TODO:
 	// The code below causes huge lag due to having to loop through the entire Y cache constantly.
 	// Find a better way to do this. There has to be an easy way to create an index of item so we can quickly
@@ -50,7 +50,7 @@ void TerrainLayer::flushCache(int x, int y) {
 // it, randomeness, etc. Re-calculating this for every tile every frame would kill the CPU. 
 // Thus we will only calculate tiles once ever, and store them in memory.
 // Eventually we'll use a disk cache to offload the memory and re-load blocks as appropriate.
-Tile* TerrainLayer::getTile(int x, int y) {
+Tile* Terrain::getTile(int x, int y) {
 	Tile* tile = nullptr;
 	tile = getCachedTile(x, y);
 	if (tile != nullptr) return tile;
@@ -79,10 +79,11 @@ Tile* TerrainLayer::getTile(int x, int y) {
 	return tile;
 }
 
-void TerrainLayer::update() {
+void Terrain::update() {
 }
 
-void TerrainLayer::draw() {
+/*
+void Terrain::draw() {
 	int tileSize = Game::getTileSize();
 	int scale = Game::getScale();
 
@@ -120,8 +121,8 @@ void TerrainLayer::draw() {
 	}
 
 	flushCache(cameraX, cameraY);
-}
+}*/
 
-void TerrainLayer::clean() {
+void Terrain::clean() {
 	tileCache_.clear();
 }

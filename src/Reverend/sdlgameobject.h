@@ -4,17 +4,19 @@
 #define SDLGAMEOBJECT_H
 
 #include <SDL/SDL.h>
+#include <vector>
 #include "gameobject.h"
-#include "../vector2d.h"
-#include "../inputhandler.h"
-#include "../gamerect.h"
+#include "vector2d.h"
+#include "inputhandler.h"
+#include "gamerect.h"
+#include "component/component.h"
 
 class SDLGameObject : public GameObject
 {
 public:
+	SDLGameObject();
 	SDLGameObject(const LoaderParams* pParams);
 
-	virtual void draw();
 	virtual void update();
 	virtual void clean();
 	virtual int getX();
@@ -28,7 +30,7 @@ public:
 	Vector2d SDLGameObject::getPosition(){ return position_; }
 	void setPosition(Vector2d position){ position_ = position; }
 	GameRect getBounds() { 
-		return GameRect(position_.getX(), position_.getY(), width_, height_);
+		return GameRect((int)position_.getX(), (int)position_.getY(), width_, height_);
 	}
 	const std::string& getTextureId() { return textureId_; }
 	
@@ -48,6 +50,18 @@ public:
 			if (cType != nullptr) return cType;
 		}
 		return nullptr;
+	}
+	
+	template <typename T>
+	std::vector<T*> getComponents() {
+		std::vector<T*> matching;
+		for(Component* c : components_) {
+			T* cType = dynamic_cast<T*>(c);
+			if (cType != nullptr) {
+				matching.push_back(cType);
+			}
+		}
+		return matching;
 	}
 
 	void sendMessage(Message* message)
@@ -71,6 +85,8 @@ protected:
 	int currentTextureFrame_;
 
 	std::string textureId_;
+	
+	std::vector<Component*> components_;
 };
 
 #endif

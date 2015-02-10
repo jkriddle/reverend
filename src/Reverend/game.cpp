@@ -1,5 +1,7 @@
 #include "game.h"
 #include <time.h>
+#include "entities\objectfactory.h"
+#include "component\renderingcomponent.h"
 
 Game* Game::instance_ = 0;
 
@@ -95,8 +97,16 @@ void Game::handleEvents() {
 }
 
 
-void Game::draw() {
+void Game::render() {
 	SDL_RenderClear(renderer_);
-	gameStateMachine_->draw();
+	// TODO loop through components, find renderers, and render them
+	std::vector<SDLGameObject*> gameObjects = ObjectFactory::getObjects();
+	for(SDLGameObject* o : gameObjects) {
+		std::vector<RenderingComponent*> renderers = o->getComponents<RenderingComponent>();
+		for(RenderingComponent* r : renderers) {
+			r->render(renderer_);
+		}
+	}
+
     SDL_RenderPresent(renderer_); 
 }
