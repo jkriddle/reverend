@@ -2,6 +2,7 @@
 #include "../object.h"
 
 void BoxTrigger::update() {
+	Component::update();
 	boundingBox_.setPosition(parent_->position.x, parent_->position.y);
 	for(GameObject* o : Object::getObjects()) {
 		if (&parent_ == &o) continue;

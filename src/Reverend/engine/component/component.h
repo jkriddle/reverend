@@ -8,16 +8,20 @@ class GameObject;
 
 class Component {
 public:
-	virtual void update() = 0;
+	virtual void update() {
+		if (!started_) start();
+	}
 	virtual void receiveMessage(Message* message) = 0;
-
+	virtual void start() { }
 protected:
 
 	Component(GameObject& parent) {
 		parent_ = &parent;
+		started_ = false;
 	}
 
 	GameObject* parent_;
+	bool started_;
 
 private:
 };

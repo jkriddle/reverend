@@ -1,12 +1,18 @@
 #include "playerinput.h"
 
+void PlayerInput::start() {
+	sprite_ = parent_->getComponent<AnimatedSprite>();
+}
+
 void PlayerInput::handleKeyboardInput() {
 	bool look = false;
 	
+	parent_->acceleration = Vector2d::ZERO;
+	parent_->velocity = Vector2d::ZERO;
+
 	// Digital Pad
 	if (Input::getInstance()->isKeyDown(SDL_SCANCODE_A)) {
 		// Left
-		std::cout << "FDJSK" << std::endl;
 		parent_->velocity.x = -1 * speed_;
 	}
 		
@@ -96,61 +102,65 @@ void PlayerInput::handleKeyboardInput() {
 	}
 
 	if (!look) {
-		//getWalkingDirection();
+		getWalkingDirection();
 	}
 
-	//updateForwardTexture();
+	updateForwardTexture();
+
+	parent_->velocity += parent_->acceleration;
+	parent_->position += parent_->velocity;
 }
 
-/*
+
 void PlayerInput::getWalkingDirection() {
 
-	if (velocity_.x == 0 && velocity_.y == 0) {
+	if (parent_->velocity.x == 0 && parent_->velocity.y == 0) {
 		// Idle
 		parent_->forward = Vector2d::ZERO;
-	} else if (velocity_.x == 0 && velocity_.y < 0) {
+	} else if (parent_->velocity.x == 0 && parent_->velocity.y < 0) {
 		// N
 		parent_->forward = Vector2d::NORTH;
-	} else if (velocity_.x > 0 && velocity_.y < 0) {
+	} else if (parent_->velocity.x > 0 && parent_->velocity.y < 0) {
 		// NE
 		parent_->forward = Vector2d::NORTH_EAST;
-	} else if (velocity_.x > 0 && velocity_.y == 0) {
+	} else if (parent_->velocity.x > 0 && parent_->velocity.y == 0) {
 		// E
 		parent_->forward = Vector2d::EAST;
-	} else if (velocity_.x > 0 && velocity_.y > 0) {
+	} else if (parent_->velocity.x > 0 && parent_->velocity.y > 0) {
 		// SE
 		parent_->forward = Vector2d::SOUTH_EAST;
-	} else if (velocity_.x == 0 && velocity_.y > 0) {
+	} else if (parent_->velocity.x == 0 && parent_->velocity.y > 0) {
 		// S
 		parent_->forward = Vector2d::SOUTH;
-	} else if (velocity_.x < 0 && velocity_.y > 0) {
+	} else if (parent_->velocity.x < 0 && parent_->velocity.y > 0) {
 		// SW
 		parent_->forward = Vector2d::SOUTH_WEST;
-	} else if (velocity_.x < 0 && velocity_.y == 0) {
+	} else if (parent_->velocity.x < 0 && parent_->velocity.y == 0) {
 		// W
 		parent_->forward = Vector2d::WEST;
-	} else if (velocity_.x < 0 && velocity_.y < 0) {
+	} else if (parent_->velocity.x < 0 && parent_->velocity.y < 0) {
 		// NW
 		parent_->forward = Vector2d::NORTH_WEST;
 	}
 }
 
 void PlayerInput::updateForwardTexture() {
-	if (forward_ == Vector2d::ZERO) {
-		currentTextureRow_ = 42; // Idle frame
+	if (parent_->forward == Vector2d::ZERO) {
+		sprite_->currentRow = 41; // Idle frame
 	}
-	if (forward_ == Vector2d::NORTH) currentTextureRow_ = 1;
-	if (forward_ == Vector2d::NORTH_EAST) currentTextureRow_ = 3;
-	if (forward_ == Vector2d::EAST) currentTextureRow_ = 5;
-	if (forward_ == Vector2d::SOUTH_EAST) currentTextureRow_ = 7;
-	if (forward_ == Vector2d::SOUTH) currentTextureRow_ = 9;
-	if (forward_ == Vector2d::SOUTH_WEST) currentTextureRow_ = 11;
-	if (forward_ == Vector2d::WEST) currentTextureRow_ = 13;
-	if (forward_ == Vector2d::NORTH_WEST) currentTextureRow_ = 15;
+	if (parent_->forward == Vector2d::NORTH) sprite_->currentRow = 0;
+	if (parent_->forward == Vector2d::NORTH_EAST) sprite_->currentRow = 2;
+	if (parent_->forward == Vector2d::EAST) sprite_->currentRow = 4;
+	if (parent_->forward == Vector2d::SOUTH_EAST) sprite_->currentRow = 6;
+	if (parent_->forward == Vector2d::SOUTH) sprite_->currentRow = 8;
+	if (parent_->forward == Vector2d::SOUTH_WEST) sprite_->currentRow = 10;
+	if (parent_->forward == Vector2d::WEST) sprite_->currentRow = 12;
+	if (parent_->forward == Vector2d::NORTH_WEST) sprite_->currentRow = 14;
 }
-*/
+
 void PlayerInput::update()
 {
+	Component::update();
 	/*
 	// Joystick input
 	if (Input::getInstance()->joysticksInitialised()) {

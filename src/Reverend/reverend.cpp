@@ -1,8 +1,12 @@
 #include "reverend.h""
 #include "engine/texturemanager.h"
 #include "engine/soundmanager.h"
+#include "engine/camera.h"
 
 void Reverend::load() {
+	// Setup camera
+	CameraManager::mainCamera = new Camera(getScreenWidth(), getScreenHeight());
+
 	// Load Textures
 	// TODO - move this to PlayState once we have the whole texture management/component renderer figured out.
 	TextureManager::getInstance()->load("assets/textures/player.png", "player", getRenderer());

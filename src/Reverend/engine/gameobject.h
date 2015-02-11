@@ -41,6 +41,11 @@ public:
 	std::vector<Component*> getComponents() {
 		return components;
 	}
+
+	// Use for in-game initialization
+	virtual void start();
+
+	void update();
 	
 	// Retrieve the first component of a specific type
 	template <typename T>
@@ -82,7 +87,7 @@ public:
 	std::vector<Component*> components;
 
 protected:
-
+	bool started_;
 	
 };
 

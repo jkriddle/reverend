@@ -1,6 +1,5 @@
 #include "graphics.h"
 #include "object.h"
-#include "component\cameracomponent.h"
 
 void Graphics::render(GameObject* o, SDL_Renderer* renderer) {
 	/*CameraComponent* component = ObjectFactory::getObject<CameraComponent>();
