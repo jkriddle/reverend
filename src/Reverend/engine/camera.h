@@ -19,8 +19,8 @@ public:
 			return Vector2d::ZERO;
 		}
 
-		int tX = x - target->position.x + (int)(width_ / 2) - (int)(target->width / 2);
-		int tY = y - target->position.y  + (int)(height_ / 2) -  (int)(target->height / 2);
+		int tX = x - (int)target->position.x + (int)(width_ / 2) - (int)(target->width / 2);
+		int tY = y - (int)target->position.y  + (int)(height_ / 2) -  (int)(target->height / 2);
 		return Vector2d((float)tX, (float)tY);
 	}
 	

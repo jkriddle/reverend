@@ -99,8 +99,6 @@ private:
 	Vector2d prevMousePosition_;
 	bool quitting_;
     
-    // singleton
-    static Input* instance_;
 };
 typedef Input Input;
 
