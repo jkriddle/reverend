@@ -4,6 +4,7 @@
 #include "../engine/component/boxcollider.h"
 #include "../component/playerinput.h"
 #include "../engine/camera.h"
+#include "../component/terrain.h"
 
 const std::string PlayState::id_ = "PLAY";
 
@@ -14,7 +15,11 @@ bool PlayState::onEnter()
 	int pX = 9000;
 	int pY = 9000;
 
-	// Load Objects
+	// Load Objects - rendered in order they are added
+	GameObject* terrain = Object::create<GameObject>();
+	Terrain* tr = new Terrain(*terrain);
+	terrain->addComponent(tr);
+
 	GameObject* player = Object::create<GameObject>();
 	player->addComponent(new PlayerInput(*player));
 
@@ -24,7 +29,7 @@ bool PlayState::onEnter()
 	player->addComponent(sprite);
 	BoxCollider* collider = new BoxCollider(*player);
 	player->addComponent(collider);
-	player->init(new LoaderParams(pX, pY, 64, 64, "player"));
+	player->init(LoaderParams(pX, pY, 64, 64, "player"));
 	CameraManager::getMain()->setTarget(player);
 
 	GameObject* e = Object::create<GameObject>();
@@ -32,7 +37,8 @@ bool PlayState::onEnter()
 	s->maxFrames = 12;
 	s->texture = "enemy";
 	e->addComponent(s);
-	e->init(new LoaderParams(pX - 100, pY - 100, 64, 64, "enemy"));
+	e->init(LoaderParams(pX - 100, pY - 100, 64, 64, "enemy"));
+
 
 	//
 	//// Setup layers - first is lowest in z-index

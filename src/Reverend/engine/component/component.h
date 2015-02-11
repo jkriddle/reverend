@@ -9,10 +9,13 @@ class GameObject;
 class Component {
 public:
 	virtual void update() {
-		if (!started_) start();
+		if (!started_) {
+			start();
+			started_ = true;
+		}
 	}
-	virtual void receiveMessage(Message* message) = 0;
-	virtual void start() { }
+	virtual void receiveMessage(Message* message) {}
+	virtual void start() {}
 protected:
 
 	Component(GameObject& parent) {

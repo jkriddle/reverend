@@ -23,6 +23,9 @@ public:
 		int tY = y - target->position.y  + (int)(height_ / 2) -  (int)(target->height / 2);
 		return Vector2d(tX, tY);
 	}
+	
+	int getWidth() { return width_; }
+	int getHeight() { return height_; }
 
 	GameObject* target;
 private:

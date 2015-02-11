@@ -21,12 +21,13 @@ public:
 	{
 	}
 
+	/*
 	GameObject(const LoaderParams* params) : position((float)params->x, (float)params->y), 
 		velocity(0.0f, 0.0f), acceleration(0.0f, 0.0f), forward(0.0f, 0.0f) {
 		init(params);
-	}
+	}*/
 
-	void init(const LoaderParams* params);
+	void init(const LoaderParams& params);
 
 	virtual ~GameObject() {}
 

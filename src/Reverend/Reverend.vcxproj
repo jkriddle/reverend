@@ -76,6 +76,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="component\playerinput.cpp" />
+    <ClCompile Include="component\terrain.cpp" />
     <ClCompile Include="engine\camera.cpp" />
     <ClCompile Include="reverend.cpp" />
     <ClCompile Include="engine\component\animatedsprite.cpp" />
@@ -116,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="component\playerinput.h" />
+    <ClInclude Include="component\terrain.h" />
     <ClInclude Include="engine\camera.h" />
     <ClInclude Include="reverend.h" />
     <ClInclude Include="engine\cleanup.h" />
