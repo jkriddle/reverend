@@ -7,7 +7,7 @@
 Input* Input::instance_ = 0;
 
 Input::Input() : keystates_(0), joysticksInitialised_(false), quitting_(false), 
-	mousePosition_(new Vector2d(0,0)), prevMousePosition_(new Vector2d(0,0))
+	mousePosition_(Vector2d(0,0)), prevMousePosition_(Vector2d(0,0))
 {
     // create button states for the mouse
     for(int i = 0; i < 3; i++)
@@ -21,8 +21,6 @@ Input::~Input()
     // delete anything we created dynamically
     delete keystates_;
     delete prevKeystates_;
-    delete mousePosition_;
-    delete prevMousePosition_;
     
     // clear our arrays
     joystickValues_.clear();
@@ -204,12 +202,12 @@ bool Input::getMouseButtonPress(int buttonNumber) const
     return prevMouseButtonStates_[buttonNumber] == 1;
 }
 
-Vector2d* Input::getMousePosition() const
+Vector2d Input::getMousePosition() const
 {
     return mousePosition_;
 }
 
-Vector2d* Input::getPrevMousePosition() const
+Vector2d Input::getPrevMousePosition() const
 {
     return prevMousePosition_;
 }
@@ -284,9 +282,9 @@ void Input::onKeyUp()
 
 void Input::onMouseMove(SDL_Event &event)
 {
-	*prevMousePosition_ = *mousePosition_;
-    mousePosition_->x = event.motion.x;
-    mousePosition_->y = event.motion.y;
+	prevMousePosition_ = mousePosition_;
+    mousePosition_.x = event.motion.x;
+    mousePosition_.y = event.motion.y;
 }
 
 void Input::onMouseButtonDown(SDL_Event &event)

@@ -21,7 +21,7 @@ public:
 
 		int tX = x - target->position.x + (int)(width_ / 2) - (int)(target->width / 2);
 		int tY = y - target->position.y  + (int)(height_ / 2) -  (int)(target->height / 2);
-		return Vector2d(tX, tY);
+		return Vector2d((float)tX, (float)tY);
 	}
 	
 	int getWidth() { return width_; }
@@ -39,6 +39,10 @@ class CameraManager  {
 public:
 	static Camera* getMain() {
 		return mainCamera;
+	}
+	static void cleanup(){
+		delete mainCamera;
+		mainCamera = NULL;
 	}
 	static Camera* mainCamera;
 };

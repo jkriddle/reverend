@@ -2,6 +2,7 @@
 #include <time.h>
 #include "component/renderingcomponent.h"
 #include "object.h"
+#include "soundmanager.h"
 
 void Game::init() {
 	if (initSystems()) {
@@ -54,12 +55,14 @@ bool Game::initSystems() {
 	//Get window surface
 	screen_ = SDL_GetWindowSurface(window_);
 
-	Input::getInstance()->initialiseJoysticks();
+	Input::getInstance().initialiseJoysticks();
 
 	return true;
 }
 
 void Game::quit() {
+	gameStateMachine_->clean();
+	Object::cleanup();
 	close();
 	isRunning_ = false;
 	cleanup(screen_, window_, renderer_);
@@ -91,8 +94,8 @@ void Game::update() {
 }
 
 void Game::handleEvents() {
-	Input::getInstance()->update();
-	if (Input::getInstance()->isQuitting()) quit();
+	Input::getInstance().update();
+	if (Input::getInstance().isQuitting()) quit();
 }
 
 

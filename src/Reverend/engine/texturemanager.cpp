@@ -1,7 +1,5 @@
 #include "texturemanager.h"
 
-TextureManager* TextureManager::instance_ = 0;
-
 bool TextureManager::load(const std::string& fileName, const std::string& id, SDL_Renderer* pRenderer) {
 	SDL_Surface* tempSurface = IMG_Load(fileName.c_str());
 	if(tempSurface == 0) {

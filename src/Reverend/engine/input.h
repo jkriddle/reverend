@@ -18,13 +18,9 @@ class Input
 {
 public:
     
-    static Input* getInstance()
+    static Input& getInstance()
     {
-        if(instance_ == 0)
-        {
-            instance_ = new Input();
-        }
-        
+		static Input instance_;
         return instance_;
     }
     
@@ -52,20 +48,17 @@ public:
     // mouse events
     bool getMouseButtonState(int buttonNumber) const;
 	bool getMouseButtonPress(int buttonNumber) const;
-    Vector2d* getMousePosition() const;
-    Vector2d* getPrevMousePosition() const;
+    Vector2d getMousePosition() const;
+    Vector2d getPrevMousePosition() const;
     
 	bool isQuitting() { return quitting_; }
 
     void onQuit();
+    ~Input();
 
 private:
     
     Input();
-    ~Input();
-    
-    Input(const Input&);
-	Input& operator=(const Input&);
     
     // private functions to handle different event types
     
@@ -102,8 +95,8 @@ private:
     // mouse specific
     std::vector<bool> mouseButtonStates_;
 	Uint8* prevMouseButtonStates_;
-    Vector2d* mousePosition_;
-	Vector2d* prevMousePosition_;
+    Vector2d mousePosition_;
+	Vector2d prevMousePosition_;
 	bool quitting_;
     
     // singleton

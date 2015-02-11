@@ -3,13 +3,13 @@
 
 bool Physics::checkCollision(GameObject &a, GameObject &b) {
 	if (&a == &b) return false;
-	int aX = a.position.x;
-	int aY = a.position.y;
+	int aX = (int)a.position.x;
+	int aY = (int)a.position.y;
 	int aW = a.width;
 	int aH = a.height;
 
-	int bX = b.position.x;
-	int bY = b.position.y;
+	int bX = (int)b.position.x;
+	int bY = (int)b.position.y;
 	int bW = b.width;
 	int bH = b.height;
 
@@ -25,13 +25,13 @@ bool Physics::checkCollision(GameObject &a, GameObject &b) {
 
 bool Physics::checkCollision(GameRect &a, GameRect &b) {
 	if (&a == &b) return false;
-	int aX = a.x;
-	int aY = a.y;
+	int aX = (int)a.x;
+	int aY = (int)a.y;
 	int aW = a.width;
 	int aH = a.height;
 
-	int bX = b.x;
-	int bY = b.y;
+	int bX = (int)b.x;
+	int bY = (int)b.y;
 	int bW = b.width;
 	int bH = b.height;
 

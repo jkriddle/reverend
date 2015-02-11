@@ -47,5 +47,7 @@ int main(int argc,char **argv)
         }
 		
 	}
+	delete reverend;
+	reverend = NULL;
 	return 0;
 }

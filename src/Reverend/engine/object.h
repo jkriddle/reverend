@@ -27,6 +27,13 @@ public:
 		}
 		return matching;
 	}
+
+	static void cleanup() {
+		for(GameObject* o : gameObjects_) {
+			delete o;
+		}
+		gameObjects_.clear();
+	}
 	
 	static std::vector<GameObject*> getObjects() {
 		return Object::gameObjects_;

@@ -11,7 +11,11 @@
 class Terrain : public RenderingComponent
 {
 public:
-	Terrain(GameObject& parent) : RenderingComponent(parent){}
+	Terrain(GameObject& parent) : map_(nullptr), RenderingComponent(parent){}
+	~Terrain() {
+		delete map_;
+		map_ = NULL;
+	}
 	virtual void start();
 	virtual void update();
 	virtual void render(SDL_Renderer* renderer);

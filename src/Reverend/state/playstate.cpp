@@ -54,7 +54,7 @@ bool PlayState::onEnter()
 bool PlayState::onExit()
 {
 	GameState::onExit();
-	
+	Object::cleanup();
 	
 	std::cout << "exiting PlayState\n";
 	return true;
@@ -62,16 +62,16 @@ bool PlayState::onExit()
 
 
 void PlayState::update() {
-	if(Input::getInstance()->getButtonState(0, 4) || Input::getInstance()->isKeyDown(SDL_SCANCODE_RETURN)) {
+	if(Input::getInstance().getButtonState(0, 4) || Input::getInstance().isKeyDown(SDL_SCANCODE_RETURN)) {
 		//Game::getStateMachine()->pushState(new PauseState());
 	}
 
 	// Inventory
-	if(Input::getInstance()->getButtonState(0, 11) || Input::getInstance()->isKeyDown(SDL_SCANCODE_I)) {
+	if(Input::getInstance().getButtonState(0, 11) || Input::getInstance().isKeyDown(SDL_SCANCODE_I)) {
 		std::cout << "show inventory" << std::endl;
 	}
 		
-	if(Input::getInstance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
-		Input::getInstance()->onQuit();
+	if(Input::getInstance().isKeyDown(SDL_SCANCODE_ESCAPE)) {
+		Input::getInstance().onQuit();
 	}
 }

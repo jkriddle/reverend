@@ -15,19 +15,16 @@ public:
 	void clearTextureMap();
 	void clearFromTextureMap(const std::string& id);
 
-	static TextureManager* getInstance()
+	static TextureManager& getInstance()
 	{
-		if(instance_ == 0)
-		{
-			instance_ = new TextureManager();
-			return instance_;
-		}
+		static TextureManager instance_;
 		return instance_;
 	} 
 
 private:
 	TextureManager() {}
-	static TextureManager* instance_;
+	~TextureManager() {
+	}
 	std::map<const std::string, SDL_Texture*> textureMap_;
 };
 

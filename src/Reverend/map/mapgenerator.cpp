@@ -6,12 +6,15 @@
 #include <iomanip>
 
 MapGenerator::MapGenerator(int width, int height, int seed) {
+	mapRenderer_ = NULL;
 	mapRenderer_ = new MapRenderer();
 	width_ = width;
 	height_ = height;
 	seed_ = seed;
 }
 MapGenerator::~MapGenerator() {
+	delete mapRenderer_;
+	mapRenderer_ = NULL;
 	cleanup(altitudeMap_);
 }
 

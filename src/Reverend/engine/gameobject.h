@@ -21,15 +21,14 @@ public:
 	{
 	}
 
-	/*
-	GameObject(const LoaderParams* params) : position((float)params->x, (float)params->y), 
-		velocity(0.0f, 0.0f), acceleration(0.0f, 0.0f), forward(0.0f, 0.0f) {
-		init(params);
-	}*/
+	~GameObject() {
+		for (unsigned int i = 0; i < components.size(); ++i) {
+			delete components[i];
+		}
+		components.clear();
+	}
 
 	void init(const LoaderParams& params);
-
-	virtual ~GameObject() {}
 
 	GameRect getBounds() { 
 		return GameRect((int)position.x, (int)position.y, width, height);

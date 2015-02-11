@@ -42,6 +42,11 @@ protected:
 		gameStateMachine_ = new GameStateMachine();
 	}
 
+	~Game() {
+		delete gameStateMachine_;
+		gameStateMachine_ = NULL;
+	}
+
 private:
 	bool initSystems();
 	

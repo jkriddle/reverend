@@ -16,13 +16,9 @@ class SoundManager
 {
 public:
     
-    static SoundManager* getInstance()
+    static SoundManager& getInstance()
     {
-        if(instance_ == 0)
-        {
-            instance_ = new SoundManager();
-            return instance_;
-        }
+		static SoundManager instance_;
         return instance_;
     }
     
@@ -33,16 +29,12 @@ public:
     
 private:
     
-    static SoundManager* instance_;
-    
     std::map<std::string, Mix_Chunk*> m_sfxs;
     std::map<std::string, Mix_Music*> m_music;
     
     SoundManager();
     ~SoundManager();
     
-    SoundManager(const SoundManager&);
-	SoundManager& operator=(const SoundManager&);
 };
 
 typedef SoundManager SoundManager;

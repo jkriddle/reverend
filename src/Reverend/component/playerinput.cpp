@@ -11,74 +11,74 @@ void PlayerInput::handleKeyboardInput() {
 	parent_->velocity = Vector2d::ZERO;
 
 	// Digital Pad
-	if (Input::getInstance()->isKeyDown(SDL_SCANCODE_A)) {
+	if (Input::getInstance().isKeyDown(SDL_SCANCODE_A)) {
 		// Left
-		parent_->velocity.x = -1 * speed_;
+		parent_->velocity.x = -1 * (float)speed_;
 	}
 		
-	if (Input::getInstance()->isKeyDown(SDL_SCANCODE_D)) {
+	if (Input::getInstance().isKeyDown(SDL_SCANCODE_D)) {
 		// Right
-		parent_->velocity.x = speed_;
+		parent_->velocity.x = (float)speed_;
 	}
 		
-	if (Input::getInstance()->isKeyDown(SDL_SCANCODE_W)) {
+	if (Input::getInstance().isKeyDown(SDL_SCANCODE_W)) {
 		// Up
-		parent_->velocity.y = -1 * speed_;
+		parent_->velocity.y = -1 * (float)speed_;
 	}
 		
-	if (Input::getInstance()->isKeyDown(SDL_SCANCODE_S)) {
+	if (Input::getInstance().isKeyDown(SDL_SCANCODE_S)) {
 		// Down
-		parent_->velocity.y = speed_;
+		parent_->velocity.y = (float)speed_;
 	}
 
-	if (Input::getInstance()->isKeyPressed(SDL_SCANCODE_E)) {
+	if (Input::getInstance().isKeyPressed(SDL_SCANCODE_E)) {
 		//action();
 	}
 		
-	if (Input::getInstance()->isKeyPressed(SDL_SCANCODE_0)) {
+	if (Input::getInstance().isKeyPressed(SDL_SCANCODE_0)) {
 		//equip(0);
 	}
 		
-	if (Input::getInstance()->isKeyPressed(SDL_SCANCODE_1)) {
+	if (Input::getInstance().isKeyPressed(SDL_SCANCODE_1)) {
 		//equip(1);
 	}
 		
-	if (Input::getInstance()->isKeyPressed(SDL_SCANCODE_2)) {
+	if (Input::getInstance().isKeyPressed(SDL_SCANCODE_2)) {
 		//equip(2);
 	}
 		
-	if (Input::getInstance()->isKeyPressed(SDL_SCANCODE_3)) {
+	if (Input::getInstance().isKeyPressed(SDL_SCANCODE_3)) {
 		//equip(3);
 	}
 	
-	if (Input::getInstance()->isKeyPressed(SDL_SCANCODE_LEFTBRACKET)) {
+	if (Input::getInstance().isKeyPressed(SDL_SCANCODE_LEFTBRACKET)) {
 		//equipPrev();
 	}
 	
-	if (Input::getInstance()->isKeyPressed(SDL_SCANCODE_RIGHTBRACKET)) {
+	if (Input::getInstance().isKeyPressed(SDL_SCANCODE_RIGHTBRACKET)) {
 		//equipNext();
 	}
 		
 	// if mouse button is being held down (shooting) then look in direction of mouse
-	if (Input::getInstance()->getMouseButtonState(0)) {
+	if (Input::getInstance().getMouseButtonState(0)) {
 		look = true;
 	}
 	
-	if (Input::getInstance()->getMouseButtonPress(0)) {
+	if (Input::getInstance().getMouseButtonPress(0)) {
 		//attack();
 	}
 
-	if (Input::getInstance()->getMouseButtonPress(2)) {
+	if (Input::getInstance().getMouseButtonPress(2)) {
 		//action();
 	}
 
 	if (look) {
-		Vector2d* mousePos = Input::getInstance()->getMousePosition();
+		Vector2d mousePos = Input::getInstance().getMousePosition();
 
 		// Mouse is active
-		Vector2d delta = *mousePos - parent_->position;
-		float radian = atan2(delta.y, delta.x) + M_PI;
-		float degree = radian * 180 / M_PI;
+		Vector2d delta = mousePos - parent_->position;
+		double radian = atan2(delta.y, delta.x) + M_PI;
+		double degree = radian * 180 / M_PI;
 			
 		// 0/360 degrees is due West
 		if (degree >= 30 && degree < 75) {
@@ -163,15 +163,15 @@ void PlayerInput::update()
 	Component::update();
 	/*
 	// Joystick input
-	if (Input::getInstance()->joysticksInitialised()) {
+	if (Input::getInstance().joysticksInitialised()) {
 		
 		// Left stick
-		if (Input::getInstance()->getAxisX(0, 1) > 0 
-			|| Input::getInstance()->getAxisX(0, 1) < 0) {
+		if (Input::getInstance().getAxisX(0, 1) > 0 
+			|| Input::getInstance().getAxisX(0, 1) < 0) {
 			velocity_.x = 1 * Input::getInstance(->getAxisX(0, 1));
 		}
 
-		if (Input::getInstance()->getAxisY(0, 1) > 0 || Input::getInstance()->getAxisY(0, 1) < 0) {
+		if (Input::getInstance().getAxisY(0, 1) > 0 || Input::getInstance().getAxisY(0, 1) < 0) {
 			velocity_.y = 1 * Input::getInstance(->getAxisY(0, 1));
 		}
 		
@@ -179,30 +179,30 @@ void PlayerInput::update()
 		bool look = true;
 
 		// If nothing is pressed on right stick, use direction of left stick
-		if (Input::getInstance()->getAxisX(0, 2) == 0 && Input::getInstance()->getAxisY(0, 2) == 0) {
+		if (Input::getInstance().getAxisX(0, 2) == 0 && Input::getInstance().getAxisY(0, 2) == 0) {
 			// No look - see below where we determine the direction of the player
 			look = false;
-		} else if (Input::getInstance()->getAxisX(0, 2) > 0) {
+		} else if (Input::getInstance().getAxisX(0, 2) > 0) {
 			// RS - Right
-			if (Input::getInstance()->getAxisY(0, 2) > 0) {
+			if (Input::getInstance().getAxisY(0, 2) > 0) {
 				parent_->forward = Vector2d::NORTH_EAST;
-			} else if (Input::getInstance()->getAxisY(0, 2) < 0) {
+			} else if (Input::getInstance().getAxisY(0, 2) < 0) {
 				parent_->forward = Vector2d::SOUTH_EAST;
 			} else {
 				parent_->forward = Vector2d::EAST;
 			}
-		} else if (Input::getInstance()->getAxisX(0, 2) < 0) {
+		} else if (Input::getInstance().getAxisX(0, 2) < 0) {
 			// RS - Left
-			if (Input::getInstance()->getAxisY(0, 2) > 0) {
+			if (Input::getInstance().getAxisY(0, 2) > 0) {
 				parent_->forward = Vector2d::SOUTH_WEST;
-			} else if (Input::getInstance()->getAxisY(0, 2) < 0) {
+			} else if (Input::getInstance().getAxisY(0, 2) < 0) {
 				parent_->forward = Vector2d::NORTH_WEST;
 			} else {
 				parent_->forward = Vector2d::WEST;
 			}
-		} else if (Input::getInstance()->getAxisY(0, 2) > 0) {
+		} else if (Input::getInstance().getAxisY(0, 2) > 0) {
 			parent_->forward = Vector2d::SOUTH;
-		} else if (Input::getInstance()->getAxisY(0, 2) < 0) {
+		} else if (Input::getInstance().getAxisY(0, 2) < 0) {
 			parent_->forward = Vector2d::NORTH;
 		}
 
@@ -214,22 +214,22 @@ void PlayerInput::update()
 		updateForwardTexture();
 
 		// Buttons
-		if (Input::getInstance()->getButtonState(0, 10)) {
+		if (Input::getInstance().getButtonState(0, 10)) {
 			// Xbox (A) or E-key
 			action();
 		}
 		
-		if (Input::getInstance()->getTriggerState(0, 1)) {
+		if (Input::getInstance().getTriggerState(0, 1)) {
 			// R Trigger
 			attack();
 		}
 
-		if (Input::getInstance()->getTriggerState(0, 8)) {
+		if (Input::getInstance().getTriggerState(0, 8)) {
 			// R Bumper
 			equipPrev();
 		}
 
-		if (Input::getInstance()->getTriggerState(0, 9)) {
+		if (Input::getInstance().getTriggerState(0, 9)) {
 			// R Bumper
 			equipNext();
 		}

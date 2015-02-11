@@ -78,7 +78,7 @@ void Terrain::render(SDL_Renderer* renderer) {
 			// also a low Y value seems to cause the map generator to crash because it is trying to get a negative pixel value
 			// (like it isn't being translated accordingly)
 			std::string tile = getTile(i, j);
-			TextureManager::getInstance()->draw(tile, cX, cY, tileSize, tileSize, renderer);
+			TextureManager::getInstance().draw(tile, cX, cY, tileSize, tileSize, renderer);
 			
 		}
 	}
