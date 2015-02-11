@@ -5,6 +5,11 @@
 #include "../component/playerinput.h"
 #include "../engine/camera.h"
 #include "../component/terrain.h"
+#include <rapidjson\document.h>
+#include <rapidjson\stringbuffer.h>
+#include <rapidjson\writer.h>
+#include <iostream>
+#include <fstream>
 
 const std::string PlayState::id_ = "PLAY";
 
@@ -14,6 +19,27 @@ bool PlayState::onEnter()
 	
 	int pX = 9000;
 	int pY = 9000;
+
+	std::ifstream t("data/items.txt");
+	std::stringstream buffer;
+	buffer << t.rdbuf();
+	const std::string tmp = buffer.str();
+	/*rapidjson::Document d;
+    d.Parse<0>(tmp.c_str());*/
+	
+    rapidjson::Document document;
+	std::string test =  "{\"a\":[{\"z\":21}, {\"z\":22}] }";
+	if ( document.Parse<0>( test.c_str() ).HasParseError() ) {
+		std::cout << "Error parsing" << std::endl;
+	} else if ( document[ "a" ].IsArray() ) {
+		std::cout << document["a"][0]["z"].GetInt() << std::endl;
+		std::cout << document["a"][1]["z"].GetInt() << std::endl;
+		/*rapidjson::StringBuffer sb;
+		rapidjson::Writer<rapidjson::StringBuffer> writer( sb );
+		document[ "a" ].Accept( writer );
+		std::cout << sb.GetString() << std::endl;*/
+	}
+	
 
 	// Load Objects - rendered in order they are added
 	GameObject* terrain = Object::create<GameObject>();

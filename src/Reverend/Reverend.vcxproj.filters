@@ -213,5 +213,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="engine\physics.h" />
+    <None Include="data\items.json" />
   </ItemGroup>
 </Project>
