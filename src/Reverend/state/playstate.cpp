@@ -19,61 +19,76 @@ bool PlayState::onEnter()
 	
 	int pX = 9000;
 	int pY = 9000;
-
-	std::ifstream t("data/items.txt");
-	std::stringstream buffer;
-	buffer << t.rdbuf();
-	const std::string tmp = buffer.str();
-	/*rapidjson::Document d;
-    d.Parse<0>(tmp.c_str());*/
 	
-    rapidjson::Document document;
-	std::string test =  "{\"a\":[{\"z\":21}, {\"z\":22}] }";
-	if ( document.Parse<0>( test.c_str() ).HasParseError() ) {
-		std::cout << "Error parsing" << std::endl;
-	} else if ( document[ "a" ].IsArray() ) {
-		std::cout << document["a"][0]["z"].GetInt() << std::endl;
-		std::cout << document["a"][1]["z"].GetInt() << std::endl;
-		/*rapidjson::StringBuffer sb;
-		rapidjson::Writer<rapidjson::StringBuffer> writer( sb );
-		document[ "a" ].Accept( writer );
-		std::cout << sb.GetString() << std::endl;*/
-	}
-	
-
 	// Load Objects - rendered in order they are added
 	GameObject* terrain = Object::create<GameObject>();
-	Terrain* tr = new Terrain(*terrain);
+	Terrain* tr = new Terrain(terrain);
 	terrain->addComponent(tr);
+	
+	// Load items
+	std::ifstream t("data/items.json");
+	std::stringstream buffer;
+	buffer << t.rdbuf();
+	const std::string itemData = buffer.str();
+	
+	/*"name" : "Rock",
+		"description" : "Your run of the mill rock. Bash things with it or make it a pet.",
+		"collision" : false,
+		"texture" : "assets/textures/stone.png",
+		"h" : 32,
+		"w" : 32*/
 
+    rapidjson::Document document;
+	if ( document.Parse<0>( itemData.c_str() ).HasParseError() ) {
+		std::cout << "Error parsing" << std::endl;
+	} else if ( document.IsArray() ) {
+		for (rapidjson::SizeType i = 0; i < document.Size(); i++) {
+			std::string texture = document[i]["name"].GetString();
+			int w = document[i]["w"].GetInt();
+			int h = document[i]["h"].GetInt();
+			GameObject* item = Object::create<GameObject>();
+			item->init(LoaderParams(9100, 9100, w, h, texture));
+			RenderingComponent* r = new RenderingComponent(item);
+			r->texture = texture;
+			item->addComponent(r);
+
+			if (document[i]["collider"] != NULL) {
+				BoxCollider* c = new BoxCollider(item);
+				c->offset = GameRect(document[i]["collider"]["x"].GetInt(),
+									document[i]["collider"]["y"].GetInt(),
+									document[i]["collider"]["w"].GetInt(),
+									document[i]["collider"]["h"].GetInt());
+				item->addComponent(c);
+			}
+
+		}
+	}
+
+	
+	// Players
 	GameObject* player = Object::create<GameObject>();
-	player->addComponent(new PlayerInput(*player));
+	player->init(LoaderParams(pX, pY, 64, 64, "player"));
 
-	AnimatedSprite* sprite = new AnimatedSprite(*player);
+	player->addComponent(new PlayerInput(player));
+
+	AnimatedSprite* sprite = new AnimatedSprite(player);
 	sprite->maxFrames = 12;
 	sprite->texture = "player";
 	player->addComponent(sprite);
-	BoxCollider* collider = new BoxCollider(*player);
+	BoxCollider* collider = new BoxCollider(player);
+	collider->offset = GameRect(15, 40, 32, 20);
 	player->addComponent(collider);
-	player->init(LoaderParams(pX, pY, 64, 64, "player"));
 	CameraManager::getMain()->setTarget(player);
-
+	/*
 	GameObject* e = Object::create<GameObject>();
+	e->init(LoaderParams(pX - 100, pY - 100, 64, 64, "enemy"));
+
 	AnimatedSprite* s = new AnimatedSprite(*e);
 	s->maxFrames = 12;
 	s->texture = "enemy";
 	e->addComponent(s);
-	e->init(LoaderParams(pX - 100, pY - 100, 64, 64, "enemy"));
-
-
-	//
-	//// Setup layers - first is lowest in z-index
-	//Terrain* terrain = new Terrain();
-	//gameObjects_.push_back(terrain);
-	//
-	//gameObjects_.push_back(ObjectFactory::create("player", new LoaderParams(pX, pY, 64, 64, "player")));
-	//gameObjects_.push_back(ObjectFactory::create("enemy", new LoaderParams(pX - 128, pY - 128, 64, 64, "enemy")));
-
+	BoxCollider* enemyCollider = new BoxCollider(*e);
+	e->addComponent(enemyCollider);*/
 	return true;
 }
 

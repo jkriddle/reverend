@@ -4,25 +4,25 @@
 
 class GameRect {
 public:
-	GameRect() : x(0), y(0), width(0), height(0) {}
+	GameRect() : x(0), y(0), w(0), h(0) {}
 
-	GameRect(int x, int y, int w, int h) : x(x), y(y), width(w), height(h) {
+	GameRect(int x, int y, int w, int h) : x(x), y(y), w(w), h(h) {
 	}
 
-	void setPosition(int x, int y) { x = x, y = y; }
+	void setPosition(int x, int y) { this->x = x, this->y = y; }
 	
 	GameRect operator+(const GameRect& v2) const {
-		return GameRect(x + v2.x, y + v2.y, width + v2.width, height + v2.height);
+		return GameRect(x + v2.x, y + v2.y, w + v2.w, h + v2.h);
 	}
 	
 	GameRect operator-(const GameRect& v2) const {
-		return GameRect(x - v2.x, y - v2.y, width - v2.width, height - v2.height);
+		return GameRect(x - v2.x, y - v2.y, w - v2.w, h - v2.h);
 	}
 
 	int x;
 	int y;
-	int width;
-	int height;
+	int w;
+	int h;
 };
 
 #endif;

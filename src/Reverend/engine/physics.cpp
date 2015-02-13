@@ -27,13 +27,13 @@ bool Physics::checkCollision(GameRect &a, GameRect &b) {
 	if (&a == &b) return false;
 	int aX = (int)a.x;
 	int aY = (int)a.y;
-	int aW = a.width;
-	int aH = a.height;
+	int aW = a.w;
+	int aH = a.h;
 
 	int bX = (int)b.x;
 	int bY = (int)b.y;
-	int bW = b.width;
-	int bH = b.height;
+	int bW = b.w;
+	int bH = b.h;
 
 	if (aX < bX + bW &&
 		aX + aW > bX &&

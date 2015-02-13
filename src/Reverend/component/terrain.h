@@ -11,7 +11,7 @@
 class Terrain : public RenderingComponent
 {
 public:
-	Terrain(GameObject& parent) : map_(nullptr), RenderingComponent(parent){}
+	Terrain(GameObject* parent) : map_(nullptr), RenderingComponent(parent){}
 	~Terrain() {
 		delete map_;
 		map_ = NULL;

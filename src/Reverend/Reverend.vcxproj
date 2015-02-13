@@ -150,8 +150,10 @@
     <Media Include="assets\sounds\fast_swipe.wav" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\items.json" />
     <None Include="engine\physics.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\items.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

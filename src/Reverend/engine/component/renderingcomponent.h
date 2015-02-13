@@ -11,7 +11,7 @@
 class RenderingComponent : public Component {
 
 public:
-	RenderingComponent(GameObject& parent) : Component(parent) {}
+	RenderingComponent(GameObject* parent) : Component(parent) {}
 	virtual void render(SDL_Renderer* renderer);
 	virtual void update();
 	virtual void receiveMessage(Message* message);

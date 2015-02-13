@@ -1,10 +1,10 @@
 #include "boxcollider.h"
-
+#include "../game.h"
 void BoxCollider::update() {
 	Component::update();
-	boundingBox_.setPosition(parent_->position.x, parent_->position.y);
+	position.setPosition(parent_->position.x, parent_->position.y);
 	for(GameObject* o : Object::getObjects()) {
-		if (&parent_ == &o) continue;
+		if (parent_ == o) continue;
 		BoxCollider* pCollider = parent_->getComponent<BoxCollider>();
 		BoxCollider* oCollider = o->getComponent<BoxCollider>();
 		if (pCollider != nullptr && oCollider != nullptr) {

@@ -6,7 +6,7 @@
 class PlayerInput : public Component {
 
 public:
-	PlayerInput(GameObject& parent) : speed_(3), Component(parent) {
+	PlayerInput(GameObject* parent) : speed_(3), Component(parent) {
 	}
 	virtual void start();
 	void update();

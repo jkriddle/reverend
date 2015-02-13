@@ -18,6 +18,7 @@ void Reverend::load() {
 	TextureManager::getInstance().load("assets/textures/dirt.png", "dirt", getRenderer());
 	TextureManager::getInstance().load("assets/textures/rock.png", "rock", getRenderer());
 	TextureManager::getInstance().load("assets/textures/snow.png", "snow", getRenderer());
+	TextureManager::getInstance().load("assets/textures/stone.png", "Stone", getRenderer());
 	SoundManager::getInstance().load("assets/sounds/fast_swipe.wav", "short_swipe", SoundType::SOUND_SFX);
 }
 

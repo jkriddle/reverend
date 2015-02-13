@@ -11,7 +11,7 @@
 class AnimatedSprite : public RenderingComponent {
 
 public:
-	AnimatedSprite(GameObject& parent) : currentFrame(0), currentRow(0), maxFrames(1), RenderingComponent(parent) {
+	AnimatedSprite(GameObject* parent) : currentFrame(0), currentRow(0), maxFrames(1), RenderingComponent(parent) {
 	}
 
 	void render(SDL_Renderer* renderer);
