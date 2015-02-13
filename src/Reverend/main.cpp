@@ -21,7 +21,6 @@ int main(int argc,char **argv)
 	
 	Reverend* reverend = new Reverend();
 	reverend->init();
-	reverend->load();
 	reverend->getStateMachine()->changeState(new PlayState());
 
 	while(reverend->running()) {

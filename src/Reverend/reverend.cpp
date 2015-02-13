@@ -34,23 +34,12 @@ void Reverend::load() {
 	int pX = 9000;
 	int pY = 9000;
 	
-	// Load Objects - rendered in order they are added
+	// Terrain
 	GameObject* terrain = Object::create<GameObject>();
 	Terrain* tr = new Terrain(terrain);
 	terrain->addComponent(tr);
-	
-	
-	// Load items
-	std::ifstream itemFile("data/items.json");
-	std::stringstream itemBuff;
-	itemBuff << itemFile.rdbuf();
-	const std::string itemData = itemBuff.str();
-    rapidjson::Document itemDocument;
-	if ( itemDocument.Parse<0>( itemData.c_str() ).HasParseError() ) {
-		std::cout << "Error parsing item document" << std::endl;
-		return;
-	}
 
+	
 	std::ifstream gameFile("data/game.json");
 	std::stringstream gameBuff;
 	gameBuff << gameFile.rdbuf();
@@ -61,70 +50,84 @@ void Reverend::load() {
 		std::cout << "Error parsing game document" << std::endl;
 		return;
 	}
+	
+	
+	// First load all the item instances
+	std::ifstream itemFile("data/items.json");
+	std::stringstream itemBuff;
+	itemBuff << itemFile.rdbuf();
+	const std::string itemData = itemBuff.str();
+    rapidjson::Document itemDocument;
+	if ( itemDocument.Parse<0>( itemData.c_str() ).HasParseError() ) {
+		std::cout << "Error parsing item document" << std::endl;
+		return;
+	}
+	
 
-	for (rapidjson::SizeType i = 0; i < itemDocument.Size(); i++) {
-		int w = 32;
-		int h = 32;
-		if (itemDocument[i].HasMember("w")) 
-			w = itemDocument[i]["w"].GetInt();
-		if (itemDocument[i].HasMember("h")) 
-			h = itemDocument[i]["h"].GetInt();
-		GameObject* item = Object::create<GameObject>();
+	for (rapidjson::SizeType j = 0; j < gameDocument["entities"].Size(); j++) {
+		
+		if (gameDocument["entities"][j].HasMember("type")) {
 
-		int x = 0;
-		int y = 0;
-			
-		if (itemDocument[i]["name"] == "Player") {
-			CameraManager::getMain()->setTarget(item);
-		}
-
-		// Load positions from game file
-		for (rapidjson::SizeType j = 0; j < gameDocument["entities"].Size(); j++) {
-			if (gameDocument["entities"][j].HasMember("type")) {
+			// Find this item (inefficient)
+			for (rapidjson::SizeType i = 0; i < itemDocument.Size(); i++) {
+				
 				std::string gameType = gameDocument["entities"][j]["type"].GetString();
 				std::string itemType = itemDocument[i]["name"].GetString();
-				if (gameType.compare(itemType) == 0) {
-					x = gameDocument["entities"][j]["x"].GetInt();
-					y = gameDocument["entities"][j]["y"].GetInt();
-				}
-			}
-		}
-		
-		item->init(LoaderParams(x, y, w, h, ""));
-			
-		// Components
-		if (itemDocument[i].HasMember("components")) {
-			for (rapidjson::SizeType j = 0; j < itemDocument[i]["components"].Size(); j++) {
-				if (itemDocument[i]["components"][j]["type"]  == "Collider") {
-					BoxCollider* c = new BoxCollider(item);
-					c->offset = GameRect(itemDocument[i]["components"][j]["x"].GetInt(),
-										itemDocument[i]["components"][j]["y"].GetInt(),
-										itemDocument[i]["components"][j]["w"].GetInt(),
-										itemDocument[i]["components"][j]["h"].GetInt());
-					item->addComponent(c);
-				}
+				if (gameType.compare(itemType) != 0) continue;
 				
-				if (itemDocument[i]["components"][j]["type"]  == "RenderingComponent") {
-					RenderingComponent* r = new RenderingComponent(item);
-					r->texture = itemDocument[i]["components"][j]["texture"].GetString();
-					item->addComponent(r);
-				}
-				
-				if (itemDocument[i]["components"][j]["type"]  == "AnimatedSprite") {
-					AnimatedSprite* r = new AnimatedSprite(item);
-					r->maxFrames = itemDocument[i]["components"][j]["maxFrames"].GetInt();
-					r->texture = itemDocument[i]["components"][j]["texture"].GetString();
-					item->addComponent(r);
-				}
-				
-				if (itemDocument[i]["components"][j]["type"] == "PlayerInput") {
-					PlayerInput* r = new PlayerInput(item);
-					item->addComponent(r);
-				}
+				int x = gameDocument["entities"][j]["x"].GetInt();
+				int y = gameDocument["entities"][j]["y"].GetInt();
+				int w = 32;
+				int h = 32;
 
-				if (itemDocument[i]["components"][j].HasMember("texture")) {
-					TextureManager::getInstance().load(itemDocument[i]["components"][j]["texture"].GetString(), 
-														itemDocument[i]["components"][j]["texture"].GetString(), getRenderer());
+				if (itemDocument[i].HasMember("w")) 
+					w = itemDocument[i]["w"].GetInt();
+				if (itemDocument[i].HasMember("h")) 
+					h = itemDocument[i]["h"].GetInt();
+					
+				GameObject* item = Object::create<GameObject>();
+			
+				if (itemDocument[i]["name"] == "Player") {
+					CameraManager::getMain()->setTarget(item);
+				}
+		
+				item->init(LoaderParams(x, y, w, h, ""));
+			
+				// Components
+				if (itemDocument[i].HasMember("components")) {
+					for (rapidjson::SizeType j = 0; j < itemDocument[i]["components"].Size(); j++) {
+						if (itemDocument[i]["components"][j]["type"]  == "Collider") {
+							BoxCollider* c = new BoxCollider(item);
+							c->offset = GameRect(itemDocument[i]["components"][j]["x"].GetInt(),
+												itemDocument[i]["components"][j]["y"].GetInt(),
+												itemDocument[i]["components"][j]["w"].GetInt(),
+												itemDocument[i]["components"][j]["h"].GetInt());
+							item->addComponent(c);
+						}
+				
+						if (itemDocument[i]["components"][j]["type"]  == "RenderingComponent") {
+							RenderingComponent* r = new RenderingComponent(item);
+							r->texture = itemDocument[i]["components"][j]["texture"].GetString();
+							item->addComponent(r);
+						}
+				
+						if (itemDocument[i]["components"][j]["type"]  == "AnimatedSprite") {
+							AnimatedSprite* r = new AnimatedSprite(item);
+							r->maxFrames = itemDocument[i]["components"][j]["maxFrames"].GetInt();
+							r->texture = itemDocument[i]["components"][j]["texture"].GetString();
+							item->addComponent(r);
+						}
+				
+						if (itemDocument[i]["components"][j]["type"] == "PlayerInput") {
+							PlayerInput* r = new PlayerInput(item);
+							item->addComponent(r);
+						}
+
+						if (itemDocument[i]["components"][j].HasMember("texture")) {
+							TextureManager::getInstance().load(itemDocument[i]["components"][j]["texture"].GetString(), 
+																itemDocument[i]["components"][j]["texture"].GetString(), getRenderer());
+						}
+					}
 				}
 			}
 		}

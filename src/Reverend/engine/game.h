@@ -40,7 +40,7 @@ protected:
 		screenHeight_ = 480;
 		isRunning_ = true;
 		gameStateMachine_ = new GameStateMachine();
-		showColliders_ = false;
+		showColliders_ = true;
 	}
 
 	~Game() {

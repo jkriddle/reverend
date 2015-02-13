@@ -2,14 +2,14 @@
 	"name" : "Save #1",
 	"entities" : [
 		{
+			"type" : "Stone",
+			"x" : 9100,
+			"y" : 9100
+		},
+		{
 			"type" : "Player",
 			"x" : 9000,
 			"y" : 9000
-		},
-		{
-			"type" : "Rock",
-			"x" : 9100,
-			"y" : 9100
 		}
 	]
 }
