@@ -216,5 +216,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\items.json" />
+    <Text Include="data\game.json" />
   </ItemGroup>
 </Project>

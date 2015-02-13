@@ -153,6 +153,7 @@
     <None Include="engine\physics.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="data\game.json" />
     <Text Include="data\items.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
