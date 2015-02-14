@@ -3,8 +3,8 @@
 #include "engine/ltimer.h"
 
 const int FPS = 30;
-const int DELAY_TIME = 1000.0f / FPS;
-const int SCREEN_TICKS_PER_FRAME = 1000 / FPS;
+const int DELAY_TIME = (int)(1000.0f / FPS);
+const int SCREEN_TICKS_PER_FRAME = (int)1000 / FPS;
 
 int main(int argc,char **argv) 
 {	

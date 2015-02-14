@@ -8,15 +8,15 @@
 
 class BoxTrigger : public Component {
 public:
-	BoxTrigger(GameObject& parent) : Component(parent) {}
+	BoxTrigger(GameObject* parent) : position(parent->position.x, parent->position.y, parent->width, parent->height), Component(parent) {}
 	
 	virtual void update();
 	virtual void receiveMessage(Message* m);
-
-	GameRect getBounds() { return boundingBox_; }
+	GameRect getBounds() { return GameRect(position.x + offset.x, position.y + offset.y, offset.w, offset.h); }
+	GameRect position;
+	GameRect offset;
 
 protected:
-	GameRect boundingBox_;
 };
 
 #endif

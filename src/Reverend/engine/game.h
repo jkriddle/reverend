@@ -40,6 +40,7 @@ protected:
 		screenHeight_ = 480;
 		isRunning_ = true;
 		gameStateMachine_ = new GameStateMachine();
+		showColliders_ = true;
 	}
 
 	~Game() {
@@ -49,7 +50,7 @@ protected:
 
 private:
 	bool initSystems();
-	
+	bool showColliders_;
 	bool isRunning_;
 	int seed_;
 	SDL_Window* window_;

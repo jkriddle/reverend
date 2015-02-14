@@ -3,9 +3,9 @@
 
 void BoxTrigger::update() {
 	Component::update();
-	boundingBox_.setPosition(parent_->position.x, parent_->position.y);
+	position.setPosition(parent_->position.x, parent_->position.y);
 	for(GameObject* o : Object::getObjects()) {
-		if (&parent_ == &o) continue;
+		if (parent_ == o) continue;
 		BoxTrigger* pTrigger = parent_->getComponent<BoxTrigger>();
 		BoxTrigger* oTrigger = o->getComponent<BoxTrigger>();
 		if (pTrigger != nullptr && oTrigger != nullptr) {

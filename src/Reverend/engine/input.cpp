@@ -4,8 +4,6 @@
 #include "game.h"
 #include <iostream>
 
-Input* Input::instance_ = 0;
-
 Input::Input() : keystates_(0), joysticksInitialised_(false), quitting_(false), 
 	mousePosition_(Vector2d(0,0)), prevMousePosition_(Vector2d(0,0))
 {
@@ -18,10 +16,6 @@ Input::Input() : keystates_(0), joysticksInitialised_(false), quitting_(false),
 
 Input::~Input()
 {
-    // delete anything we created dynamically
-    delete keystates_;
-    delete prevKeystates_;
-    
     // clear our arrays
     joystickValues_.clear();
     joysticks_.clear();

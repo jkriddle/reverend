@@ -54,9 +54,11 @@ the Reverend will continue to look in the direction of the mouse.
 
 * ...
 
-## Development Roadmap
+## Development Roadmap (TODO)
 
-* ...
+* When not moving in direction, keep existing forward/texture showing where player is facing.
+* At item ID attribute instead of comparing item/gameData type/name.
+* More efficient item/gameData iterations to avoid O(n^2)? Possibly a map?
 
 ## Installation
 

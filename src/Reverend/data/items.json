@@ -1,0 +1,46 @@
+[
+	{
+		"name" : "Player",
+		"description" : "The hero!",
+		"components" : [
+			{ 
+				"type" : "Collider",
+				"x" : 15,
+				"y" : 40,
+				"w" : 32,
+				"h" : 17
+			},
+			{
+				"type" : "AnimatedSprite",
+				"texture" : "assets/textures/player.png",
+				"w" : 64,
+				"h" : 64,
+				"maxFrames" : 12
+			},
+			{
+				"type" : "PlayerInput"
+			}
+		],
+		"w" : 64,
+		"h" : 64
+	},
+	{
+		"name" : "Stone",
+		"description" : "Your run of the mill rock. Bash things with it or make it a pet.",
+		"components" : [
+			{
+				"type" : "Collider",
+				"x" : 0,
+				"y" : 5,
+				"w" : 32,
+				"h" : 25
+			},
+			{
+				"type" : "RenderingComponent",
+				"texture" : "assets/textures/stone.png",
+				"w" : 32,
+				"h" : 32
+			}
+		]
+	}
+]

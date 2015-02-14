@@ -3,6 +3,8 @@
 #include "component/renderingcomponent.h"
 #include "object.h"
 #include "soundmanager.h"
+#include "component/boxcollider.h"
+#include "camera.h"
 
 void Game::init() {
 	if (initSystems()) {
@@ -108,6 +110,21 @@ void Game::render() {
 		for(RenderingComponent* r : renderers) {
 			r->render(renderer_);
 		}
+		
+		// This is just for testing
+		if (showColliders_) {
+			std::vector<BoxCollider*> colliders = o->getComponents<BoxCollider>();
+			for(BoxCollider* c : colliders) {
+				SDL_Rect destRect;
+				Vector2d pos = CameraManager::getMain()->translate(c->getBounds().x, c->getBounds().y);
+				destRect.x = pos.x;
+				destRect.y = pos.y;
+				destRect.w = c->getBounds().w;
+				destRect.h = c->getBounds().h;
+				SDL_RenderDrawRect(renderer_, &destRect);
+			}
+		}
+		
 	}
 
     SDL_RenderPresent(renderer_); 

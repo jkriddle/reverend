@@ -38,16 +38,13 @@ std::string Terrain::getTile(int x, int y) {
 	double height = map_->getAltitude(mapAltX, mapAltY);
 	std::string texture = mapTexture(height);
 	
+	// if block above this is dirt
 	height = map_->getAltitude(mapAltX, mapAltY - 1);
 	std::string textureN = mapTexture(height);
 	if (texture == "grass" && textureN == "dirt") {
 		texture = "grass-n";
 	}
 
-	// if block above this is dirt
-
-
-	// TODO load from file
 	return texture;
 }
 

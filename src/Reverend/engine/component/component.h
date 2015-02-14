@@ -18,8 +18,8 @@ public:
 	virtual void start() {}
 protected:
 
-	Component(GameObject& parent) {
-		parent_ = &parent;
+	Component(GameObject* parent) {
+		parent_ = parent;
 		started_ = false;
 	}
 
