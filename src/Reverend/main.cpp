@@ -2,9 +2,7 @@
 #include "state/playstate.h"
 #include "engine/ltimer.h"
 
-const int FPS = 30;
-const int DELAY_TIME = (int)(1000.0f / FPS);
-const int SCREEN_TICKS_PER_FRAME = (int)1000 / FPS;
+const int MAX_FPS = 30;
 
 int main(int argc,char **argv) 
 {	
@@ -23,29 +21,39 @@ int main(int argc,char **argv)
 	reverend->init();
 	reverend->getStateMachine()->changeState(new PlayState());
 
+	float dt; //delta time in seconds
+	Uint32 clock; //last time sample in seconds
+	float render_timer; //time control for rendering
+
+	dt = 0.0;
+	render_timer = 0.0; //init the render timer
+	clock = SDL_GetTicks(); //API callback to get the current time in seconds
+	
+	Uint32 startTime = SDL_GetTicks();
+	int numFrames = 0;
+
 	while(reverend->running()) {
+		++numFrames;
+		dt = SDL_GetTicks() - clock; //get the current delta time for this frame
+		clock = SDL_GetTicks(); //updates the clock to check the next delta time
 		
-        //Calculate and correct fps
-        float avgFPS = countedFrames / ( fpsTimer.getTicks() / 1000.f );
-        if( avgFPS > 2000000 )
-        {
-            avgFPS = 0;
-        }
-       
-		++countedFrames;
+		Uint32 elapsedMS = SDL_GetTicks() - startTime; // Time since start of loop
+		if (elapsedMS) { // Skip this the first frame
+			double elapsedSeconds = elapsedMS / 1000.0; // Convert to seconds
+			double fps = numFrames / elapsedSeconds; // FPS is Frames / Seconds
+			std::cout << fps << std::endl; 
+		}
 
 		reverend->handleEvents();
 		reverend->update();
-		reverend->render();
 
-		//If frame finished early
-        int frameTicks = capTimer.getTicks();
-        if( frameTicks < SCREEN_TICKS_PER_FRAME )
-        {
-            //Wait remaining time
-            SDL_Delay( SCREEN_TICKS_PER_FRAME - frameTicks );
-        }
-		
+		if(render_timer >= (1.0f/MAX_FPS)) //checks if the frame is ready to render
+		{
+			reverend->render();
+			render_timer -= (1.0f/MAX_FPS); //do not set to zero, remove the accumulated frame time to avoid skipping
+		}
+
+		render_timer += dt; //updates the render timer
 	}
 	delete reverend;
 	reverend = NULL;

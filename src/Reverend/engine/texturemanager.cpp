@@ -1,7 +1,7 @@
 #include "texturemanager.h"
 
-bool TextureManager::load(const std::string& fileName, const std::string& id, SDL_Renderer* pRenderer) {
-	SDL_Surface* tempSurface = IMG_Load(fileName.c_str());
+bool TextureManager::load(const char* fileName, const char* id, SDL_Renderer* pRenderer) {
+	SDL_Surface* tempSurface = IMG_Load(fileName);
 	if(tempSurface == 0) {
 		return false;
 	}
@@ -18,7 +18,7 @@ bool TextureManager::load(const std::string& fileName, const std::string& id, SD
 	return false;
 }
 
-void TextureManager::draw(const std::string& id, int x, int y, int width, int height, SDL_Renderer* pRenderer, SDL_RendererFlip flip) {
+void TextureManager::draw(const char* id, int x, int y, int width, int height, SDL_Renderer* pRenderer) {
 	SDL_Rect srcRect;
 	SDL_Rect destRect;
 	srcRect.x = 0;
@@ -27,10 +27,10 @@ void TextureManager::draw(const std::string& id, int x, int y, int width, int he
 	srcRect.h = destRect.h = height;
 	destRect.x = x;
 	destRect.y = y;
-	SDL_RenderCopyEx(pRenderer, textureMap_[id], &srcRect, &destRect, 0, 0, flip);
+	SDL_RenderCopy(pRenderer, textureMap_[id], &srcRect, &destRect);
 }
 
-void TextureManager::drawFrame(const std::string& id, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer *pRenderer, SDL_RendererFlip flip) {
+void TextureManager::drawFrame(const char* id, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer *pRenderer) {
 	SDL_Rect srcRect;
 	SDL_Rect destRect;
 	srcRect.x = width * currentFrame;
@@ -39,11 +39,11 @@ void TextureManager::drawFrame(const std::string& id, int x, int y, int width, i
 	srcRect.h = destRect.h = height;
 	destRect.x = x;
 	destRect.y = y;
-	SDL_RenderCopyEx(pRenderer, textureMap_[id], &srcRect, &destRect, 0, 0, flip);
+	SDL_RenderCopy(pRenderer, textureMap_[id], &srcRect, &destRect);
 	//SDL_RenderDrawRect(pRenderer, &destRect);
 }
 
-void TextureManager::drawTile(const std::string& id, int margin, int spacing, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer *pRenderer)
+void TextureManager::drawTile(const char* id, int margin, int spacing, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer *pRenderer)
 {
     SDL_Rect srcRect;
     SDL_Rect destRect;
@@ -54,7 +54,7 @@ void TextureManager::drawTile(const std::string& id, int margin, int spacing, in
     destRect.x = x;
     destRect.y = y;
     
-    SDL_RenderCopyEx(pRenderer, textureMap_[id], &srcRect, &destRect, 0, 0, SDL_FLIP_NONE);
+    SDL_RenderCopy(pRenderer, textureMap_[id], &srcRect, &destRect);
 }
 
 void TextureManager::clearTextureMap()
@@ -62,7 +62,7 @@ void TextureManager::clearTextureMap()
     textureMap_.clear();
 }
 
-void TextureManager::clearFromTextureMap(const std::string& id)
+void TextureManager::clearFromTextureMap(const char* id)
 {
     textureMap_.erase(id);
 }

@@ -78,6 +78,9 @@ void Terrain::render(SDL_Renderer* renderer) {
 
 	int offsetX, offsetY, cX, cY;
 	
+	SDL_SetRenderDrawColor(renderer, 100, 32, 53, 1);
+	
+
 	for(int i = startX; i <= mX; i+=tileSize_) { // for 0 through 720, every 32 px
 		for(int j = startY; j <= mY; j+=tileSize_) { // for 0 through 360, every 32 px
 			//srand(seed_ + i + j);
@@ -92,8 +95,15 @@ void Terrain::render(SDL_Renderer* renderer) {
 			// also a low Y value seems to cause the map generator to crash because it is trying to get a negative pixel value
 			// (like it isn't being translated accordingly)
 			std::string tile = getTile(i, j);
-			TextureManager::getInstance().draw(tile, cX, cY, tileSize_, tileSize_, renderer);
+			TextureManager::getInstance().draw(tile.c_str(), cX, cY, tileSize_, tileSize_, renderer);
+			/*SDL_Rect destRect;
+			destRect.x = cX;
+			destRect.y = cY;
+			destRect.w = tileSize_;
+			destRect.h = tileSize_;
+			SDL_RenderDrawRect(renderer, &destRect);*/
 			
 		}
 	}
+
 }

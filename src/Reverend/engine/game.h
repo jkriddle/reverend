@@ -60,6 +60,7 @@ private:
 	SDL_Renderer* renderer_;
 	SDL_Surface* screen_;
 	GameStateMachine* gameStateMachine_;
+	SDL_Texture* pTexture ;
 };
 
 #endif

@@ -7,6 +7,9 @@
 Input::Input() : keystates_(0), joysticksInitialised_(false), quitting_(false), 
 	mousePosition_(Vector2d(0,0)), prevMousePosition_(Vector2d(0,0))
 {
+	prevKeystates_ = new Uint8[255];
+	prevMouseButtonStates_ = new Uint8[3];
+
     // create button states for the mouse
     for(int i = 0; i < 3; i++)
     {
@@ -187,12 +190,14 @@ bool Input::getTriggerState(int joy, int triggerNumber) const
 // Check if a mouse button is currently down (including repeat events)
 bool Input::getMouseButtonState(int buttonNumber) const
 {
+	if (mouseButtonStates_.size() < buttonNumber - 1) return false;
     return mouseButtonStates_[buttonNumber];
 }
 
 // Check if a mouse button has been initially pressed (no repeat events/held down)
 bool Input::getMouseButtonPress(int buttonNumber) const
 {
+	if (prevMouseButtonStates_ == nullptr) return false;
     return prevMouseButtonStates_[buttonNumber] == 1;
 }
 
@@ -209,8 +214,6 @@ Vector2d Input::getPrevMousePosition() const
 void Input::update()
 {
     SDL_Event event;
-	prevKeystates_ = new Uint8[255];
-	prevMouseButtonStates_ = new Uint8[3];
 
     while(SDL_PollEvent(&event))
     {

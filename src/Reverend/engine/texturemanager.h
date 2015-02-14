@@ -8,12 +8,12 @@
 
 class TextureManager {
 public:
-	bool load(const std::string& fileName, const std::string& id, SDL_Renderer* renderer);
-	void draw(const std::string& id, int x, int y, int width, int height, SDL_Renderer* pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
-	void drawFrame(const std::string& id, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer*pRenderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
-	void drawTile(const std::string& id, int margin, int spacing, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer *pRenderer);
+	bool load(const char* fileName, const char* id, SDL_Renderer* renderer);
+	void draw(const char* id, int x, int y, int width, int height, SDL_Renderer* pRenderer);
+	void drawFrame(const char* id, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer*pRendere);
+	void drawTile(const char* id, int margin, int spacing, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer *pRenderer);
 	void clearTextureMap();
-	void clearFromTextureMap(const std::string& id);
+	void clearFromTextureMap(const char* id);
 
 	static TextureManager& getInstance()
 	{

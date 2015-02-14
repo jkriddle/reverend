@@ -25,16 +25,10 @@ bool Game::initSystems() {
 	}
 
 	//Create window
-	window_ = SDL_CreateWindow("Reverend", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth_, screenHeight_, SDL_WINDOW_OPENGL); // SDL_WINDOW_FULLSCREEN
+	window_ = SDL_CreateWindow("Reverend", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth_, screenHeight_, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN); // SDL_WINDOW_FULLSCREEN
 	if( window_ == NULL )
 	{
 		printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
-		return false;
-	}
-
-	context_ = SDL_GL_CreateContext(window_);
-	if (context_ == nullptr) {
-		std::cout << "SDL_GL context could not be created!";
 		return false;
 	}
 
@@ -59,6 +53,14 @@ bool Game::initSystems() {
 
 	Input::getInstance().initialiseJoysticks();
 
+	SDL_Surface* tempSurface = IMG_Load("assets/textures/terrain/grass.png");
+	if(tempSurface == 0) {
+		return false;
+	}
+
+	pTexture = SDL_CreateTextureFromSurface(renderer_, tempSurface);
+	SDL_FreeSurface(tempSurface);
+
 	return true;
 }
 
@@ -79,6 +81,8 @@ void Game::quit() {
 
 
 void Game::update() {
+	Input::getInstance().update();
+
 	// Update all components
 	std::vector<GameObject*> objects = Object::getObjects();
 	for(unsigned int i = 0; i < objects.size(); i++) {
@@ -103,8 +107,10 @@ void Game::handleEvents() {
 
 void Game::render() {
 	SDL_RenderClear(renderer_);
-	// TODO loop through components, find renderers, and render them
+
+
 	std::vector<GameObject*> gameObjects = Object::getObjects();
+
 	for(GameObject* o : gameObjects) {
 		std::vector<RenderingComponent*> renderers = o->getComponents<RenderingComponent>();
 		for(RenderingComponent* r : renderers) {
@@ -126,6 +132,23 @@ void Game::render() {
 		}
 		
 	}
+
+	/*
+
+	for(int i = 0; i < screenWidth_; i+= 32)
+		for(int j = 0; j < screenHeight_; j+= 32) {
+			SDL_Rect srcRect;
+			SDL_Rect destRect;
+			srcRect.x = 0;
+			srcRect.y = 0;
+			srcRect.w = destRect.w = 32;
+			srcRect.h = destRect.h = 32;
+			destRect.x = i;
+			destRect.y = j;
+			SDL_RenderCopy(renderer_, pTexture, &srcRect, &destRect);
+		}
+
+		*/
 
     SDL_RenderPresent(renderer_); 
 }
