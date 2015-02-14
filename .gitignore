@@ -28,6 +28,7 @@ Debug
 *.la
 *.a
 *.lib
+*.db
 
 # Executables
 *.exe

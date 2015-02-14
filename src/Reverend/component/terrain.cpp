@@ -39,10 +39,20 @@ std::string Terrain::getTile(int x, int y) {
 	std::string texture = mapTexture(height);
 	
 	// if block above this is dirt
-	height = map_->getAltitude(mapAltX, mapAltY - 1);
-	std::string textureN = mapTexture(height);
-	if (texture == "grass" && textureN == "dirt") {
-		texture = "grass-n";
+	std::string textureN = mapTexture(map_->getAltitude(mapAltX, mapAltY - 1));
+	std::string textureE = mapTexture(map_->getAltitude(mapAltX + 1, mapAltY));
+	std::string textureS = mapTexture(map_->getAltitude(mapAltX, mapAltY + 1));
+	std::string textureW = mapTexture(map_->getAltitude(mapAltX - 1, mapAltY));
+
+	if (texture == "grass") {
+		if (textureN == "dirt" && textureW == "dirt") texture = "grass-nw";
+		else if (textureW == "dirt" && textureS == "dirt") texture = "grass-sw";
+		else if (textureN == "dirt" && textureE == "dirt") texture = "grass-ne";
+		else if (textureE == "dirt" && textureS == "dirt") texture = "grass-se";
+		else if (textureN == "dirt") texture = "grass-n";
+		else if (textureE == "dirt") texture = "grass-e";
+		else if (textureS == "dirt") texture = "grass-s";
+		else if (textureW == "dirt") texture = "grass-w";
 	}
 
 	return texture;
