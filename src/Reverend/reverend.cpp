@@ -14,8 +14,16 @@ void Reverend::load() {
 	TextureManager::getInstance().load("assets/textures/water.png", "water", getRenderer());
 	TextureManager::getInstance().load("assets/textures/shallows.png", "shallows", getRenderer());
 	TextureManager::getInstance().load("assets/textures/sand.png", "sand", getRenderer());
-	TextureManager::getInstance().load("assets/textures/grass.png", "grass", getRenderer());
-	TextureManager::getInstance().load("assets/textures/dirt.png", "dirt", getRenderer());
+	TextureManager::getInstance().load("assets/textures/terrain/grass.png", "grass", getRenderer());
+	TextureManager::getInstance().load("assets/textures/terrain/grass-n.png", "grass-n", getRenderer());
+	TextureManager::getInstance().load("assets/textures/terrain/grass-ne.png", "grass-ne", getRenderer());
+	TextureManager::getInstance().load("assets/textures/terrain/grass-e.png", "grass-e", getRenderer());
+	TextureManager::getInstance().load("assets/textures/terrain/grass-se.png", "grass-se", getRenderer());
+	TextureManager::getInstance().load("assets/textures/terrain/grass-s.png", "grass-s", getRenderer());
+	TextureManager::getInstance().load("assets/textures/terrain/grass-sw.png", "grass-sw", getRenderer());
+	TextureManager::getInstance().load("assets/textures/terrain/grass-w.png", "grass-w", getRenderer());
+	TextureManager::getInstance().load("assets/textures/terrain/grass-nw.png", "grass-nw", getRenderer());
+	TextureManager::getInstance().load("assets/textures/terrain/dirt.png", "dirt", getRenderer());
 	TextureManager::getInstance().load("assets/textures/rock.png", "rock", getRenderer());
 	TextureManager::getInstance().load("assets/textures/snow.png", "snow", getRenderer());
 	SoundManager::getInstance().load("assets/sounds/fast_swipe.wav", "short_swipe", SoundType::SOUND_SFX);
