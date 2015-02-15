@@ -6,6 +6,7 @@
 #include "engine/component/animatedsprite.h"
 #include "engine/component/boxcollider.h"
 #include "component/playerinput.h"
+#include "component/fpsrenderer.h"
 #include "engine/camera.h"
 #include "component/terrain.h"
 #include <rapidjson\document.h>
@@ -41,12 +42,11 @@ void Reverend::load() {
 	// TODO - move this to PlayState once we have the whole texture management/component renderer figured out.
 	int pX = 9000;
 	int pY = 9000;
-	
+
 	// Terrain
 	GameObject* terrain = Object::create<GameObject>();
 	Terrain* tr = new Terrain(terrain);
 	terrain->addComponent(tr);
-
 	
 	std::ifstream gameFile("data/game.json");
 	std::stringstream gameBuff;
@@ -145,14 +145,6 @@ void Reverend::load() {
 }
 
 void Reverend::close() {
-	TextureManager::getInstance().clearFromTextureMap("player");
-	TextureManager::getInstance().clearFromTextureMap("enemy");
-	TextureManager::getInstance().clearFromTextureMap("water");
-	TextureManager::getInstance().clearFromTextureMap("shallows");
-	TextureManager::getInstance().clearFromTextureMap("sand");
-	TextureManager::getInstance().clearFromTextureMap("grass");
-	TextureManager::getInstance().clearFromTextureMap("dirt");
-	TextureManager::getInstance().clearFromTextureMap("rock");
-	TextureManager::getInstance().clearFromTextureMap("snow");
+	TextureManager::getInstance().clearTextureMap();
 	CameraManager::cleanup();
 }

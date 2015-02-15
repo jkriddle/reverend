@@ -55,7 +55,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL/SDL2.lib;SDL/SDL2main.lib;SDL/SDL2_image.lib;SDL/SDL2_mixer.lib;noise/libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL/SDL2.lib;SDL/SDL2main.lib;SDL/SDL2_image.lib;SDL/SDL2_mixer.lib;SDL/SDL2_ttf.lib;noise/libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
@@ -75,6 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="component\fpsrenderer.cpp" />
     <ClCompile Include="component\playerinput.cpp" />
     <ClCompile Include="component\terrain.cpp" />
     <ClCompile Include="engine\camera.cpp" />
@@ -116,6 +117,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="component\fpsrenderer.h" />
     <ClInclude Include="component\playerinput.h" />
     <ClInclude Include="component\terrain.h" />
     <ClInclude Include="engine\camera.h" />

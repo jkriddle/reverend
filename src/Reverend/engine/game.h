@@ -3,6 +3,7 @@
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include <SDL/SDL_ttf.h>
 #include <iostream>
 #include <vector>
 #include "texturemanager.h"
@@ -31,6 +32,7 @@ public:
 
 	static const int getTileSize() { return 32; }
 	static const int getScale() { return 4; }
+	double fps;
 
 protected:
 	Game() {
@@ -41,6 +43,8 @@ protected:
 		isRunning_ = true;
 		gameStateMachine_ = new GameStateMachine();
 		showColliders_ = true;
+		fps = 0;
+		showFps_ = true;
 	}
 
 	~Game() {
@@ -60,7 +64,7 @@ private:
 	SDL_Renderer* renderer_;
 	SDL_Surface* screen_;
 	GameStateMachine* gameStateMachine_;
-	SDL_Texture* pTexture ;
+	bool showFps_;
 };
 
 #endif

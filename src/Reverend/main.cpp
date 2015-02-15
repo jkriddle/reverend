@@ -32,6 +32,8 @@ int main(int argc,char **argv)
 	Uint32 startTime = SDL_GetTicks();
 	int numFrames = 0;
 
+	double fps = 0;
+
 	while(reverend->running()) {
 		++numFrames;
 		dt = SDL_GetTicks() - clock; //get the current delta time for this frame
@@ -40,8 +42,7 @@ int main(int argc,char **argv)
 		Uint32 elapsedMS = SDL_GetTicks() - startTime; // Time since start of loop
 		if (elapsedMS) { // Skip this the first frame
 			double elapsedSeconds = elapsedMS / 1000.0; // Convert to seconds
-			double fps = numFrames / elapsedSeconds; // FPS is Frames / Seconds
-			std::cout << fps << std::endl; 
+			reverend->fps = numFrames / elapsedSeconds; // FPS is Frames / Seconds
 		}
 
 		reverend->handleEvents();

@@ -18,7 +18,7 @@ void Game::init() {
 bool Game::initSystems() {
 	
 	//Initialize SDL
-	if( SDL_Init( SDL_INIT_EVERYTHING ) < 0 )
+	if( SDL_Init( SDL_INIT_EVERYTHING ) < 0  ||  TTF_Init() < 0)
 	{
 		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
 		return false;
@@ -48,18 +48,14 @@ bool Game::initSystems() {
 		return false;
 	}
 
+	if (showFps_) {
+		TextureManager::getInstance().loadFont("assets/fonts/OpenSans-Regular.ttf", "sans", 12); 
+	}
+
 	//Get window surface
 	screen_ = SDL_GetWindowSurface(window_);
 
 	Input::getInstance().initialiseJoysticks();
-
-	SDL_Surface* tempSurface = IMG_Load("assets/textures/terrain/grass.png");
-	if(tempSurface == 0) {
-		return false;
-	}
-
-	pTexture = SDL_CreateTextureFromSurface(renderer_, tempSurface);
-	SDL_FreeSurface(tempSurface);
 
 	return true;
 }
@@ -76,11 +72,13 @@ void Game::quit() {
 //	map_ = NULL;
 	//Quit SDL subsystems
 	IMG_Quit();
+	TTF_Quit();
 	SDL_Quit();
 }
 
 
 void Game::update() {
+
 	Input::getInstance().update();
 
 	// Update all components
@@ -130,25 +128,15 @@ void Game::render() {
 				SDL_RenderDrawRect(renderer_, &destRect);
 			}
 		}
+
+		if (showFps_) {
+			char msg[30];
+			SDL_Color color = { 250, 250, 100 };
+			sprintf(msg, "FPS: %4.0f", fps);
+			TextureManager::getInstance().drawText("sans", msg, color, 10, 10, 60, 20, renderer_);
+		}
 		
 	}
-
-	/*
-
-	for(int i = 0; i < screenWidth_; i+= 32)
-		for(int j = 0; j < screenHeight_; j+= 32) {
-			SDL_Rect srcRect;
-			SDL_Rect destRect;
-			srcRect.x = 0;
-			srcRect.y = 0;
-			srcRect.w = destRect.w = 32;
-			srcRect.h = destRect.h = 32;
-			destRect.x = i;
-			destRect.y = j;
-			SDL_RenderCopy(renderer_, pTexture, &srcRect, &destRect);
-		}
-
-		*/
 
     SDL_RenderPresent(renderer_); 
 }
